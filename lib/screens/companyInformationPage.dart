@@ -1,10 +1,10 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, avoid_print
 
 import 'dart:io';
 import 'package:she_wo/JsnClass/companyProfile.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
-import 'package:she_wo/widgets/backgroundContainer.dart';
+import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/textButtonWidget.dart';
 import 'package:she_wo/widgets/textFieldWidget.dart';
 import 'package:flutter/material.dart';
@@ -92,13 +92,13 @@ class _CompanyInformationPageState extends State<CompanyInformationPage> {
                                 backgroundColor: Colors.white,
                                 child: IconButton(
                                     iconSize: iconSize,
-                                    icon: Icon(Icons.arrow_back, color: primaryColor),
+                                    icon: const Icon(Icons.arrow_back, color: primaryColor),
                                     onPressed: () {
                                       Navigator.pop(context, false);
                                     }),
                               ),
-                              SizedBox(width: maxSpace),
-                              Text(
+                              const SizedBox(width: maxSpace),
+                              const Text(
                                 "Firma Bilgileri",
                                 style: TextStyle(fontFamily: leadingFont, fontSize: 25, color: Colors.white),
                               ),
@@ -114,10 +114,10 @@ class _CompanyInformationPageState extends State<CompanyInformationPage> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             companyProfile!.result!.companyName!,
-                            style: TextStyle(color: Colors.white, fontSize: 20),
+                            style: const TextStyle(color: Colors.white, fontSize: 20),
                           ),
                         ),
-                        SizedBox(height: maxSpace)
+                        const SizedBox(height: maxSpace)
                       ],
                     ),
                   ),
@@ -125,7 +125,7 @@ class _CompanyInformationPageState extends State<CompanyInformationPage> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).backgroundColor,
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(cardCurved)), //Yalnızca dikeyde yuvarlatılmış
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(cardCurved)), //Yalnızca dikeyde yuvarlatılmış
                       ),
                       child: ListView(children: [
                         Padding(
@@ -137,7 +137,7 @@ class _CompanyInformationPageState extends State<CompanyInformationPage> {
                                   backgroundImage: selectedImage != null ? FileImage(selectedImage!) : null,
                                   child: selectedImage == null ? Image.network(companyProfile!.result!.companyLogo!) : null),
                             )),
-                        Container(
+                        SizedBox(
                           width: deviceWidth(context),
                           child: TextButtonWidget(
                             buttonText: "Firma Logosu Seçiniz",
@@ -149,46 +149,46 @@ class _CompanyInformationPageState extends State<CompanyInformationPage> {
                         TextFieldWidget(
                           hintText: "Firma Adı",
                           obscureText: false,
-                          inputFormatters: [],
+                          inputFormatters: const [],
                           keyboardType: TextInputType.text,
                           textEditingController: teCompanyName,
                         ),
                         TextFieldWidget(
                           hintText: "Firma E-Posta",
                           obscureText: false,
-                          inputFormatters: [],
+                          inputFormatters: const [],
                           keyboardType: TextInputType.text,
                           textEditingController: teEPosta,
                         ),
                         TextFieldWidget(
                           hintText: "Firma Telefonu",
                           obscureText: false,
-                          inputFormatters: [],
+                          inputFormatters: const [],
                           keyboardType: TextInputType.text,
                           textEditingController: teTel1,
                         ),
                         TextFieldWidget(
                           hintText: "Firma Telefonu 2",
                           obscureText: false,
-                          inputFormatters: [],
+                          inputFormatters: const [],
                           keyboardType: TextInputType.text,
                           textEditingController: teTel2,
                         ),
                         TextFieldWidget(
                           hintText: "Firma Google Linki",
                           obscureText: false,
-                          inputFormatters: [],
+                          inputFormatters: const [],
                           keyboardType: TextInputType.text,
                           textEditingController: teGoogleAddress,
                         ),
                         TextFieldWidget(
                           hintText: "Firma Web Adresi",
                           obscureText: false,
-                          inputFormatters: [],
+                          inputFormatters: const [],
                           keyboardType: TextInputType.text,
                           textEditingController: teWeb,
                         ),
-                        Container(
+                        SizedBox(
                           width: deviceWidth(context),
                           child: TextButtonWidget(
                             buttonText: "Firma Bilgilerini Kaydet",

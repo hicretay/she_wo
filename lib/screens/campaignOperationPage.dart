@@ -4,7 +4,7 @@ import 'package:she_wo/screens/newCampaignPage.dart';
 //import 'package:she_wo/screens/updateCampaignPage.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
-import 'package:she_wo/widgets/backgroundContainer.dart';
+import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/textButtonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -64,13 +64,13 @@ class _CampaignOperationPageState extends State<CampaignOperationPage> {
                                 backgroundColor: Colors.white,
                                 child: IconButton(
                                     iconSize: iconSize,
-                                    icon: Icon(Icons.arrow_back, color: primaryColor),
+                                    icon: const Icon(Icons.arrow_back, color: primaryColor),
                                     onPressed: () {
                                       Navigator.pop(context, false);
                                     }),
                               ),
-                              SizedBox(width: maxSpace),
-                              Text(
+                              const SizedBox(width: maxSpace),
+                              const Text(
                                 "Kampanya İşlemleri",
                                 style: TextStyle(fontFamily: leadingFont, fontSize: 25, color: Colors.white),
                               ),
@@ -86,10 +86,10 @@ class _CampaignOperationPageState extends State<CampaignOperationPage> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             companyProfile!.result!.companyName!,
-                            style: TextStyle(color: Colors.white, fontSize: 20),
+                            style: const TextStyle(color: Colors.white, fontSize: 20),
                           ),
                         ),
-                        SizedBox(height: maxSpace)
+                        const SizedBox(height: maxSpace)
                       ],
                     ),
                   ),
@@ -97,7 +97,7 @@ class _CampaignOperationPageState extends State<CampaignOperationPage> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).backgroundColor,
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(cardCurved)),
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(cardCurved)),
                       ),
                       child: RefreshIndicator(
                         onRefresh: () => refreshCampaignList(),
@@ -107,7 +107,7 @@ class _CampaignOperationPageState extends State<CampaignOperationPage> {
                           child: Column(children: [
                             Padding(
                               padding: const EdgeInsets.only(top: maxSpace),
-                              child: Container(
+                              child: SizedBox(
                                 width: deviceWidth(context),
                                 child: TextButtonWidget(
                                   buttonText: "Yeni Kampanya Oluştur",
@@ -118,7 +118,7 @@ class _CampaignOperationPageState extends State<CampaignOperationPage> {
                               ),
                             ),
                             ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemCount: companyProfile!.result!.campaignList!.length,
                                 itemBuilder: (BuildContext context, int index) {
@@ -140,22 +140,20 @@ class _CampaignOperationPageState extends State<CampaignOperationPage> {
                                             child: Column(
                                               children: [
                                                 Padding(
-                                                  padding: EdgeInsets.only(left: defaultPadding, right: defaultPadding, top: defaultPadding),
+                                                  padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding, top: defaultPadding),
                                                   //--------------Resmi çevreyelecek container yapısı------------------
-                                                  child: Container(
-                                                    child: AspectRatio(
-                                                      aspectRatio: 1.79,
-                                                      child: Container(
-                                                        width: double.infinity,
-                                                        decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.only(
-                                                              topLeft: Radius.circular(maxSpace), topRight: Radius.circular(maxSpace)),
-                                                          image: DecorationImage(
-                                                              fit: BoxFit.fitWidth,
-                                                              image: NetworkImage(companyProfile!.result!.campaignList![index].campaingLogo!)),
-                                                        ),
-                                                        //------------------------------------------------------------------
+                                                  child: AspectRatio(
+                                                    aspectRatio: 1.79,
+                                                    child: Container(
+                                                      width: double.infinity,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: const BorderRadius.only(
+                                                            topLeft: Radius.circular(maxSpace), topRight: Radius.circular(maxSpace)),
+                                                        image: DecorationImage(
+                                                            fit: BoxFit.fitWidth,
+                                                            image: NetworkImage(companyProfile!.result!.campaignList![index].campaingLogo!)),
                                                       ),
+                                                      //------------------------------------------------------------------
                                                     ),
                                                   ),
                                                 ),
@@ -166,13 +164,13 @@ class _CampaignOperationPageState extends State<CampaignOperationPage> {
                                                       alignment: Alignment.bottomLeft,
                                                       child: Container(
                                                         width: deviceWidth(context),
-                                                        padding: EdgeInsets.all(minSpace),
-                                                        decoration: BoxDecoration(
+                                                        padding: const EdgeInsets.all(minSpace),
+                                                        decoration: const BoxDecoration(
                                                           color: secondaryTransparentColor,
                                                         ),
                                                         child: Text(
                                                           companyProfile!.result!.campaignList![index].campaingName!,
-                                                          style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold, fontSize: 20),
+                                                          style: const TextStyle(color: primaryColor, fontWeight: FontWeight.bold, fontSize: 20),
                                                         ),
                                                       ),
                                                     ),
@@ -181,7 +179,7 @@ class _CampaignOperationPageState extends State<CampaignOperationPage> {
                                                 //-------------------------------------ICONBUTTONLAR PANELİ----------------------------------------
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding),
-                                                  child: Container(
+                                                  child: SizedBox(
                                                       width: deviceWidth(context),
                                                       child: Column(
                                                         mainAxisAlignment: MainAxisAlignment.end, //Tüm widgetlar container altına konumlandırılsın
@@ -201,8 +199,8 @@ class _CampaignOperationPageState extends State<CampaignOperationPage> {
                                                                     children: [
                                                                       //------------------------------SİLME ICONBUTTONI----------------------------
                                                                       IconButton(
-                                                                          padding: EdgeInsets.all(0),
-                                                                          icon: Icon(LineIcons.trash, color: primaryColor),
+                                                                          padding: const EdgeInsets.all(0),
+                                                                          icon: const Icon(LineIcons.trash, color: primaryColor),
                                                                           onPressed: () async {
                                                                             final progressHUD = ProgressHUD.of(context);
                                                                             progressHUD!.show();
@@ -212,7 +210,7 @@ class _CampaignOperationPageState extends State<CampaignOperationPage> {
                                                                                   return ProgressHUD(
                                                                                     child: Builder(
                                                                                       builder: (context) => AlertDialog(
-                                                                                        content: Text("Kampanya silinsin mi?",
+                                                                                        content: const Text("Kampanya silinsin mi?",
                                                                                             style: TextStyle(fontFamily: contentFont)),
                                                                                         actions: <Widget>[
                                                                                           Row(
@@ -220,7 +218,8 @@ class _CampaignOperationPageState extends State<CampaignOperationPage> {
                                                                                             children: [
                                                                                               MaterialButton(
                                                                                                   color: primaryColor,
-                                                                                                  child: Text("Evet", style: TextStyle(color: white)),
+                                                                                                  child: const Text("Evet",
+                                                                                                      style: TextStyle(color: white)),
                                                                                                   onPressed: () async {
                                                                                                     final progressHUD = ProgressHUD.of(context);
                                                                                                     progressHUD!.show();
@@ -241,7 +240,8 @@ class _CampaignOperationPageState extends State<CampaignOperationPage> {
                                                                                                   }),
                                                                                               MaterialButton(
                                                                                                 color: primaryColor,
-                                                                                                child: Text("Hayır", style: TextStyle(color: white)),
+                                                                                                child: const Text("Hayır",
+                                                                                                    style: TextStyle(color: white)),
                                                                                                 onPressed: () {
                                                                                                   showToast(context, "Kampanya silinmedi!");
                                                                                                   Navigator.of(context).pop();
@@ -259,8 +259,8 @@ class _CampaignOperationPageState extends State<CampaignOperationPage> {
                                                                       //------------------------------------------------------------------------------
                                                                       //-----------------------------DÜZENLEME ICONBUTTONI--------------------------------
                                                                       IconButton(
-                                                                        padding: EdgeInsets.all(0),
-                                                                        icon: Icon(LineIcons.edit, color: primaryColor, size: iconSize),
+                                                                        padding: const EdgeInsets.all(0),
+                                                                        icon: const Icon(LineIcons.edit, color: primaryColor, size: iconSize),
                                                                         onPressed: () async {
                                                                           // final ContentStreamDetailJsn? companyDetailData = await contentStreamDetailJsnFunc(companyProfile!.result!.id!, companyProfile!.result!.campaignList![index].campaingId!, 1);
                                                                           // List<dynamic> sliderImg = [];

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:she_wo/JsnClass/companyOperationJsn.dart';
 import 'package:she_wo/screens/makeAppointmentOperationPage.dart';
 import 'package:she_wo/model/appointmentModel.dart';
@@ -50,7 +52,7 @@ class _MakeAppointmentCalendarPageState extends State<MakeAppointmentCalendarPag
                 color: primaryColor,
                 child: Column(
                   children: [
-                    BackLeadingWidget(
+                    const BackLeadingWidget(
                       backColor: primaryColor,
                     ),
                     Padding(
@@ -62,10 +64,10 @@ class _MakeAppointmentCalendarPageState extends State<MakeAppointmentCalendarPag
                             alignment: Alignment.topLeft,
                             child: Text(
                               appointment.companyNameS!,
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ),
-                          SizedBox(height: maxSpace)
+                          const SizedBox(height: maxSpace)
                         ],
                       ),
                     ),
@@ -73,7 +75,7 @@ class _MakeAppointmentCalendarPageState extends State<MakeAppointmentCalendarPag
                       child: Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.vertical(
+                          borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(cardCurved),
                           ),
                         ),
@@ -99,7 +101,7 @@ class _MakeAppointmentCalendarPageState extends State<MakeAppointmentCalendarPag
                                   defaultDecoration: boxDecoration,
                                   weekendDecoration: boxDecoration,
                                   defaultTextStyle: TextStyle(color: Theme.of(context).hintColor),
-                                  selectedTextStyle: TextStyle(
+                                  selectedTextStyle: const TextStyle(
                                     color: Colors.white,
                                   ),
                                   todayDecoration: BoxDecoration(
@@ -117,7 +119,7 @@ class _MakeAppointmentCalendarPageState extends State<MakeAppointmentCalendarPag
                                     _focusedDay = focusedDay;
                                   });
                                 },
-                                headerStyle: HeaderStyle(
+                                headerStyle: const HeaderStyle(
                                   formatButtonVisible: false,
                                   titleCentered: true,
                                 ),
@@ -135,14 +137,11 @@ class _MakeAppointmentCalendarPageState extends State<MakeAppointmentCalendarPag
                 color: Theme.of(context).backgroundColor,
                 child: TextButtonWidget(
                     buttonText: "Randevu alınacak işlemi seçiniz",
-                    icon: FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: white),
+                    icon: const FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: white),
                     //-----------------------------Randevu alınacak işlemi seçiniz butonu------------------------------
                     onPressed: () async {
-                      appointment.appointmentDate = (_selectedDay.day <= 9 ? "0" + _selectedDay.day.toString() : _selectedDay.day.toString()) +
-                          "." +
-                          (_selectedDay.month <= 9 ? "0" + _selectedDay.month.toString() : _selectedDay.month.toString()) +
-                          "." +
-                          _selectedDay.year.toString();
+                      appointment.appointmentDate =
+                          "${_selectedDay.day <= 9 ? "0${_selectedDay.day}" : _selectedDay.day.toString()}.${_selectedDay.month <= 9 ? "0" + _selectedDay.month.toString() : _selectedDay.month.toString()}.${_selectedDay.year}";
                       print(appointment.appointmentDate);
                       final progressHUD = ProgressHUD.of(context);
                       progressHUD!.show();
@@ -167,5 +166,6 @@ class Event {
   final String operation;
   Event({required this.operation});
 
-  String toString() => this.operation;
+  @override
+  String toString() => operation;
 }

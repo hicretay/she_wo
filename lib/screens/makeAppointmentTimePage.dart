@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, avoid_print
 
 import 'package:she_wo/screens/makeAppointmentCheckPage.dart';
 import 'package:she_wo/model/appointmentModel.dart';
@@ -37,7 +37,7 @@ class _MakeAppointmentTimePageState extends State<MakeAppointmentTimePage> {
               color: primaryColor,
               child: Column(
                 children: [
-                  BackLeadingWidget(
+                  const BackLeadingWidget(
                     backColor: primaryColor,
                   ),
                   Padding(
@@ -49,10 +49,10 @@ class _MakeAppointmentTimePageState extends State<MakeAppointmentTimePage> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             appointment!.companyNameS!,
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: maxSpace,
                         )
                       ],
@@ -60,7 +60,7 @@ class _MakeAppointmentTimePageState extends State<MakeAppointmentTimePage> {
                   ),
                   Expanded(
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: passivePurple,
                         borderRadius: BorderRadius.vertical(
                           top: Radius.circular(cardCurved),
@@ -71,12 +71,12 @@ class _MakeAppointmentTimePageState extends State<MakeAppointmentTimePage> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(defaultPadding),
-                              child: (companyOperationTime!.isEmpty || companyOperationTime!.length == 0)
-                                  ? Center(child: Text("Uygun saat bulunamadı !"))
+                              child: (companyOperationTime!.isEmpty || companyOperationTime!.isEmpty)
+                                  ? const Center(child: Text("Uygun saat bulunamadı !"))
                                   : GridView.builder(
                                       shrinkWrap: true,
                                       itemCount: companyOperationTime!.length,
-                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                         childAspectRatio: (1 / .5),
                                         crossAxisCount: 4,
                                         mainAxisSpacing: minSpace,
@@ -89,7 +89,7 @@ class _MakeAppointmentTimePageState extends State<MakeAppointmentTimePage> {
                                             child: Center(
                                               child: Text(
                                                 companyOperationTime![index].operationStartTime,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: darkWhite,
                                                 ),
                                               ),
@@ -120,7 +120,7 @@ class _MakeAppointmentTimePageState extends State<MakeAppointmentTimePage> {
               color: passivePurple,
               child: TextButtonWidget(
                   buttonText: "Randevuyu Tamamla",
-                  icon: FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: white),
+                  icon: const FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: white),
                   onPressed: () {
                     print(appointment!.timeS);
                     final progressHUD = ProgressHUD.of(context);

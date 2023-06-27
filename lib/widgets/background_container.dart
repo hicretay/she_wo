@@ -6,7 +6,7 @@ class BackGroundContainer extends StatefulWidget {
   // Uygulama arka planındaki renk geçişini oluşturuyor
   // favoritePage, locationPage sayfalarında kullanıldı
   final Widget? child;
-  BackGroundContainer({this.child});
+  const BackGroundContainer({Key? key, this.child}) : super(key: key);
 
   @override
   _BackGroundContainerState createState() => _BackGroundContainerState();
@@ -16,14 +16,14 @@ class _BackGroundContainerState extends State<BackGroundContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: widget.child,
-      decoration: BoxDecoration(color: primaryColor
+      decoration: const BoxDecoration(color: primaryColor
           // gradient: LinearGradient(
           //   begin: Alignment.topLeft,
           //   end: Alignment.topRight,
           //   colors: widget.colors
           // ),
           ),
+      child: widget.child,
     );
   }
 }

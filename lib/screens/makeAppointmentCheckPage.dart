@@ -53,7 +53,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
             color: primaryColor,
             child: Column(
               children: [
-                BackLeadingWidget(
+                const BackLeadingWidget(
                   backColor: primaryColor,
                 ),
                 Padding(
@@ -68,16 +68,16 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                         alignment: Alignment.topLeft,
                         child: Text(
                           appointment.companyNameS!,
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
-                      SizedBox(height: maxSpace)
+                      const SizedBox(height: maxSpace)
                     ],
                   ),
                 ),
                 Expanded(
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: passivePurple,
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(cardCurved),
@@ -95,7 +95,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                               height: deviceWidth(context) * 0.15,
                               child: Text(
                                 appointment.appointmentDate! != null ? appointment.appointmentDate! : "tarih",
-                                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                                style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
                             InformationRowWidget(
@@ -105,7 +105,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                               operationName: "Saat",
                               child: Text(
                                 appointment.timeS!,
-                                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                                style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
                             InformationRowWidget(
@@ -118,7 +118,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                                   padding: EdgeInsets.all(deviceWidth(context) * 0.01),
                                   child: Text(
                                     appointment.operationS!,
-                                    style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                                    style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
@@ -134,8 +134,8 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                                 maxLines: null,
                                 controller: teNote,
                                 cursorColor: primaryColor,
-                                style: TextStyle(color: primaryColor, fontSize: 18),
-                                decoration: InputDecoration(
+                                style: const TextStyle(color: primaryColor, fontSize: 18),
+                                decoration: const InputDecoration(
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(
                                       width: 0,
@@ -148,11 +148,11 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(""),
+                                const Text(""),
                                 Container(
                                   width: deviceWidth(context) * 0.6,
                                   height: deviceWidth(context) * 0.15,
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.topRight, colors: backGroundColor1),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(5.0),
@@ -160,7 +160,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                                   ),
                                   child: Center(
                                     child: MaterialButton(
-                                      child: Text(
+                                      child: const Text(
                                         "Randevu Olustur",
                                         style: TextStyle(fontFamily: leadingFont, color: Colors.white, fontSize: 18),
                                       ),

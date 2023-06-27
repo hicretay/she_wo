@@ -24,14 +24,14 @@ class _InformationRowWidgetState extends State<InformationRowWidget> {
           children: [
             Text(
               "${widget.operationName}:",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: darkWhite),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: darkWhite),
             ),
             Container(
               width: widget.width,
               height: widget.height,
               decoration: BoxDecoration(
                 color: widget.containerColor,
-                borderRadius: BorderRadius.all(
+                borderRadius: const BorderRadius.all(
                   Radius.circular(minSpace),
                 ),
               ),
@@ -41,7 +41,7 @@ class _InformationRowWidgetState extends State<InformationRowWidget> {
             ),
           ],
         ),
-        SizedBox(height: maxSpace),
+        const SizedBox(height: maxSpace),
       ],
     );
   }

@@ -24,8 +24,8 @@ class BackLeadingWidget extends StatelessWidget {
                   onPressed: () {
                     Navigator.pop(context, false);
                   }),
-              SizedBox(width: maxSpace),
-              Text(
+              const SizedBox(width: maxSpace),
+              const Text(
                 "estetik vitrini",
                 style: TextStyle(fontFamily: leadingFont, fontSize: 30, color: Colors.white),
               ),

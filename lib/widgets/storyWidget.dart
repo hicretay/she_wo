@@ -45,7 +45,7 @@ class _StoryWidgetState extends State<StoryWidget> {
         url: itemS.storyContentPicture,
         controller: controller!,
         caption: itemS.storyContent,
-        duration: Duration(milliseconds: 5000),
+        duration: const Duration(milliseconds: 5000),
       ));
     }
     return storyItems;
@@ -67,7 +67,7 @@ class _StoryWidgetState extends State<StoryWidget> {
     // Story tamamlandığında olacakların fonk.
     widget.controller!.nextPage(
       // sonraki sayfa animasyonu
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeIn,
     );
     if (widget.company.id == lastCompId) {
@@ -81,7 +81,7 @@ class _StoryWidgetState extends State<StoryWidget> {
         future: addStoryItems(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(
+            return const Center(
               child: Text("Hata oluştu"),
             );
           } else if (snapshot.hasData) {
@@ -121,7 +121,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                                     return Center(
                                         child: CircularProgressIndicator(
                                       backgroundColor: primaryColor,
-                                      valueColor: AlwaysStoppedAnimation<Color>(secondaryColor),
+                                      valueColor: const AlwaysStoppedAnimation<Color>(secondaryColor),
                                       value: loadingProgress.expectedTotalBytes != null
                                           ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                                           : null,
@@ -140,7 +140,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                                   padding: const EdgeInsets.only(top: 5),
                                   child: Text(
                                     widget.company.companyName.isEmpty ? "company" : widget.company.companyName,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_function_literals_in_foreach_calls
+
 import 'package:she_wo/JsnClass/companyListJsn.dart';
 import 'package:she_wo/JsnClass/companyProfile.dart';
 import 'package:she_wo/providers/navigationProvider.dart';
@@ -23,10 +25,11 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<CompanyListJsn?> allCompaniesList() async {
     final CompanyListJsn? companyNewList = await companyListJsnFunc();
-    if (mounted)
+    if (mounted) {
       setState(() {
         allCompanies = companyNewList!.result!;
       });
+    }
     return companyNewList;
   }
 
@@ -42,7 +45,7 @@ class _SearchPageState extends State<SearchPage> {
         future: allCompaniesList(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(
+            return const Center(
               child: Text("HATA"),
             );
           } else {
@@ -75,7 +78,7 @@ class _SearchPageState extends State<SearchPage> {
                                           backgroundColor: Colors.transparent,
                                           child: IconButton(
                                             iconSize: iconSize,
-                                            icon: Icon(Icons.arrow_back, color: primaryColor, size: 30),
+                                            icon: const Icon(Icons.arrow_back, color: primaryColor, size: 30),
                                             onPressed: () {
                                               NavigationProvider.of(context).setTab(HOME_PAGE);
                                             },
@@ -88,10 +91,10 @@ class _SearchPageState extends State<SearchPage> {
                                               controller: teSearch,
                                               decoration: InputDecoration(
                                                 hintText: "Ara",
-                                                hintStyle: TextStyle(color: primaryColor),
+                                                hintStyle: const TextStyle(color: primaryColor),
                                                 focusedBorder: InputBorder.none,
                                                 enabledBorder: InputBorder.none,
-                                                contentPadding: EdgeInsets.all(maxSpace),
+                                                contentPadding: const EdgeInsets.all(maxSpace),
                                                 filled: true,
                                                 fillColor: Colors.white,
                                                 border: OutlineInputBorder(
@@ -142,20 +145,20 @@ class _SearchPageState extends State<SearchPage> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: maxSpace, left: maxSpace, bottom: maxSpace / 2),
                                     child: Container(
-                                      decoration: BoxDecoration(color: passivePurple, borderRadius: BorderRadius.all(Radius.circular(20))),
+                                      decoration: const BoxDecoration(color: passivePurple, borderRadius: BorderRadius.all(Radius.circular(20))),
                                       child: ListView.separated(
-                                        padding: EdgeInsets.all(0),
+                                        padding: const EdgeInsets.all(0),
                                         controller: NavigationProvider.of(context).screens[SEARCH_PAGE].scrollController,
                                         shrinkWrap: true,
-                                        itemCount: selectedCompanies.length == 0 ? allCompanies.length : selectedCompanies.length,
+                                        itemCount: selectedCompanies.isEmpty ? allCompanies.length : selectedCompanies.length,
                                         itemBuilder: (BuildContext context, int index) {
                                           return GestureDetector(
                                             child: Padding(
                                                 padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding),
                                                 child: Container(
                                                     height: deviceHeight(context) * 0.1,
-                                                    decoration:
-                                                        BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.all(Radius.circular(10))),
+                                                    decoration: const BoxDecoration(
+                                                        color: Colors.transparent, borderRadius: const BorderRadius.all(Radius.circular(10))),
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment.spaceBetween, // Row içindeki widgetların yayılmasını sağlar
@@ -188,12 +191,12 @@ class _SearchPageState extends State<SearchPage> {
                                                             SizedBox(
                                                               width: deviceWidth(context) * 0.60,
                                                               child: Text(
-                                                                  selectedCompanies.length == 0
+                                                                  selectedCompanies.isEmpty
                                                                       ? allCompanies[index].companyName
                                                                       : selectedCompanies[index].companyName,
                                                                   overflow: TextOverflow.fade,
                                                                   softWrap: false,
-                                                                  style: TextStyle(fontSize: 17, fontFamily: headerFont, color: darkWhite)),
+                                                                  style: const TextStyle(fontSize: 17, fontFamily: headerFont, color: darkWhite)),
                                                             ),
                                                           ],
                                                         ),
@@ -211,10 +214,10 @@ class _SearchPageState extends State<SearchPage> {
                                           );
                                         },
                                         separatorBuilder: (BuildContext context, int index) {
-                                          return SizedBox(
+                                          return const SizedBox(
                                               height: 0,
                                               child: Padding(
-                                                padding: const EdgeInsets.only(right: defaultPadding * 3, left: defaultPadding * 2),
+                                                padding: EdgeInsets.only(right: defaultPadding * 3, left: defaultPadding * 2),
                                                 child: Divider(color: Colors.black12, thickness: 1.5),
                                               ));
                                         },

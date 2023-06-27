@@ -1,5 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:she_wo/JsnClass/addUserCityJsn.dart';
 import 'package:she_wo/JsnClass/addUserJsn.dart';
 import 'package:she_wo/JsnClass/appointmentAddJsn.dart';
@@ -41,8 +44,8 @@ Map<String, String> header = {
 //---------------------------------------------------Login Fonksiyonu-------------------------------------------------------------
 Future<LoginJsn?> loginJsnFunc(String userName, String password, bool social) async {
   final response = await http.post(
-    Uri.parse(url + "LoginJsn"),
-    body: '{"userName":' + '"$userName"' + ',' + '"password":' + '"$password"' + ',' + '"social":' + social.toString() + '}',
+    Uri.parse("${url}LoginJsn"),
+    body: '{"userName":"$userName","password":"$password","social":$social}',
     headers: header,
   );
 
@@ -57,8 +60,7 @@ Future<LoginJsn?> loginJsnFunc(String userName, String password, bool social) as
 
 //----------------------------------------------Ana sayfa postlar Listesi Fonksiyonu-----------------------------------------------
 Future<ContentStreamJsn?> contentStreamJsnFunc(int id, int page) async {
-  final response = await http.post(Uri.parse(url + "ContentStream/List"),
-      body: '{"userId":' + id.toString() + ',' + '"page":' + page.toString() + '}', headers: header);
+  final response = await http.post(Uri.parse("${url}ContentStream/List"), body: '{"userId":$id,"page":$page}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -71,8 +73,8 @@ Future<ContentStreamJsn?> contentStreamJsnFunc(int id, int page) async {
 
 //----------------------------------------------Favori Salonlar Listesi Fonksiyonu-----------------------------------------------
 Future<ContentStreamJsn?> favoriteJsnFunc(int userId, int page, bool favorite) async {
-  final response = await http.post(Uri.parse(url + "ContentStream/List"),
-      body: '{"userId":' + userId.toString() + ',' + '"page":' + page.toString() + ',' + '"favorite":' + favorite.toString() + '}', headers: header);
+  final response =
+      await http.post(Uri.parse("${url}ContentStream/List"), body: '{"userId":$userId,"page":$page,"favorite":$favorite}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -85,9 +87,8 @@ Future<ContentStreamJsn?> favoriteJsnFunc(int userId, int page, bool favorite) a
 
 //----------------------------------------------Kampanya Listesi Fonksiyonu--------------------------------------------------------
 Future<ContentStreamDetailJsn?> contentStreamDetailJsnFunc(int companyId, int campaingId, int userId) async {
-  final response = await http.post(Uri.parse(url + "ContentStreamDetail/List"),
-      body: '{"companyId":' + companyId.toString() + ',' + '"campaingId":' + campaingId.toString() + ',' + '"userId":' + userId.toString() + '}',
-      headers: header);
+  final response = await http.post(Uri.parse("${url}ContentStreamDetail/List"),
+      body: '{"companyId":$companyId,"campaingId":$campaingId,"userId":$userId}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -100,7 +101,7 @@ Future<ContentStreamDetailJsn?> contentStreamDetailJsnFunc(int companyId, int ca
 
 //----------------------------------------------Favori Konumlar Listesi Fonksiyonu-------------------------------------------------
 Future<UserFavoriAreaJsn?> userFavoriAreaJsnFunc(int id) async {
-  final response = await http.post(Uri.parse(url + "UserFavoriArea/List"), body: '{"userId":' + id.toString() + '}', headers: header);
+  final response = await http.post(Uri.parse("${url}UserFavoriArea/List"), body: '{"userId":$id}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -113,7 +114,7 @@ Future<UserFavoriAreaJsn?> userFavoriAreaJsnFunc(int id) async {
 
 //----------------------------------------------Şehir Listesi Fonksiyonu-----------------------------------------------------------
 Future<CityJsn?> cityJsnFunc() async {
-  final response = await http.post(Uri.parse(url + "City"), headers: header);
+  final response = await http.post(Uri.parse("${url}City"), headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -126,7 +127,7 @@ Future<CityJsn?> cityJsnFunc() async {
 
 //----------------------------------------------İlçe Listesi Fonksiyonu-----------------------------------------------------------
 Future<CountyJsn?> countyJsnFunc(String city) async {
-  final response = await http.post(Uri.parse(url + "County"), body: '{"city":"' + city + '"}', headers: header);
+  final response = await http.post(Uri.parse("${url}County"), body: '{"city":"$city"}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -139,7 +140,7 @@ Future<CountyJsn?> countyJsnFunc(String city) async {
 
 //----------------------------------------------Hikayedeki Firmaların Listesi Fonksiyonu-----------------------------------------
 Future<CompanyListJsn?> companyListJsnFunc() async {
-  final response = await http.post(Uri.parse(url + "CompanyList"), headers: header);
+  final response = await http.post(Uri.parse("${url}CompanyList"), headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -152,7 +153,7 @@ Future<CompanyListJsn?> companyListJsnFunc() async {
 
 //----------------------------------------------------Hikaye İçeriği Fonksiyonu--------------------------------------------------
 Future<StoryContentJsn?> storyContentJsnFunc(int id) async {
-  final response = await http.post(Uri.parse(url + "StoryContentJsn"), body: '{"companyId":' + id.toString() + '}', headers: header);
+  final response = await http.post(Uri.parse("${url}StoryContentJsn"), body: '{"companyId":$id}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -165,7 +166,7 @@ Future<StoryContentJsn?> storyContentJsnFunc(int id) async {
 
 //----------------------------------------------------Kampanyalı İşlemler Fonksiyonu--------------------------------------------------
 Future<CompanyOperationJsn?> companyOperationJsnFunc(int id) async {
-  final response = await http.post(Uri.parse(url + "CompanyOperation/List"), body: '{"companyId":' + id.toString() + '}', headers: header);
+  final response = await http.post(Uri.parse("${url}CompanyOperation/List"), body: '{"companyId":$id}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -178,7 +179,7 @@ Future<CompanyOperationJsn?> companyOperationJsnFunc(int id) async {
 
 //----------------------------------------------------İşlem Saatleri Fonksiyonu--------------------------------------------------
 Future<CompanyOperationTimeJsn?> companyOperationTimeJsnFunc(List id) async {
-  final response = await http.post(Uri.parse(url + "CompanyOperation/Time"), body: '{"operationId":' + id.toString() + '}', headers: header);
+  final response = await http.post(Uri.parse("${url}CompanyOperation/Time"), body: '{"operationId":$id}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -191,8 +192,8 @@ Future<CompanyOperationTimeJsn?> companyOperationTimeJsnFunc(List id) async {
 
 //-----------------------------------------------Kullanıcının Randevuları Listesi Fonksiyonu-------------------------------------------------
 Future<AppointmentListJsn?> appointmentListJsnFunc(int userId, String? appointmentDate) async {
-  final response = await http.post(Uri.parse(url + "Appointment/List"),
-      body: '{"userId":' + userId.toString() + ',' + '"appointmentDate":' + '"$appointmentDate"' + '}', headers: header);
+  final response =
+      await http.post(Uri.parse("${url}Appointment/List"), body: '{"userId":$userId,"appointmentDate":"$appointmentDate"}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -205,8 +206,8 @@ Future<AppointmentListJsn?> appointmentListJsnFunc(int userId, String? appointme
 //-----------------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------Firma Sahibinin Randevuları Listesi Fonksiyonu-------------------------------------------------
 Future<CompanyAppointmentListJsn?> appointmentCompanyListJsnFunc(int userId, String? appointmentDate) async {
-  final response = await http.post(Uri.parse(url + "Appointment/CompanyList"),
-      body: '{"userId":' + userId.toString() + ',' + '"appointmentDate":' + '"$appointmentDate"' + '}', headers: header);
+  final response =
+      await http.post(Uri.parse("${url}Appointment/CompanyList"), body: '{"userId":$userId,"appointmentDate":"$appointmentDate"}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -231,7 +232,7 @@ Future<AppointmentAddJsn?> appointmentAddJsnFunc(
 
   String body = json.encode(bodys);
 
-  final response = await http.post(Uri.parse(url + "Appointment/Add"), body: body, headers: header);
+  final response = await http.post(Uri.parse("${url}Appointment/Add"), body: body, headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -250,7 +251,7 @@ Future<AppointmentDeleteJsn?> appointmentDeleteJsnFunc(int id) async {
 
   String body = json.encode(bodys);
 
-  final response = await http.post(Uri.parse(url + "Appointment/Delete"), body: body, headers: header);
+  final response = await http.post(Uri.parse("${url}Appointment/Delete"), body: body, headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -269,7 +270,7 @@ Future<AppointmentDeleteJsn?> appointmentApproveJsnFunc(int id) async {
 
   String body = json.encode(bodys);
 
-  final response = await http.post(Uri.parse(url + "Appointment/CompanyConfirm"), body: body, headers: header);
+  final response = await http.post(Uri.parse("${url}Appointment/CompanyConfirm"), body: body, headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -294,7 +295,7 @@ Future<AddUserJsn?> userAddJsnFunc(
 
   String body = json.encode(bodys);
 
-  final response = await http.post(Uri.parse(url + "AddUser"), body: body, headers: header);
+  final response = await http.post(Uri.parse("${url}AddUser"), body: body, headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -315,7 +316,7 @@ Future<AddUserCityJsn?> userAddCityJsnFunc(int userId, int cityId, int countyId)
 
   String body = json.encode(bodys);
 
-  final response = await http.post(Uri.parse(url + "AddUser/City"), body: body, headers: header);
+  final response = await http.post(Uri.parse("${url}AddUser/City"), body: body, headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -335,7 +336,7 @@ Future<LikeJsn?> likeJsnFunc(int userId, int campaignId) async {
 
   String body = json.encode(bodys);
 
-  final response = await http.post(Uri.parse(url + "LikeandShare/Like"), body: body, headers: header);
+  final response = await http.post(Uri.parse("${url}LikeandShare/Like"), body: body, headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -355,7 +356,7 @@ Future<FavoriteJsn?> favoriteAddJsnFunc(int userId, int companyId) async {
 
   String body = json.encode(bodys);
 
-  final response = await http.post(Uri.parse(url + "CompanyList/Favorite"), body: body, headers: header);
+  final response = await http.post(Uri.parse("${url}CompanyList/Favorite"), body: body, headers: header);
   if (response.statusCode == 200) {
     final String responseString = response.body;
     return favoriteJsnFromJson(responseString);
@@ -368,7 +369,7 @@ Future<FavoriteJsn?> favoriteAddJsnFunc(int userId, int companyId) async {
 
 //--------------------------------------------- Firma Profil Sayfası Fonksiyonu-----------------------------------------------------
 Future<CompanyProfileJsn?> companyListDetailJsnFunc(int companyId) async {
-  final response = await http.post(Uri.parse(url + "CompanyList/Detail"), body: '{"companyId":' + companyId.toString() + '}', headers: header);
+  final response = await http.post(Uri.parse("${url}CompanyList/Detail"), body: '{"companyId":$companyId}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -381,7 +382,7 @@ Future<CompanyProfileJsn?> companyListDetailJsnFunc(int companyId) async {
 //------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------Şifremi Unuttum Fonksiyonu----------------------------------------------------
 Future<ForgetPasswordJsn?> forgetPasswordJsnFunc(String eMail) async {
-  final response = await http.post(Uri.parse(url + "ForgetPassword"), body: '{"userName":"' + eMail + '"}', headers: header);
+  final response = await http.post(Uri.parse("${url}ForgetPassword"), body: '{"userName":"$eMail"}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -394,7 +395,7 @@ Future<ForgetPasswordJsn?> forgetPasswordJsnFunc(String eMail) async {
 //-------------------------------------------------------------------------------------------------------------------------
 //-----------------------------------beğenilen kampanyalar Listesi Fonksiyonu----------------------------------------------
 Future<LikedCampaingJsn?> likedCampaingJsnFunc(int userId) async {
-  final response = await http.post(Uri.parse(url + "LikedCampaing/List"), body: '{"userId":' + userId.toString() + '}', headers: header);
+  final response = await http.post(Uri.parse("${url}LikedCampaing/List"), body: '{"userId":$userId}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -423,12 +424,12 @@ showAlert(BuildContext context, String content) {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Text(content, style: TextStyle(fontFamily: contentFont)),
+          content: Text(content, style: const TextStyle(fontFamily: contentFont)),
           actions: <Widget>[
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               MaterialButton(
                   color: primaryColor,
-                  child: Text("Kapat", style: TextStyle(fontFamily: leadingFont, color: white)),
+                  child: const Text("Kapat", style: TextStyle(fontFamily: leadingFont, color: white)),
                   onPressed: () async {
                     Navigator.of(context).pop();
                   }),
@@ -445,19 +446,19 @@ showNotMemberAlert(BuildContext context) {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Text("Devam etmek için lütfen üye olunuz !", style: TextStyle(fontFamily: contentFont)),
+          content: const Text("Devam etmek için lütfen üye olunuz !", style: TextStyle(fontFamily: contentFont)),
           actions: <Widget>[
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
               MaterialButton(
                   color: primaryColor,
-                  child: Text("Kayıt Ol", style: TextStyle(fontFamily: leadingFont, color: white)),
+                  child: const Text("Kayıt Ol", style: TextStyle(fontFamily: leadingFont, color: white)),
                   onPressed: () async {
                     Navigator.of(context, rootNavigator: true)
                         .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
                   }),
               MaterialButton(
                   color: primaryColor,
-                  child: Text("Kapat", style: TextStyle(fontFamily: leadingFont, color: white)),
+                  child: const Text("Kapat", style: TextStyle(fontFamily: leadingFont, color: white)),
                   onPressed: () async {
                     Navigator.of(context).pop();
                   }),
@@ -483,13 +484,15 @@ Future<CompanyInfUpdateJsn?> companyInfUpdateJsnFunc(int id, String companyName,
 
   String body = json.encode(bodys);
 
-  final response = await http.post(Uri.parse(url + "CompanyList/Update"), body: body, headers: header);
+  final response = await http.post(Uri.parse("${url}CompanyList/Update"), body: body, headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
     return companyInfUpdateJsnFromJson(responseString);
   } else {
-    print(response.statusCode);
+    if (kDebugMode) {
+      print(response.statusCode);
+    }
     return null;
   }
 }
@@ -509,7 +512,7 @@ Future<AddUserJsn?> campaignAddJsnFunc(int id, int companyId, String campaignSta
 
   String body = json.encode(bodys);
 
-  final response = await http.post(Uri.parse(url + "ContentStream/Add"), body: body, headers: header);
+  final response = await http.post(Uri.parse("${url}ContentStream/Add"), body: body, headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
@@ -528,7 +531,7 @@ Future<AppointmentDeleteJsn?> campaignDeleteJsnFunc(int id) async {
 
   String body = json.encode(bodys);
 
-  final response = await http.post(Uri.parse(url + "ContentStream/Delete"), body: body, headers: header);
+  final response = await http.post(Uri.parse("${url}ContentStream/Delete"), body: body, headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;

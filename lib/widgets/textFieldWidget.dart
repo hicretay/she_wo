@@ -19,7 +19,7 @@ class TextFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: minSpace, right: maxSpace, left: maxSpace),
-      child: Container(
+      child: SizedBox(
         height: deviceHeight(context) * 0.07,
         width: deviceWidth(context),
         child: TextFormField(
@@ -31,16 +31,26 @@ class TextFieldWidget extends StatelessWidget {
           keyboardType: keyboardType,
           obscureText: obscureText!,
           cursorColor: primaryColor,
+          textAlign: TextAlign.center,
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(maxSpace),
-            filled: true,
-            fillColor: Colors.white,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(maxSpace),
+              borderRadius: BorderRadius.circular(16.0),
             ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16.0),
+              borderSide: const BorderSide(color: secondaryColor, width: 0.0),
+            ),
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            contentPadding: const EdgeInsets.all(maxSpace),
+            filled: true,
+            fillColor: secondaryColor,
             hintText: hintText,
-            hintStyle: TextStyle(color: Colors.black38, fontSize: 17, fontFamily: contentFont),
-            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: secondaryColor), borderRadius: BorderRadius.circular(maxSpace)),
+            hintStyle: const TextStyle(color: Colors.black38, fontSize: 17, fontFamily: contentFont),
+            // focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: secondaryColor), borderRadius: BorderRadius.circular(maxSpace)),
           ),
         ),
       ),

@@ -1,8 +1,8 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, avoid_print
 import 'dart:io';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
-import 'package:she_wo/widgets/backgroundContainer.dart';
+import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/textButtonWidget.dart';
 import 'package:she_wo/widgets/textFieldWidget.dart';
 import 'package:flutter/material.dart';
@@ -48,11 +48,7 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
     if (startdDate == null) {
       return "";
     } else {
-      return (startdDate!.day <= 9 ? "0" + startdDate!.day.toString() : startdDate!.day.toString()) +
-          "." +
-          (startdDate!.month <= 9 ? "0" + startdDate!.month.toString() : startdDate!.month.toString()) +
-          "." +
-          startdDate!.year.toString();
+      return "${startdDate!.day <= 9 ? "0${startdDate!.day}" : startdDate!.day.toString()}.${startdDate!.month <= 9 ? "0${startdDate!.month}" : startdDate!.month.toString()}.${startdDate!.year}";
     }
   }
 
@@ -60,11 +56,7 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
     if (finishedDate == null) {
       return "";
     } else {
-      return (finishedDate!.day <= 9 ? "0" + finishedDate!.day.toString() : finishedDate!.day.toString()) +
-          "." +
-          (finishedDate!.month <= 9 ? "0" + finishedDate!.month.toString() : finishedDate!.month.toString()) +
-          "." +
-          finishedDate!.year.toString();
+      return "${finishedDate!.day <= 9 ? "0${finishedDate!.day}" : finishedDate!.day.toString()}.${finishedDate!.month <= 9 ? "0${finishedDate!.month}" : finishedDate!.month.toString()}.${finishedDate!.year}";
     }
   }
 
@@ -90,13 +82,13 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
                                 backgroundColor: Colors.white,
                                 child: IconButton(
                                     iconSize: iconSize,
-                                    icon: Icon(Icons.arrow_back, color: primaryColor),
+                                    icon: const Icon(Icons.arrow_back, color: primaryColor),
                                     onPressed: () {
                                       Navigator.pop(context, false);
                                     }),
                               ),
-                              SizedBox(width: maxSpace),
-                              Text(
+                              const SizedBox(width: maxSpace),
+                              const Text(
                                 "Yeni Kampanya Olustur",
                                 style: TextStyle(fontFamily: leadingFont, fontSize: 25, color: Colors.white),
                               ),
@@ -112,10 +104,10 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             user,
-                            style: TextStyle(color: Colors.white, fontSize: 20),
+                            style: const TextStyle(color: Colors.white, fontSize: 20),
                           ),
                         ),
-                        SizedBox(height: maxSpace)
+                        const SizedBox(height: maxSpace)
                       ],
                     ),
                   ),
@@ -123,14 +115,14 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).backgroundColor,
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(cardCurved)),
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(cardCurved)),
                       ),
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
                             base64imagesList != null
                                 ? ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics: const NeverScrollableScrollPhysics(),
                                     itemCount: imageList.length,
                                     shrinkWrap: true,
                                     itemBuilder: (BuildContext context, int index) {
@@ -142,15 +134,15 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
                                             width: deviceWidth(context) * 0.8,
                                             height: deviceHeight(context) * 0.3,
                                             decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(Radius.circular(maxSpace)),
+                                                borderRadius: const BorderRadius.all(Radius.circular(maxSpace)),
                                                 color: secondaryTransparentColor,
                                                 image: DecorationImage(fit: BoxFit.fitWidth, image: FileImage(imageList[index]))),
                                             child: Align(
                                                 alignment: Alignment.topRight,
                                                 child: IconButton(
-                                                  icon: Icon(Icons.cancel_outlined, size: 30, color: primaryColor),
+                                                  icon: const Icon(Icons.cancel_outlined, size: 30, color: primaryColor),
                                                   onPressed: () {
-                                                    print(index.toString() + " silindi");
+                                                    print("$index silindi");
                                                     imageList.removeAt(index);
                                                     base64imagesList.removeAt(index);
                                                     setState(() {});
@@ -163,7 +155,7 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
                                 : Container(),
                             Padding(
                               padding: const EdgeInsets.only(top: maxSpace),
-                              child: Container(
+                              child: SizedBox(
                                 width: deviceWidth(context),
                                 child: TextButtonWidget(
                                   buttonText: "Fotoğraf Ekle",
@@ -174,7 +166,7 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
                             Padding(
                               padding: EdgeInsets.only(top: deviceHeight(context) * 0.01, bottom: deviceHeight(context) * 0.01),
                               child: Padding(
-                                padding: EdgeInsets.only(left: maxSpace),
+                                padding: const EdgeInsets.only(left: maxSpace),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
@@ -182,14 +174,14 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
                                       child: Container(
                                         width: deviceWidth(context) / 2.5,
                                         height: deviceHeight(context) * 0.04,
-                                        child: Center(
-                                          child: Text(getStartDate() == "" ? "Başlangıç Tarihi" : getStartDate(),
-                                              style: TextStyle(color: Colors.black, fontSize: 17, fontFamily: contentFont)),
-                                        ),
                                         decoration: BoxDecoration(
                                             color: secondaryColor,
                                             border: Border.all(color: Colors.grey),
-                                            borderRadius: BorderRadius.all(Radius.circular(minSpace))),
+                                            borderRadius: const BorderRadius.all(Radius.circular(minSpace))),
+                                        child: Center(
+                                          child: Text(getStartDate() == "" ? "Başlangıç Tarihi" : getStartDate(),
+                                              style: const TextStyle(color: Colors.black, fontSize: 17, fontFamily: contentFont)),
+                                        ),
                                       ),
                                       onTap: () async {
                                         pickStartDate(context);
@@ -201,14 +193,14 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
                                       child: Container(
                                         width: deviceWidth(context) / 2.5,
                                         height: deviceHeight(context) * 0.04,
-                                        child: Center(
-                                          child: Text(getFinishedDate() == "" ? "Bitiş Tarihi" : getFinishedDate(),
-                                              style: TextStyle(color: Colors.black, fontSize: 17, fontFamily: contentFont)),
-                                        ),
                                         decoration: BoxDecoration(
                                             color: secondaryColor,
                                             border: Border.all(color: Colors.grey),
-                                            borderRadius: BorderRadius.all(Radius.circular(minSpace))),
+                                            borderRadius: const BorderRadius.all(Radius.circular(minSpace))),
+                                        child: Center(
+                                          child: Text(getFinishedDate() == "" ? "Bitiş Tarihi" : getFinishedDate(),
+                                              style: const TextStyle(color: Colors.black, fontSize: 17, fontFamily: contentFont)),
+                                        ),
                                       ),
                                       onTap: () => pickFinishedDate(context),
                                     ),
@@ -219,7 +211,7 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
                             TextFieldWidget(
                               hintText: "Bir Başlık Giriniz",
                               obscureText: false,
-                              inputFormatters: [],
+                              inputFormatters: const [],
                               keyboardType: TextInputType.text,
                               textEditingController: teLeading,
                             ),
@@ -257,10 +249,10 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
                                 maxLines: null,
                                 controller: teContent,
                                 cursorColor: primaryColor,
-                                style: TextStyle(color: primaryColor, fontSize: 18),
+                                style: const TextStyle(color: primaryColor, fontSize: 18),
                                 decoration: InputDecoration(
                                   hintText: "Kampanya İçeriği",
-                                  hintStyle: TextStyle(color: Colors.black38, fontSize: 17, fontFamily: contentFont),
+                                  hintStyle: const TextStyle(color: Colors.black38, fontSize: 17, fontFamily: contentFont),
                                   contentPadding: EdgeInsets.symmetric(vertical: deviceHeight(context) * 0.07, horizontal: maxSpace),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(maxSpace),
@@ -273,7 +265,7 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: maxSpace),
-                              child: Container(
+                              child: SizedBox(
                                 width: deviceWidth(context),
                                 child: TextButtonWidget(
                                   buttonText: "Kampanyayı Kaydet",
@@ -370,8 +362,8 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
       builder: (context, child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(primary: secondaryColor),
-            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            colorScheme: const ColorScheme.light(primary: secondaryColor),
+            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 primary: secondaryColor,
@@ -399,8 +391,8 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
       builder: (context, child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(primary: secondaryColor),
-            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            colorScheme: const ColorScheme.light(primary: secondaryColor),
+            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 primary: secondaryColor,

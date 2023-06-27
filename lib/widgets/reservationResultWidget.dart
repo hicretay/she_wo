@@ -29,7 +29,7 @@ class ResevationResultWidget extends StatelessWidget {
           color: Provider.of<ThemeDataProvider>(context, listen: true).isLightTheme ? passivePurple : darkBg,
           width: double.infinity,
           child: Padding(
-            padding: EdgeInsets.all(defaultPadding),
+            padding: const EdgeInsets.all(defaultPadding),
             child: Column(
               children: [
                 Row(
@@ -47,7 +47,7 @@ class ResevationResultWidget extends StatelessWidget {
                             style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).hintColor),
                           ),
                         ),
-                        SizedBox(height: minSpace),
+                        const SizedBox(height: minSpace),
                         SizedBox(
                           width: deviceWidth(context) * 0.5,
                           child: Text(
@@ -72,8 +72,8 @@ class ResevationResultWidget extends StatelessWidget {
                         confirmButton!,
                         SizedBox(width: deviceWidth(context) * 0.03),
                         GestureDetector(
-                          child: Icon(Icons.clear, size: 18, color: Theme.of(context).hintColor),
                           onTap: onTap,
+                          child: Icon(Icons.clear, size: 18, color: Theme.of(context).hintColor),
                         )
                       ],
                     ),
@@ -83,7 +83,7 @@ class ResevationResultWidget extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: defaultPadding),
+        const SizedBox(height: defaultPadding),
       ],
     );
   }

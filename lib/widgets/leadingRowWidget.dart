@@ -27,6 +27,7 @@ class _LeadingRowWidgetState extends State<LeadingRowWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween, // Row içindeki widgetların yayılmasını sağlar
       children: [
         GestureDetector(
+          onTap: widget.logoOnTap,
           child: Row(
             children: [
               //------------Başlıktaki firma logosu görünümü-----------
@@ -53,12 +54,12 @@ class _LeadingRowWidgetState extends State<LeadingRowWidget> {
                 child: Text(widget.companyName,
                     overflow: TextOverflow.fade,
                     softWrap: false,
-                    style: TextStyle(fontSize: 17, fontFamily: headerFont, color: Colors.white) // widget.leadingColor firma adı rengi düzenleniyor.
+                    style: const TextStyle(
+                        fontSize: 17, fontFamily: headerFont, color: Colors.white) // widget.leadingColor firma adı rengi düzenleniyor.
                     ),
               ),
             ],
           ),
-          onTap: widget.logoOnTap,
         ),
         widget.starButton,
         SizedBox(width: deviceWidth(context) * 0.01),

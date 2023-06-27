@@ -5,7 +5,7 @@ import 'package:she_wo/providers/navigationProvider.dart';
 import 'package:she_wo/screens/companiesPage.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
-import 'package:she_wo/widgets/backgroundContainer.dart';
+import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/reservationResultWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -34,11 +34,8 @@ class _ReservationPageState extends State<ReservationPage> {
   Future appointmentListFunc() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userIdData = prefs.getInt("userIdData");
-    String calendarDate = (_selectedDay.day <= 9 ? "0" + _selectedDay.day.toString() : _selectedDay.day.toString()) +
-        "." +
-        (_selectedDay.month <= 9 ? "0" + _selectedDay.month.toString() : _selectedDay.month.toString()) +
-        "." +
-        _selectedDay.year.toString();
+    String calendarDate =
+        "${_selectedDay.day <= 9 ? "0" + _selectedDay.day.toString() : _selectedDay.day.toString()}.${_selectedDay.month <= 9 ? "0" + _selectedDay.month.toString() : _selectedDay.month.toString()}.${_selectedDay.year}";
     final AppointmentListJsn? appointmentNewList = await appointmentListJsnFunc(userIdData!, calendarDate);
     setState(() {
       appointmentList = appointmentNewList!.result;
@@ -90,11 +87,8 @@ class _ReservationPageState extends State<ReservationPage> {
   @override
   Widget build(BuildContext context) {
     //final rootContext = context.findRootAncestorStateOfType<NavigatorState>().context;
-    String calendarDate = (_selectedDay.day <= 9 ? "0" + _selectedDay.day.toString() : _selectedDay.day.toString()) +
-        "." +
-        (_selectedDay.month <= 9 ? "0" + _selectedDay.month.toString() : _selectedDay.month.toString()) +
-        "." +
-        _selectedDay.year.toString();
+    String calendarDate =
+        "${_selectedDay.day <= 9 ? "0${_selectedDay.day}" : _selectedDay.day.toString()}.${_selectedDay.month <= 9 ? "0${_selectedDay.month}" : _selectedDay.month.toString()}.${_selectedDay.year}";
     return Container(
       color: Colors.transparent,
       child: SafeArea(
@@ -107,8 +101,8 @@ class _ReservationPageState extends State<ReservationPage> {
                 onPressed: () async {
                   Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => CompaniesPage(date: calendarDate)));
                 },
-                label: Text("Randevu Al"),
-                icon: FaIcon(FontAwesomeIcons.calendar, size: 18, color: white)),
+                label: const Text("Randevu Al"),
+                icon: const FaIcon(FontAwesomeIcons.calendar, size: 18, color: white)),
           ),
           body: ProgressHUD(
             child: Builder(
@@ -130,7 +124,7 @@ class _ReservationPageState extends State<ReservationPage> {
                     ),
                     Expanded(
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: passivePurple,
                           borderRadius: BorderRadius.vertical(
                             top: Radius.circular(cardCurved),
@@ -158,9 +152,9 @@ class _ReservationPageState extends State<ReservationPage> {
                                     outsideDecoration: boxDecoration,
                                     defaultDecoration: boxDecoration,
                                     weekendDecoration: boxDecoration,
-                                    defaultTextStyle: TextStyle(color: darkWhite),
-                                    outsideTextStyle: TextStyle(color: darkWhite),
-                                    selectedTextStyle: TextStyle(
+                                    defaultTextStyle: const TextStyle(color: darkWhite),
+                                    outsideTextStyle: const TextStyle(color: darkWhite),
+                                    selectedTextStyle: const TextStyle(
                                       color: Colors.white,
                                     ),
                                     todayDecoration: BoxDecoration(
@@ -177,7 +171,7 @@ class _ReservationPageState extends State<ReservationPage> {
                                     _focusedDay = focusedDay;
                                     await appointmentListFunc(); // randevuları yenileme
                                   },
-                                  headerStyle: HeaderStyle(
+                                  headerStyle: const HeaderStyle(
                                     formatButtonVisible: false,
                                     titleCentered: true,
                                   ),
@@ -188,7 +182,7 @@ class _ReservationPageState extends State<ReservationPage> {
                               child: Align(
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                    calendarDate + " Randevu Listesi",
+                                    "$calendarDate Randevu Listesi",
                                     style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).hintColor),
                                   )),
                             ),
@@ -198,7 +192,7 @@ class _ReservationPageState extends State<ReservationPage> {
                                 color: primaryColor,
                                 backgroundColor: secondaryColor,
                                 child: ListView.builder(
-                                    padding: EdgeInsets.all(0),
+                                    padding: const EdgeInsets.all(0),
                                     shrinkWrap: true,
                                     itemCount: appointmentList == null ? 0 : appointmentList!.length,
                                     controller: NavigationProvider.of(context).screens[RESERVATION_PAGE].scrollController,
@@ -221,14 +215,14 @@ class _ReservationPageState extends State<ReservationPage> {
                                                 return ProgressHUD(
                                                   child: Builder(
                                                     builder: (context) => AlertDialog(
-                                                      content: Text("Randevu iptal edilsin mi?", style: TextStyle(fontFamily: contentFont)),
+                                                      content: const Text("Randevu iptal edilsin mi?", style: TextStyle(fontFamily: contentFont)),
                                                       actions: <Widget>[
                                                         Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                           children: [
                                                             MaterialButton(
                                                                 color: primaryColor,
-                                                                child: Text("Evet", style: TextStyle(color: white)),
+                                                                child: const Text("Evet", style: TextStyle(color: white)),
                                                                 onPressed: () async {
                                                                   final progressHUD = ProgressHUD.of(context);
                                                                   progressHUD!.show();
@@ -245,7 +239,7 @@ class _ReservationPageState extends State<ReservationPage> {
                                                                 }),
                                                             MaterialButton(
                                                               color: primaryColor,
-                                                              child: Text("Hayır", style: TextStyle(color: white)),
+                                                              child: const Text("Hayır", style: TextStyle(color: white)),
                                                               onPressed: () {
                                                                 showToast(context, "Randevu iptal edilmedi!");
                                                                 Navigator.of(context).pop();

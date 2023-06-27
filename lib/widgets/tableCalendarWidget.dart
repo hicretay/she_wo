@@ -47,7 +47,7 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
         outsideDecoration: boxDecoration,
         defaultDecoration: boxDecoration,
         weekendDecoration: boxDecoration,
-        selectedTextStyle: TextStyle(
+        selectedTextStyle: const TextStyle(
           color: Colors.white,
         ),
         todayDecoration: BoxDecoration(
@@ -65,7 +65,7 @@ class _TableCalendarWidgetState extends State<TableCalendarWidget> {
           _focusedDay = focusedDay;
         });
       },
-      headerStyle: HeaderStyle(
+      headerStyle: const HeaderStyle(
         formatButtonVisible: false,
         titleCentered: true,
       ),
@@ -78,5 +78,6 @@ class Event {
   final String? operation;
   Event({this.operation});
 
-  String toString() => this.operation!;
+  @override
+  String toString() => operation!;
 }

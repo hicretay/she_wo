@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:she_wo/JsnClass/companyProfile.dart';
 import 'package:she_wo/JsnClass/contentStreamDetailJsn.dart';
 import 'package:she_wo/JsnClass/likedCampaingJsn.dart';
@@ -6,7 +8,7 @@ import 'package:she_wo/screens/companyProfilePage.dart';
 import 'package:she_wo/screens/homeDetailPage.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
-import 'package:she_wo/widgets/backgroundContainer.dart';
+import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/homeContainerWidget.dart';
 import 'package:she_wo/widgets/webViewWidget.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +96,7 @@ class _LikedCampaignPageState extends State<LikedCampaignPage> {
                     //------------------------- Arkaplan containerı---------------------
                     Expanded(
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: primaryColor,
                           borderRadius: BorderRadius.vertical(top: Radius.circular(cardCurved)), //Yalnızca dikeyde yuvarlatılmış
                         ),
@@ -103,7 +105,7 @@ class _LikedCampaignPageState extends State<LikedCampaignPage> {
                           color: primaryColor,
                           backgroundColor: secondaryColor,
                           child: ListView.builder(
-                              padding: EdgeInsets.all(0),
+                              padding: const EdgeInsets.all(0),
                               itemCount: likedContent == null ? 0 : likedContent!.length,
                               controller: NavigationProvider.of(context).screens[FAVORITE_PAGE].scrollController,
                               itemBuilder: (BuildContext context, int index) {
@@ -115,7 +117,7 @@ class _LikedCampaignPageState extends State<LikedCampaignPage> {
                                   pinColor: primaryColor,
                                   onPressedPhone: () async {
                                     dynamic number = likedContent![index].companyPhone.toString(); // arama ekranına yönlendirme
-                                    launch("tel://$number");
+                                    launchUrl(Uri(path: "tel://$number"));
                                   },
                                   //------------------------------------------"DETAYLI BİLGİ İÇİN" BUTONU-----------------------------------------------
                                   onPressed: () async {

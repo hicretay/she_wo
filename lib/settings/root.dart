@@ -39,8 +39,8 @@ class _RootState extends State<Root> {
           onWillPop: () async => provider.onWillPop(context),
           child: Scaffold(
             body: IndexedStack(
-              children: screens,
               index: provider.currentTabIndex,
+              children: screens,
             ),
             bottomNavigationBar: BottomNavigationBar(
               backgroundColor: primaryColor,

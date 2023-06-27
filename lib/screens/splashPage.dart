@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:she_wo/JsnClass/loginJsn.dart';
 import 'package:she_wo/providers/themeDataProvider.dart';
+import 'package:she_wo/screens/log_reg_choice_page.dart';
 import 'package:she_wo/screens/loginPage.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
@@ -23,7 +24,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 1), () async {
+    Future.delayed(const Duration(seconds: 1), () async {
       Provider.of<ThemeDataProvider>(context, listen: false).loadTheme();
       if (await connectivityResult != ConnectivityResult.none) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -32,7 +33,7 @@ class _SplashPageState extends State<SplashPage> {
 
         if (user == null) {
           Navigator.of(context).pop();
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LogRegChoicePage()), (route) => false);
         } else {
           // ignore: unused_local_variable
           final LoginJsn? userData = await loginJsnFunc(user, pass!, false);
@@ -43,14 +44,14 @@ class _SplashPageState extends State<SplashPage> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                content: Text("İnternet bağlantınızı kontrol ediniz.", style: TextStyle(fontFamily: contentFont)),
+                content: const Text("İnternet bağlantınızı kontrol ediniz.", style: TextStyle(fontFamily: contentFont)),
                 actions: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       MaterialButton(
                           color: primaryColor,
-                          child: Text("Kapat", style: TextStyle(fontFamily: leadingFont)),
+                          child: const Text("Kapat", style: TextStyle(fontFamily: leadingFont)),
                           onPressed: () async {
                             exit(0);
                           }),
@@ -66,12 +67,13 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: primaryColor,
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage("assets/images/splash.jpg"),
-        ),
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+      ),
+      child: SizedBox(
+        child: Image.asset("assets/images/shewo_logo.png"),
       ),
     );
   }

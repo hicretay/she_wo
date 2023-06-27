@@ -1,4 +1,4 @@
-// ignore_for_file: unrelated_type_equality_checks, unnecessary_null_comparison
+// ignore_for_file: unrelated_type_equality_checks, unnecessary_null_comparison, avoid_print
 import 'dart:async';
 import 'package:she_wo/JsnClass/companyListJsn.dart';
 import 'package:she_wo/JsnClass/companyProfile.dart';
@@ -12,7 +12,7 @@ import 'package:she_wo/screens/settingsPage.dart';
 import 'package:she_wo/widgets/webViewWidget.dart';
 import 'package:she_wo/screens/homeDetailPage.dart';
 import 'package:she_wo/settings/connection.dart';
-import 'package:she_wo/widgets/backgroundContainer.dart';
+import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/homeContainerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -63,8 +63,7 @@ class _HomePageState extends State<HomePage> {
       }
     }
 
-    final response = await http.post(Uri.parse(url + "ContentStream/List"),
-        body: '{"userId":' + userIdData.toString() + ',' + '"page":' + pageIndex.toString() + '}', headers: header);
+    final response = await http.post(Uri.parse("${url}ContentStream/List"), body: '{"userId":$userIdData,"page":$pageIndex}', headers: header);
 
     if (response.statusCode == 200) {
       final result = contentStreamJsnFromJson(response.body);
@@ -174,13 +173,13 @@ class _HomePageState extends State<HomePage> {
                             //------------------------------------------------------------------
                             //---------------------------Story Paneli---------------------------
                             Padding(
-                              padding: EdgeInsets.only(left: maxSpace, right: maxSpace, top: 88),
+                              padding: const EdgeInsets.only(left: maxSpace, right: maxSpace, top: 88),
                               child: ListView.separated(
                                   shrinkWrap: true,
                                   itemCount: companyContent!.length,
                                   scrollDirection: Axis.horizontal,
                                   separatorBuilder: (BuildContext context, int index) {
-                                    return SizedBox(width: maxSpace);
+                                    return const SizedBox(width: maxSpace);
                                   },
                                   itemBuilder: (BuildContext context, index) {
                                     return Column(children: [
@@ -189,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                                           Container(
                                             width: deviceWidth(context) * 0.20,
                                             height: deviceWidth(context) * 0.20,
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                                 gradient: LinearGradient(
                                                     begin: Alignment.topCenter,
                                                     end: Alignment.bottomCenter,
@@ -232,7 +231,7 @@ class _HomePageState extends State<HomePage> {
                                         width: 65.0,
                                         child: Center(
                                           child: Text(companyContent![index].companyName,
-                                              overflow: TextOverflow.fade, softWrap: false, style: TextStyle(color: white)),
+                                              overflow: TextOverflow.fade, softWrap: false, style: const TextStyle(color: white)),
                                         ),
                                       ),
                                     ]);
@@ -256,17 +255,15 @@ class _HomePageState extends State<HomePage> {
                                     } else if (mode == LoadStatus.loading) {
                                       body = circularBasic;
                                     } else if (mode == LoadStatus.failed) {
-                                      body = Text("Yükleme Hatası");
+                                      body = const Text("Yükleme Hatası");
                                     } else if (mode == LoadStatus.canLoading) {
                                       body = circularBasic;
                                     } else if (mode == LoadStatus.noMore) {
-                                      body = Text("Hepsini gördün", style: TextStyle(color: secondaryColor));
+                                      body = const Text("Hepsini gördün", style: TextStyle(color: secondaryColor));
                                     } else {
                                       body = circularBasic;
                                     }
-                                    return Container(
-                                      child: Center(child: body),
-                                    );
+                                    return Center(child: body);
                                   },
                                 ),
                                 onRefresh: () async {
@@ -298,7 +295,7 @@ class _HomePageState extends State<HomePage> {
                                         pinColor: primaryColor,
                                         onPressedPhone: () async {
                                           dynamic number = homeContent[index].companyPhone.toString(); // arama ekranına yönlendirme
-                                          launch("tel://$number");
+                                          launchUrl(Uri(path: "tel://$number"));
                                         },
                                         //--------------------------------------------------------"DETAYLI BİLGİ İÇİN" BUTONU-------------------------------------------------------------
                                         onPressed: () async {
@@ -336,7 +333,7 @@ class _HomePageState extends State<HomePage> {
                                             icon: homeContent[index].liked
                                                 ? SvgPicture.asset("assets/icons/heart-focus.svg", height: 22, width: 22, color: secondaryColor)
                                                 : SvgPicture.asset("assets/icons/heart.svg", height: 25, width: 25, color: white),
-                                            padding: EdgeInsets.all(0),
+                                            padding: const EdgeInsets.all(0),
                                             onPressed: () async {
                                               SharedPreferences prefs = await SharedPreferences.getInstance();
                                               userIdData = prefs.getInt("userIdData");

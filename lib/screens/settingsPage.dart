@@ -9,7 +9,7 @@ import 'package:she_wo/widgets/backleadingWidget.dart';
 import 'package:she_wo/widgets/webViewWidget.dart';
 import 'package:she_wo/screens/loginPage.dart';
 import 'package:she_wo/settings/consts.dart';
-import 'package:she_wo/widgets/backgroundContainer.dart';
+import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/listTileWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -67,7 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: Column(
                   children: [
                     SizedBox(height: deviceHeight(context) * 0.02),
-                    BackLeadingWidget(
+                    const BackLeadingWidget(
                       backColor: primaryColor,
                     ),
                     Padding(
@@ -82,7 +82,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 child: Column(
                                   children: [
                                     Text("Profil", style: Theme.of(context).textTheme.headline3!.copyWith(color: white, fontFamily: leadingFont)),
-                                    Align(alignment: Alignment.bottomLeft, child: Text(user, style: TextStyle(color: white, fontSize: 16))),
+                                    Align(alignment: Alignment.bottomLeft, child: Text(user, style: const TextStyle(color: white, fontSize: 16))),
                                     SizedBox(height: deviceHeight(context) * 0.01),
                                   ],
                                 ),
@@ -91,10 +91,10 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           Column(
                             children: [
-                              CircleAvatar(
+                              const CircleAvatar(
                                 radius: 32,
                                 backgroundColor: primaryColor,
-                                child: CircleAvatar(
+                                child: const CircleAvatar(
                                   backgroundColor: secondaryColor,
                                   radius: 30,
                                   child: Icon(Icons.person, color: primaryColor, size: 40),
@@ -109,18 +109,18 @@ class _SettingsPageState extends State<SettingsPage> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.vertical(top: Radius.circular(cardCurved)), //Yalnızca dikeyde yuvarlatılmış
+                          borderRadius: const BorderRadius.vertical(top: const Radius.circular(cardCurved)), //Yalnızca dikeyde yuvarlatılmış
                         ),
                         child: ListView(
                           controller: NavigationProvider.of(context).screens[LIKED_PAGE].scrollController,
-                          padding: EdgeInsets.all(0),
+                          padding: const EdgeInsets.all(0),
                           children: [
-                            SizedBox(height: defaultPadding),
+                            const SizedBox(height: defaultPadding),
                             isAdmin == true
                                 ? Column(children: [
                                     ListTileWidget(
                                       text: "Kampanya İşlemleri",
-                                      child: FaIcon(FontAwesomeIcons.tags, size: 16, color: white),
+                                      child: const FaIcon(FontAwesomeIcons.tags, size: 16, color: white),
                                       onTap: () async {
                                         final progressHUD = ProgressHUD.of(context);
                                         progressHUD!.show();
@@ -137,7 +137,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     ),
                                     ListTileWidget(
                                       text: "Gelen Randevular",
-                                      child: FaIcon(FontAwesomeIcons.calendarCheck, size: 18, color: white),
+                                      child: const FaIcon(FontAwesomeIcons.calendarCheck, size: 18, color: white),
                                       onTap: () {
                                         final progressHUD = ProgressHUD.of(context);
                                         progressHUD!.show();
@@ -148,7 +148,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     ),
                                     ListTileWidget(
                                       text: "Firma Bilgileri",
-                                      child: FaIcon(FontAwesomeIcons.questionCircle, size: 18, color: white),
+                                      child: const FaIcon(FontAwesomeIcons.questionCircle, size: 18, color: white),
                                       onTap: () async {
                                         final progressHUD = ProgressHUD.of(context);
                                         progressHUD!.show();
@@ -158,8 +158,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                         progressHUD.dismiss();
                                       },
                                     ),
-                                    SizedBox(height: maxSpace), //Post altı - divider arası boşluk
-                                    Divider(
+                                    const SizedBox(height: maxSpace), //Post altı - divider arası boşluk
+                                    const Divider(
                                       //İki post arasında yer alan çizgi
                                       indent: 100.0,
                                       endIndent: 100.0,
@@ -169,15 +169,15 @@ class _SettingsPageState extends State<SettingsPage> {
                                     ),
                                   ])
                                 : Container(),
-                            SizedBox(height: minSpace), // Post üstü - divider arası boşluk
+                            const SizedBox(height: minSpace), // Post üstü - divider arası boşluk
                             ListTileWidget(
                               text: "Lisans Sözleşmesi",
                               child: LineIcon(LineIcons.fileContract, color: white),
                               onTap: () {
                                 final progressHUD = ProgressHUD.of(context);
                                 progressHUD!.show();
-                                Navigator.of(context, rootNavigator: true)
-                                    .push(MaterialPageRoute(builder: (context) => WebViewWidget(locationUrl: "https://she_wo.com/license.html")));
+                                Navigator.of(context, rootNavigator: true).push(
+                                    MaterialPageRoute(builder: (context) => const WebViewWidget(locationUrl: "https://she_wo.com/license.html")));
                                 progressHUD.dismiss();
                               },
                             ),
@@ -188,7 +188,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 final progressHUD = ProgressHUD.of(context);
                                 progressHUD!.show();
                                 Navigator.of(context, rootNavigator: true)
-                                    .push(MaterialPageRoute(builder: (context) => WebViewWidget(locationUrl: "https://she_wo.com/usage.html")));
+                                    .push(MaterialPageRoute(builder: (context) => const WebViewWidget(locationUrl: "https://she_wo.com/usage.html")));
                                 progressHUD.dismiss();
                               },
                             ),
@@ -198,8 +198,8 @@ class _SettingsPageState extends State<SettingsPage> {
                               onTap: () {
                                 final progressHUD = ProgressHUD.of(context);
                                 progressHUD!.show();
-                                Navigator.of(context, rootNavigator: true)
-                                    .push(MaterialPageRoute(builder: (context) => WebViewWidget(locationUrl: "https://she_wo.com/privacy.html")));
+                                Navigator.of(context, rootNavigator: true).push(
+                                    MaterialPageRoute(builder: (context) => const WebViewWidget(locationUrl: "https://she_wo.com/privacy.html")));
                                 progressHUD.dismiss();
                               },
                             ),
@@ -208,7 +208,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               child: LineIcon(LineIcons.infoCircle, color: white),
                               onTap: () {
                                 Navigator.of(context, rootNavigator: true)
-                                    .push(MaterialPageRoute(builder: (context) => WebViewWidget(locationUrl: "https://she_wo.com/About.html")));
+                                    .push(MaterialPageRoute(builder: (context) => const WebViewWidget(locationUrl: "https://she_wo.com/About.html")));
                               },
                             ),
                             ListTileWidget(
@@ -231,7 +231,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             // ),
                             ListTileWidget(
                                 text: "Uygulamadan çıkış yap",
-                                child: Icon(Icons.exit_to_app, color: white),
+                                child: const Icon(Icons.exit_to_app, color: white),
                                 onTap: () async {
                                   final progressUHD = ProgressHUD.of(context);
                                   progressUHD!.show();
@@ -247,7 +247,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                       .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
                                   progressUHD.dismiss();
                                 }),
-                            SizedBox(height: defaultPadding),
+                            const SizedBox(height: defaultPadding),
                           ],
                         ),
                       ),

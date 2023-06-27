@@ -1,10 +1,12 @@
+// ignore_for_file: avoid_print
+
 import 'package:she_wo/JsnClass/companyListJsn.dart';
 import 'package:she_wo/JsnClass/companyOperationJsn.dart';
 import 'package:she_wo/model/appointmentModel.dart';
 import 'package:she_wo/screens/makeAppointmentOperationPage.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
-import 'package:she_wo/widgets/backgroundContainer.dart';
+import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/backleadingWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -30,10 +32,11 @@ class _CompaniesPageState extends State<CompaniesPage> {
 
   Future<CompanyListJsn> allCompaniesList() async {
     final CompanyListJsn? companyNewList = await companyListJsnFunc();
-    if (mounted)
+    if (mounted) {
       setState(() {
         allCompanies = companyNewList!.result!;
       });
+    }
     return companyNewList!;
   }
 
@@ -49,7 +52,7 @@ class _CompaniesPageState extends State<CompaniesPage> {
         future: allCompaniesList(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(child: Text("HATA"));
+            return const Center(child: Text("HATA"));
           } else {
             if (snapshot.hasData) {
               if (isFirstTime) {
@@ -63,7 +66,7 @@ class _CompaniesPageState extends State<CompaniesPage> {
                       builder: (context) => BackGroundContainer(
                         child: Column(
                           children: [
-                            BackLeadingWidget(
+                            const BackLeadingWidget(
                               backColor: primaryColor,
                             ),
                             Padding(
@@ -77,20 +80,20 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                       style: Theme.of(context).textTheme.headline4!.copyWith(color: white, fontFamily: leadingFont),
                                     ),
                                   ),
-                                  Align(
+                                  const Align(
                                     alignment: Alignment.topLeft,
                                     child: Text(
                                       "randevu alınacak firmayı seçiniz",
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),
-                                  SizedBox(height: maxSpace)
+                                  const SizedBox(height: maxSpace)
                                 ],
                               ),
                             ),
                             Expanded(
                               child: Container(
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     color: passivePurple,
                                     borderRadius: BorderRadius.vertical(top: Radius.circular(cardCurved)),
                                   ),
@@ -105,10 +108,10 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                               controller: teSearch,
                                               decoration: InputDecoration(
                                                 hintText: "Ara",
-                                                hintStyle: TextStyle(color: primaryColor),
+                                                hintStyle: const TextStyle(color: primaryColor),
                                                 focusedBorder: InputBorder.none,
                                                 enabledBorder: InputBorder.none,
-                                                contentPadding: EdgeInsets.all(maxSpace),
+                                                contentPadding: const EdgeInsets.all(maxSpace),
                                                 filled: true,
                                                 fillColor: white,
                                                 border: OutlineInputBorder(
@@ -118,42 +121,43 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                               onTap: () {
                                                 selectedCompanies.clear();
                                                 setState(() {
-                                                  allCompanies.forEach((element) {
+                                                  for (var element in allCompanies) {
                                                     if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
                                                       selectedCompanies.add(element);
                                                     }
-                                                  });
+                                                  }
                                                 });
                                               },
                                               onChanged: (value) {
                                                 selectedCompanies.clear();
                                                 setState(() {
-                                                  allCompanies.forEach((element) {
+                                                  for (var element in allCompanies) {
                                                     if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
                                                       selectedCompanies.add(element);
                                                     }
-                                                  });
+                                                  }
                                                 });
                                               },
                                             ),
                                             trailing: IconButton(
-                                                icon: FaIcon(FontAwesomeIcons.search, color: darkWhite, size: 20, textDirection: TextDirection.ltr),
+                                                icon: const FaIcon(FontAwesomeIcons.search,
+                                                    color: darkWhite, size: 20, textDirection: TextDirection.ltr),
                                                 onPressed: () {
                                                   selectedCompanies.clear();
                                                   setState(() {
-                                                    allCompanies.forEach((element) {
+                                                    for (var element in allCompanies) {
                                                       if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
                                                         selectedCompanies.add(element);
                                                       }
-                                                    });
+                                                    }
                                                   });
                                                 }),
                                           ),
                                           ListView.separated(
-                                            padding: EdgeInsets.all(0),
-                                            physics: NeverScrollableScrollPhysics(),
+                                            padding: const EdgeInsets.all(0),
+                                            physics: const NeverScrollableScrollPhysics(),
                                             shrinkWrap: true,
-                                            itemCount: selectedCompanies.length == 0 ? allCompanies.length : selectedCompanies.length,
+                                            itemCount: selectedCompanies.isEmpty ? allCompanies.length : selectedCompanies.length,
                                             itemBuilder: (BuildContext context, int index) {
                                               return Padding(
                                                 padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding),
@@ -161,17 +165,17 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                                   child: Container(
                                                     height: deviceHeight(context) * 0.06,
                                                     width: deviceWidth(context) * 0.06,
-                                                    decoration: BoxDecoration(
+                                                    decoration: const BoxDecoration(
                                                       borderRadius: BorderRadius.all(Radius.circular(15)),
                                                       color: primaryColor,
                                                     ),
                                                     child: Center(
                                                       child: Text(
-                                                        selectedCompanies.length == 0
+                                                        selectedCompanies.isEmpty
                                                             ? allCompanies[index].companyName
                                                             : selectedCompanies[index].companyName,
                                                         textAlign: TextAlign.center,
-                                                        style: TextStyle(fontSize: 18, color: darkWhite),
+                                                        style: const TextStyle(fontSize: 18, color: darkWhite),
                                                       ),
                                                     ),
                                                   ),
@@ -182,10 +186,9 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                                     int? userIdData = prefs.getInt("userIdData");
                                                     //if(userIdData != 0){
                                                     AppointmentObject appointment = AppointmentObject(
-                                                        companyId:
-                                                            selectedCompanies.length == 0 ? allCompanies[index].id : selectedCompanies[index].id,
+                                                        companyId: selectedCompanies.isEmpty ? allCompanies[index].id : selectedCompanies[index].id,
                                                         userId: userIdData!,
-                                                        companyNameS: selectedCompanies.length == 0
+                                                        companyNameS: selectedCompanies.isEmpty
                                                             ? allCompanies[index].companyName
                                                             : selectedCompanies[index].companyName,
                                                         campaignId: 0,
@@ -197,10 +200,10 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                                         MaterialPageRoute(
                                                             builder: (context) => MakeAppointmentOperationPage(
                                                                 companyOperation: companyOperation!.result, appointment: appointment)));
-                                                    print(selectedCompanies.length == 0
+                                                    print(selectedCompanies.isEmpty
                                                         ? allCompanies[index].companyName
                                                         : selectedCompanies[index].companyName);
-                                                    print(selectedCompanies.length == 0 ? allCompanies[index].id : selectedCompanies[index].id);
+                                                    print(selectedCompanies.isEmpty ? allCompanies[index].id : selectedCompanies[index].id);
                                                     progressHUD.dismiss();
                                                     // }
                                                     // else{
@@ -212,10 +215,10 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                               );
                                             },
                                             separatorBuilder: (BuildContext context, int index) {
-                                              return SizedBox(height: minSpace);
+                                              return const SizedBox(height: minSpace);
                                             },
                                           ),
-                                          SizedBox(height: maxSpace)
+                                          const SizedBox(height: maxSpace)
                                         ],
                                       ),
                                     ),

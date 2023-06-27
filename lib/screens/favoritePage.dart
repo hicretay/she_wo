@@ -6,7 +6,7 @@ import 'package:she_wo/widgets/webViewWidget.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/providers/navigationProvider.dart';
 import 'package:she_wo/settings/functions.dart';
-import 'package:she_wo/widgets/backgroundContainer.dart';
+import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/homeContainerWidget.dart';
 import 'package:she_wo/screens/homeDetailPage.dart';
 import 'package:flutter/material.dart';

@@ -1,9 +1,11 @@
+// ignore_for_file: avoid_print
+
 import 'package:she_wo/JsnClass/cityJsn.dart';
 import 'package:she_wo/JsnClass/countyJsn.dart';
 import 'package:she_wo/providers/navigationProvider.dart';
 import 'package:she_wo/providers/themeDataProvider.dart';
 import 'package:she_wo/settings/root.dart';
-import 'package:she_wo/widgets/backgroundContainer.dart';
+import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/textButtonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -89,7 +91,7 @@ class _LocationPageState extends State<LocationPage> {
                                         backgroundColor: Colors.white,
                                         child: IconButton(
                                             iconSize: iconSize,
-                                            icon: Icon(Icons.arrow_back, color: primaryColor),
+                                            icon: const Icon(Icons.arrow_back, color: primaryColor),
                                             onPressed: () async {
                                               SharedPreferences prefs = await SharedPreferences.getInstance();
                                               if (prefs.getString("isFirstLogin") != null) {
@@ -99,8 +101,8 @@ class _LocationPageState extends State<LocationPage> {
                                               }
                                             }),
                                       ),
-                                      SizedBox(width: maxSpace),
-                                      Text(
+                                      const SizedBox(width: maxSpace),
+                                      const Text(
                                         "estetik vitrini",
                                         style: TextStyle(fontFamily: leadingFont, fontSize: 30, color: Colors.white),
                                       ),
@@ -151,19 +153,19 @@ class _LocationPageState extends State<LocationPage> {
                       // arkaplan containerı
                       decoration: BoxDecoration(
                         color: Provider.of<ThemeDataProvider>(context, listen: true).isLightTheme ? passivePurple : darkBg,
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(maxSpace)),
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(maxSpace)),
                         //dikeyde yuvarlatılmış
                       ),
                       //-----------------------Itamların Listelenmesi----------------------------
                       child: ListView(
-                        padding: EdgeInsets.all(0),
+                        padding: const EdgeInsets.all(0),
                         children: [
-                          SizedBox(height: defaultPadding),
+                          const SizedBox(height: defaultPadding),
                           Center(
                             child: Container(
                               height: deviceHeight(context) * 0.07,
                               width: deviceWidth(context) * 0.9,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.all(Radius.circular(15)),
                                 color: darkWhite,
                                 gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.topRight, colors: backGroundColor1),
@@ -178,7 +180,7 @@ class _LocationPageState extends State<LocationPage> {
                                       child: DropdownButtonHideUnderline(
                                         child: DropdownButton(
                                           isExpanded: true,
-                                          hint: Center(
+                                          hint: const Center(
                                             child: Text(
                                               "İSTANBUL",
                                               textAlign: TextAlign.center,
@@ -192,12 +194,13 @@ class _LocationPageState extends State<LocationPage> {
                                           value: selection,
                                           items: cities.map((data) {
                                             return DropdownMenuItem(
+                                                value: data.city,
                                                 child: SizedBox(
                                                   child: Center(
-                                                    child: Text(data.city, textAlign: TextAlign.center, style: TextStyle(color: white, fontSize: 20)),
+                                                    child: Text(data.city,
+                                                        textAlign: TextAlign.center, style: const TextStyle(color: white, fontSize: 20)),
                                                   ),
-                                                ),
-                                                value: data.city);
+                                                ));
                                           }).toList(),
                                           onChanged: (value) {
                                             if (!mounted) return;
@@ -222,8 +225,8 @@ class _LocationPageState extends State<LocationPage> {
                               builder: (context, snapshot) {
                                 return counties.isNotEmpty
                                     ? ListView.separated(
-                                        padding: EdgeInsets.all(0),
-                                        physics: BouncingScrollPhysics(),
+                                        padding: const EdgeInsets.all(0),
+                                        physics: const BouncingScrollPhysics(),
                                         scrollDirection: Axis.vertical, //dikeyde kaydırılabilir
                                         shrinkWrap: true,
                                         itemCount: counties.length, //_location mapi uzunluğu kadar
@@ -246,7 +249,7 @@ class _LocationPageState extends State<LocationPage> {
                                                 width: deviceWidth(context) * 0.06,
                                                 decoration: BoxDecoration(
                                                   // Container rengi gradient ile verildi
-                                                  borderRadius: BorderRadius.all(Radius.circular(15)), color: darkWhite,
+                                                  borderRadius: const BorderRadius.all(Radius.circular(15)), color: darkWhite,
                                                   gradient: LinearGradient(
                                                     //soldan sağa doğru color listteki renkleri yaydı
                                                     begin: Alignment.topLeft,
@@ -303,7 +306,7 @@ class _LocationPageState extends State<LocationPage> {
                                                           ),
                                                         ],
                                                       ),
-                                                      Icon(Icons.location_city,
+                                                      const Icon(Icons.location_city,
                                                           color: Colors.transparent) //SvgPicture.asset("assets/icons/haritanoktası.svg"),
                                                     ],
                                                   ),
@@ -315,7 +318,7 @@ class _LocationPageState extends State<LocationPage> {
                                         //separatorBuilder list itemları arasına bir widget koymayı sağlıyor
                                         //SizedBox ile itemlar arası boşluk sağlandı
                                         separatorBuilder: (BuildContext context, int index) {
-                                          return SizedBox(height: minSpace);
+                                          return const SizedBox(height: minSpace);
                                         },
                                       )
                                     : Center(child: circularBasic);

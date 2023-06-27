@@ -27,167 +27,147 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool checkedPrivacy = true;
 
-  var maskFormatter = MaskTextInputFormatter(
-
-    mask: '+90 (###) ### ## ##', 
-    filter: { "#": RegExp(r'[0-9]')},
-    initialText: "+90");
+  var maskFormatter = MaskTextInputFormatter(mask: '+90 (###) ### ## ##', filter: {"#": RegExp(r'[0-9]')}, initialText: "+90");
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: ProgressHUD(
-        child: Builder(builder: (context)=>
-            Stack(children:[
-              Container(
-                decoration: BoxDecoration(gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [secondaryColor,primaryColor],
-                  )),
-                child: null,
-            ),
-            SingleChildScrollView(
-              reverse: true,
-              child: Padding(
-                padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: Column(children: [
-                Padding(
-                padding: const EdgeInsets.only(left: defaultPadding,right: defaultPadding,top: defaultPadding*3,bottom: defaultPadding),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      //iconun çevresini saran yapı tasarımı
-                      maxRadius: 25,
-                      backgroundColor: Colors.transparent,
-                      child: IconButton(
-                        iconSize: iconSize,
-                        icon: Icon(Icons.arrow_back,color: primaryColor,size: 35),
-                        onPressed: (){Navigator.pop(context, false);},
-                      ),
-                    ),
-                  ],
-                )
-              ),
-               //--------------------------giriş ikonu----------------------------------
-                Padding(
-                  padding: const EdgeInsets.only(bottom: minSpace),
-                  child: Container(
-                    width: deviceWidth(context)*0.9,
-                    height: deviceWidth(context)*0.2,
-                    child: Center(child: SvgPicture.asset("assets/images/logobeyaz.svg",color: white,placeholderBuilder: (context)=> circularBasic))),
-                ),  
-               //------------------------------------------------------------------
-                SingleChildScrollView(
-                  reverse: true,
-                  child: Padding(padding: const EdgeInsets.only(left: minSpace,right: minSpace,bottom: minSpace),
-                    child: Column(children: [
-                       //---------------------------Ad-Soyad textField'ı---------------------------------------
-                        TextFieldWidget(textEditingController: txtNameSurname,
-                        keyboardType: TextInputType.name,
-                        hintText    : "Ad Soyad*", //ipucu metni
-                        obscureText : false, // yazılanlar gizlenmesin
-                        ),
-                      //-----------------------------Eposta textField'ı----------------------------------------
-                        TextFieldWidget(textEditingController: txtEMail,
-                        keyboardType: TextInputType.emailAddress,
-                        hintText    : "E-Posta*", //ipucu metni
-                        obscureText : false, // yazılanlar gizlenmesin
-                        ),
-                      //-----------------------------Telefon textField'ı--------------------------------------
-                        TextFieldWidget(textEditingController: txtTelephone,
-                        keyboardType: TextInputType.phone,
-                        hintText    : "Telefon* (Başında 0 olmadan)", //ipucu metni
-                        obscureText : false, // yazılanlar gizlenmesin
-                        inputFormatters: [maskFormatter],
-                        ),
-                      //-----------------------------Şifre textField'ı----------------------------------------
-                        TextFieldWidget(
-                        textEditingController: txtPassword,
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText : true, // yazılanlar gizlensin
-                        hintText    : "Şifre*", //ipucu metni
-                        validator: (value) => (value)!.length > 2 ? "null" : "3 'ten küçük olmamalı"
-                        ),
-                      //----------------------------Şifre tekrar textField'ı---------------------------------
-                        TextFieldWidget(
-                        textEditingController: txtPasswordAgain,
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText : true, // yazılanlar gizlensin
-                        hintText    : "Şifre tekrar*", //ipucu metni
-                        validator: (value) => (value)!.length > 2 ? "null" : "3 'ten küçük olmamalı"
-                        ),
-                        //-----------------------------------------------------------------------------------
-                        Text("* ile işaretli alanların girilmesi zorunludur"),
+        child: Builder(
+          builder: (context) => Stack(
+            children: [
+              SingleChildScrollView(
+                reverse: true,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Column(
+                    children: [
+                      SizedBox(height: deviceWidth(context) * 0.2),
+                      //--------------------------giriş ikonu----------------------------------
+                      SizedBox(
+                          width: deviceWidth(context),
+                          height: deviceWidth(context) * 0.5,
+                          child: Center(child: Image.asset("assets/images/shewo_logo.png"))),
+                      //------------------------------------------------------------------
+                      SingleChildScrollView(
+                        reverse: true,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: minSpace, right: minSpace, bottom: minSpace),
+                          child: Column(
+                            children: [
+                              //---------------------------Ad-Soyad textField'ı---------------------------------------
+                              TextFieldWidget(
+                                textEditingController: txtNameSurname,
+                                keyboardType: TextInputType.name,
+                                hintText: "Ad Soyad*", //ipucu metni
+                                obscureText: false, // yazılanlar gizlenmesin
+                              ),
+                              //-----------------------------Eposta textField'ı----------------------------------------
+                              TextFieldWidget(
+                                textEditingController: txtEMail,
+                                keyboardType: TextInputType.emailAddress,
+                                hintText: "E-Posta*", //ipucu metni
+                                obscureText: false, // yazılanlar gizlenmesin
+                              ),
+                              //-----------------------------Telefon textField'ı--------------------------------------
+                              TextFieldWidget(
+                                textEditingController: txtTelephone,
+                                keyboardType: TextInputType.phone,
+                                hintText: "Telefon* (Başında 0 olmadan)", //ipucu metni
+                                obscureText: false, // yazılanlar gizlenmesin
+                                inputFormatters: [maskFormatter],
+                              ),
+                              //-----------------------------Şifre textField'ı----------------------------------------
+                              TextFieldWidget(
+                                  textEditingController: txtPassword,
+                                  keyboardType: TextInputType.visiblePassword,
+                                  obscureText: true, // yazılanlar gizlensin
+                                  hintText: "Şifre*", //ipucu metni
+                                  validator: (value) => (value)!.length > 2 ? "null" : "3 'ten küçük olmamalı"),
+                              //----------------------------Şifre tekrar textField'ı---------------------------------
+                              TextFieldWidget(
+                                  textEditingController: txtPasswordAgain,
+                                  keyboardType: TextInputType.visiblePassword,
+                                  obscureText: true, // yazılanlar gizlensin
+                                  hintText: "Şifre tekrar*", //ipucu metni
+                                  validator: (value) => (value)!.length > 2 ? "null" : "3 'ten küçük olmamalı"),
+                              //-----------------------------------------------------------------------------------
 
-                        Column(
-                          children:[
-                            CheckboxListTile(
-                            value: checkedPrivacy, 
-                            title: GestureDetector(
-                            child: Text("Gizlilik Sözleşmesini kabul ediyorum",
-                            style: TextStyle(color: secondaryColor,
-                            decoration: TextDecoration.underline)),
-                            onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=> WebViewWidget(locationUrl: "https://she_wo.com/privacy.html")));
-                              },
-                            ),
-                            activeColor: secondaryColor,
-                            checkColor: primaryColor,
-                            controlAffinity: ListTileControlAffinity.leading,
-                            onChanged: (value){
-                            setState(() {
-                                checkedPrivacy = value!;
-                              });
-                            }),
-                          ],
+                              Column(
+                                children: [
+                                  CheckboxListTile(
+                                      value: checkedPrivacy,
+                                      title: GestureDetector(
+                                        child: const Text("Gizlilik Sözleşmesini kabul ediyorum",
+                                            style: TextStyle(color: tertiaryColor, decoration: TextDecoration.underline)),
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => const WebViewWidget(locationUrl: "https://she_wo.com/privacy.html")));
+                                        },
+                                      ),
+                                      activeColor: tertiaryColor,
+                                      checkColor: primaryColor,
+                                      controlAffinity: ListTileControlAffinity.leading,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          checkedPrivacy = value!;
+                                        });
+                                      }),
+                                ],
+                              ),
+                              Material(
+                                color: tertiaryColor,
+                                borderRadius: BorderRadius.circular(30.0),
+                                child: MaterialButton(
+                                    minWidth: deviceWidth(context) * 0.5,
+                                    child: Text("Kayıt Ol",
+                                        style: Theme.of(context).textTheme.button!.copyWith(color: white, fontFamily: contentFont, fontSize: 20)),
+                                    onPressed: () async {
+                                      final progressUHD = ProgressHUD.of(context);
+                                      progressUHD!.show();
+                                      if (txtNameSurname.text != null &&
+                                          txtEMail.text != null &&
+                                          txtTelephone.text != null &&
+                                          txtPassword.text != null &&
+                                          txtNameSurname.text != "" &&
+                                          txtEMail.text != "" &&
+                                          txtTelephone.text != "" &&
+                                          txtPassword.text != "") {
+                                        final userAddData =
+                                            await userAddJsnFunc(txtNameSurname.text, txtEMail.text, txtTelephone.text, txtPassword.text, "", "");
+                                        if (checkedPrivacy == true) {
+                                          if (txtPassword.text == txtPasswordAgain.text) {
+                                            if (userAddData!.success == true) {
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                                            } else {
+                                              showToast(context, userAddData.result!);
+                                            }
+                                          } else {
+                                            showToast(context, "Girilen şifreler birbirinden farklı !");
+                                          }
+                                        } else {
+                                          showToast(context, "Gizlilik Sözleşmesini Onaylayınız !");
+                                        }
+                                      } else {
+                                        showToast(context, "Eksik Alanları Doldurunuz !");
+                                      }
+
+                                      progressUHD.dismiss();
+                                    }),
+                              ),
+                            ],
+                          ),
                         ),
-                        Material(
-                          color: primaryColor,
-                          borderRadius: BorderRadius.circular(30.0),
-                          child: MaterialButton(
-                            minWidth: deviceWidth(context) * 0.5, 
-                            child: Text("Kayıt Ol",style: Theme.of(context).textTheme.button!.copyWith(color: white,fontFamily: contentFont,fontSize: 20)),
-                            onPressed: ()async{
-                            final progressUHD = ProgressHUD.of(context);
-                            progressUHD!.show(); 
-                            if(txtNameSurname.text != null && txtEMail.text != null && txtTelephone.text != null && txtPassword.text !=null && txtNameSurname.text != "" && txtEMail.text != "" && txtTelephone.text != "" && txtPassword.text !=""){ 
-                            final userAddData = await userAddJsnFunc(txtNameSurname.text, txtEMail.text, txtTelephone.text, txtPassword.text, "", ""); 
-                              if(checkedPrivacy == true){
-                              if(txtPassword.text == txtPasswordAgain.text){
-                              if(userAddData!.success==true) {
-                              Navigator.push(context,MaterialPageRoute(builder: (context) => LoginPage())); 
-                            }
-                            else{
-                              showToast(context, userAddData.result!); 
-                            }}
-                            else {
-                              showToast(context, "Girilen şifreler birbirinden farklı !"); 
-                            }
-                            }
-                            else{
-                              showToast(context, "Gizlilik Sözleşmesini Onaylayınız !"); 
-                            }
-
-                            } 
-
-                            else{
-                              showToast(context, "Eksik Alanları Doldurunuz !"); 
-                            }
-
-                            progressUHD.dismiss(); 
-                          }),
-                        ),
-                      ],),
+                      )
+                    ],
                   ),
-                )
-                ],),
+                ),
               ),
-            ),
-          ],
-            ),
+            ],
+          ),
         ),
       ),
     );

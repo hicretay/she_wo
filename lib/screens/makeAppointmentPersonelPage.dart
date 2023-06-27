@@ -52,7 +52,7 @@ class _MakeAppointmentPersonelPageState extends State<MakeAppointmentPersonelPag
               color: primaryColor,
               child: Column(
                 children: [
-                  BackLeadingWidget(
+                  const BackLeadingWidget(
                     backColor: primaryColor,
                   ),
                   Padding(
@@ -64,10 +64,10 @@ class _MakeAppointmentPersonelPageState extends State<MakeAppointmentPersonelPag
                           alignment: Alignment.topLeft,
                           child: Text(
                             appointment!.companyNameS!,
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: maxSpace,
                         )
                       ],
@@ -77,17 +77,17 @@ class _MakeAppointmentPersonelPageState extends State<MakeAppointmentPersonelPag
                     child: Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).backgroundColor,
-                        borderRadius: BorderRadius.vertical(
+                        borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(cardCurved),
                         ),
                       ),
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            SizedBox(height: defaultPadding),
+                            const SizedBox(height: defaultPadding),
                             //(companyOperation.isEmpty || companyOperation.length == 0) ? Center(child: Text("Uygun işlem bulunamadı !")) :
                             ListView.separated(
-                              physics: BouncingScrollPhysics(),
+                              physics: const BouncingScrollPhysics(),
                               scrollDirection: Axis.vertical, //dikeyde kaydırılabilir
                               shrinkWrap: true,
                               itemCount: 3, //companyOperation.length, //_location mapi uzunluğu kadar
@@ -111,7 +111,7 @@ class _MakeAppointmentPersonelPageState extends State<MakeAppointmentPersonelPag
                                       height: 60,
                                       decoration: BoxDecoration(
                                         // Container rengi gradient ile verildi
-                                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                                        borderRadius: const BorderRadius.all(Radius.circular(15)),
                                         gradient: LinearGradient(
                                           //soldan sağa doğru color listteki renkleri yaydı
                                           begin: Alignment.topLeft,
@@ -181,7 +181,7 @@ class _MakeAppointmentPersonelPageState extends State<MakeAppointmentPersonelPag
                               //separatorBuilder list itemları arasına bir widget koymayı sağlıyor
                               //SizedBox ile itemlar arası boşluk sağlandı
                               separatorBuilder: (BuildContext context, int index) {
-                                return SizedBox(height: minSpace);
+                                return const SizedBox(height: minSpace);
                               },
                             ),
                             SizedBox(height: deviceHeight(context) * 0.01),
@@ -198,7 +198,7 @@ class _MakeAppointmentPersonelPageState extends State<MakeAppointmentPersonelPag
               color: Theme.of(context).backgroundColor,
               child: TextButtonWidget(
                   buttonText: "Randevu Saatini Seç",
-                  icon: FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: white),
+                  icon: const FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: white),
                   onPressed: () async {
                     final progressHUD = ProgressHUD.of(context);
                     progressHUD!.show();

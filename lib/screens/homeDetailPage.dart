@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:carousel_nullsafety/carousel_nullsafety.dart';
 import 'package:she_wo/JsnClass/companyProfile.dart';
 import 'package:she_wo/JsnClass/contentStreamDetailJsn.dart';
@@ -8,7 +10,7 @@ import 'package:she_wo/screens/makeAppointmentCalendarPage.dart';
 import 'package:she_wo/model/appointmentModel.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
-import 'package:she_wo/widgets/backgroundContainer.dart';
+import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/backleadingWidget.dart';
 import 'package:she_wo/widgets/leadingRowWidget.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +96,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
         child: Container(
           decoration: BoxDecoration(
               image: DecorationImage(fit: BoxFit.fitWidth, image: NetworkImage(item.cPicture)),
-              borderRadius: BorderRadius.all(Radius.circular(maxSpace))),
+              borderRadius: const BorderRadius.all(const Radius.circular(maxSpace))),
         ),
       ));
     }
@@ -107,7 +109,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
             builder: (context) => BackGroundContainer(
               child: Column(
                 children: [
-                  BackLeadingWidget(
+                  const BackLeadingWidget(
                     backColor: primaryColor,
                   ),
                   Padding(
@@ -125,18 +127,18 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             companyName!,
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                         ),
-                        SizedBox(height: maxSpace)
+                        const SizedBox(height: maxSpace)
                       ],
                     ),
                   ),
                   Expanded(
                     child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: passivePurple, //Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.vertical(top: Radius.circular(cardCurved)), //Yalnızca dikeyde yuvarlatılmış
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(cardCurved)), //Yalnızca dikeyde yuvarlatılmış
                         ),
                         child: FutureBuilder<dynamic>(
                             future: homeDetailRefresh(),
@@ -144,7 +146,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                               return SingleChildScrollView(
                                 child: Column(
                                   children: [
-                                    SizedBox(height: maxSpace),
+                                    const SizedBox(height: maxSpace),
                                     LeadingRowWidget(
                                       companyName: companyName!,
                                       companyLogo: companyLogo!,
@@ -183,7 +185,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                           aspectRatio: 16 / 9,
                                                           child: Container(
                                                             decoration: BoxDecoration(
-                                                                borderRadius: BorderRadius.all(Radius.circular(maxSpace)),
+                                                                borderRadius: const BorderRadius.all(const Radius.circular(maxSpace)),
                                                                 image: DecorationImage(
                                                                     fit: BoxFit.fitWidth,
                                                                     image: NetworkImage(homeDetailContent!.first.contentPictures.first.cPicture))),
@@ -201,11 +203,11 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                         },
                                                         child: Carousel(
                                                             borderRadius: true,
-                                                            radius: Radius.circular(maxSpace),
+                                                            radius: const Radius.circular(maxSpace),
                                                             boxFit: BoxFit.fitWidth,
                                                             autoplay: false,
                                                             animationCurve: Curves.bounceInOut, // animasyon efekti
-                                                            animationDuration: Duration(milliseconds: 1000), // animasyon süresi
+                                                            animationDuration: const Duration(milliseconds: 1000), // animasyon süresi
                                                             dotSize: 6.0, //Nokta büyüklüğü
                                                             dotIncreasedColor: primaryColor, // Seçili sayfa noktası rengi
                                                             dotColor: secondaryColor,
@@ -238,8 +240,8 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                     : passivePurple, // seçili ise koyu, değilse açık renk verildi
                                                 child: IconButton(
                                                     icon: homeDetailContent!.first.liked
-                                                        ? Icon(LineIcons.heart, color: white)
-                                                        : Icon(LineIcons.heart, color: darkWhite),
+                                                        ? const Icon(LineIcons.heart, color: white)
+                                                        : const Icon(LineIcons.heart, color: darkWhite),
                                                     onPressed: () async {
                                                       SharedPreferences prefs = await SharedPreferences.getInstance();
                                                       userIdData = prefs.getInt("userIdData")!;
@@ -272,11 +274,11 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                               padding: const EdgeInsets.all(minSpace),
                                               child: IconButton(
                                                   padding: EdgeInsets.zero,
-                                                  constraints: BoxConstraints(),
-                                                  icon: Icon(LineIcons.phone, color: darkWhite, size: iconSize),
+                                                  constraints: const BoxConstraints(),
+                                                  icon: const Icon(LineIcons.phone, color: darkWhite, size: iconSize),
                                                   onPressed: () async {
                                                     dynamic number = companyPhone; // arama ekranına yönlendirme
-                                                    launch("tel://$number");
+                                                    launchUrl(Uri(path: "tel://$number"));
                                                   }),
                                             ),
                                             //------------------------------------------------------------------------
@@ -285,8 +287,8 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                               padding: const EdgeInsets.all(minSpace),
                                               child: IconButton(
                                                   padding: EdgeInsets.zero,
-                                                  constraints: BoxConstraints(),
-                                                  icon: Icon(LineIcons.locationArrow, color: darkWhite, size: iconSize),
+                                                  constraints: const BoxConstraints(),
+                                                  icon: const Icon(LineIcons.locationArrow, color: darkWhite, size: iconSize),
                                                   onPressed: () async {
                                                     final progressUHD = ProgressHUD.of(context);
                                                     progressUHD!.show();
@@ -333,8 +335,8 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                       //----------------------------Buton Metni------------------------------------------
                                                       Text("Randevu Al", style: Theme.of(context).textTheme.button!.copyWith(color: white)),
                                                       //---------------------------------------------------------------------------------
-                                                      SizedBox(width: 10), //butondaki Text ve icon arası boşluk
-                                                      Icon(LineIcons.arrowRight, color: passivePurple),
+                                                      const SizedBox(width: 10), //butondaki Text ve icon arası boşluk
+                                                      const Icon(LineIcons.arrowRight, color: passivePurple),
                                                     ],
                                                   ),
                                                 ),
@@ -344,16 +346,17 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                               ),
                                       ],
                                     ),
-                                    SizedBox(height: maxSpace), // Alt Header ve beğeni metni arasındaki boşluk
+                                    const SizedBox(height: maxSpace), // Alt Header ve beğeni metni arasındaki boşluk
                                     Padding(
                                       padding: const EdgeInsets.only(left: maxSpace),
                                       child: Row(
                                         children: [
-                                          Icon(Icons.favorite, // Beğeni İcon'ı
+                                          const Icon(Icons.favorite, // Beğeni İcon'ı
                                               size: iconSize,
                                               color: darkWhite),
-                                          SizedBox(width: minSpace),
-                                          Text("${homeDetailContent!.first.likeCount} kişi tarafından beğenildi", style: TextStyle(color: darkWhite)),
+                                          const SizedBox(width: minSpace),
+                                          Text("${homeDetailContent!.first.likeCount} kişi tarafından beğenildi",
+                                              style: const TextStyle(color: darkWhite)),
                                           // counter ile gösterilecek beğeni sayısı
                                         ],
                                       ),
@@ -367,7 +370,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                             alignment: Alignment.bottomLeft,
                                             child: Text(
                                               contentTitle!,
-                                              style: TextStyle(fontSize: 22, color: darkWhite),
+                                              style: const TextStyle(fontSize: 22, color: darkWhite),
                                             ),
                                           ),
                                           Align(

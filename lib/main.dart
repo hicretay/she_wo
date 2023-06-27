@@ -12,18 +12,20 @@ Future main() async {
   await ThemeDataProvider().createSharedPrefObj();
   initializeDateFormatting()
       .then((_) => SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) => runApp(
-            ChangeNotifierProvider<ThemeDataProvider>(create: (BuildContext context) => ThemeDataProvider(), child: App()),
+            ChangeNotifierProvider<ThemeDataProvider>(create: (BuildContext context) => ThemeDataProvider(), child: const App()),
           )));
 }
 
 class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     Provider.of<ThemeDataProvider>(context, listen: false).loadTheme();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
-        ChangeNotifierProvider<ThemeDataProvider>(create: (BuildContext context) => ThemeDataProvider(), child: App()),
+        ChangeNotifierProvider<ThemeDataProvider>(create: (BuildContext context) => ThemeDataProvider(), child: const App()),
       ],
       child: Builder(
         builder: (context) {

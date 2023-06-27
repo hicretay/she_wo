@@ -11,6 +11,7 @@ class ListTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       GestureDetector(
+        onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.only(right: maxSpace, left: maxSpace, top: minSpace),
           child: ClipRRect(
@@ -23,7 +24,7 @@ class ListTileWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Expanded(child: Text(text!, style: TextStyle(fontSize: 18, color: white))),
+                    Expanded(child: Text(text!, style: const TextStyle(fontSize: 18, color: white))),
                     child!,
                   ],
                 ),
@@ -31,7 +32,6 @@ class ListTileWidget extends StatelessWidget {
             ),
           ),
         ),
-        onTap: onTap,
       ),
     ]);
   }

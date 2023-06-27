@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:she_wo/screens/favoritePage.dart';
 import 'package:she_wo/screens/homePage.dart';
 import 'package:she_wo/screens/likedCampaignPage.dart';

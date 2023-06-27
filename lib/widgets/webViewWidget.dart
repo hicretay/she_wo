@@ -4,7 +4,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewWidget extends StatefulWidget {
   final String? locationUrl;
-  WebViewWidget({Key? key, this.locationUrl}) : super(key: key);
+  const WebViewWidget({Key? key, this.locationUrl}) : super(key: key);
 
   @override
   _WebViewWidgetState createState() => _WebViewWidgetState();
@@ -27,14 +27,14 @@ class _WebViewWidgetState extends State<WebViewWidget> {
                       backgroundColor: secondaryColor,
                       child: IconButton(
                         iconSize: iconSize,
-                        icon: Icon(Icons.arrow_back, color: primaryColor, size: 25),
+                        icon: const Icon(Icons.arrow_back, color: primaryColor, size: 25),
                         onPressed: () {
                           Navigator.pop(context);
                         },
                       ),
                     ),
-                    SizedBox(width: maxSpace),
-                    Text(
+                    const SizedBox(width: maxSpace),
+                    const Text(
                       "Estetik Vitrini",
                       style: TextStyle(fontFamily: leadingFont, fontSize: 25, color: primaryColor),
                     ),

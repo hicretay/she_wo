@@ -1,14 +1,14 @@
 import 'package:she_wo/JsnClass/companyAppointmentListJsn.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
-import 'package:she_wo/widgets/backgroundContainer.dart';
+import 'package:she_wo/widgets/background_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppointmentOperationPage extends StatefulWidget {
-  AppointmentOperationPage({Key? key}) : super(key: key);
+  const AppointmentOperationPage({Key? key}) : super(key: key);
 
   @override
   _AppointmentOperationPageState createState() => _AppointmentOperationPageState();
@@ -26,11 +26,7 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
     if (date == null) {
       return "";
     } else {
-      return (date!.day <= 9 ? "0" + date!.day.toString() : date!.day.toString()) +
-          "." +
-          (date!.month <= 9 ? "0" + date!.month.toString() : date!.month.toString()) +
-          "." +
-          date!.year.toString();
+      return "${date!.day <= 9 ? "0${date!.day}" : date!.day.toString()}.${date!.month <= 9 ? "0${date!.month}" : date!.month.toString()}.${date!.year}";
     }
   }
 
@@ -83,13 +79,13 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                               backgroundColor: Colors.white,
                               child: IconButton(
                                   iconSize: iconSize,
-                                  icon: Icon(Icons.arrow_back, color: primaryColor),
+                                  icon: const Icon(Icons.arrow_back, color: primaryColor),
                                   onPressed: () {
                                     Navigator.pop(context, false);
                                   }),
                             ),
-                            SizedBox(width: maxSpace),
-                            Text(
+                            const SizedBox(width: maxSpace),
+                            const Text(
                               "Randevu İşlemleri",
                               style: TextStyle(fontFamily: leadingFont, fontSize: 25, color: Colors.white),
                             ),
@@ -105,10 +101,10 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                         alignment: Alignment.topLeft,
                         child: Text(
                           user,
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style: const TextStyle(color: Colors.white, fontSize: 20),
                         ),
                       ),
-                      SizedBox(height: maxSpace)
+                      const SizedBox(height: maxSpace)
                     ],
                   ),
                 ),
@@ -116,7 +112,7 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).backgroundColor,
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(cardCurved)),
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(cardCurved)),
                     ),
                     child: RefreshIndicator(
                       onRefresh: () => appointmentListFunc(),
@@ -130,7 +126,7 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                                   Padding(
                                     padding: EdgeInsets.only(top: deviceHeight(context) * 0.01),
                                     child: Padding(
-                                      padding: EdgeInsets.only(left: maxSpace),
+                                      padding: const EdgeInsets.only(left: maxSpace),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                         children: [
@@ -138,14 +134,14 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                                             child: Container(
                                               width: deviceWidth(context) / 2.5,
                                               height: deviceHeight(context) * 0.04,
-                                              child: Center(
-                                                child: Text("Tümünü Listele",
-                                                    style: TextStyle(color: Colors.black, fontSize: 17, fontFamily: contentFont)),
-                                              ),
                                               decoration: BoxDecoration(
                                                   color: secondaryColor,
                                                   border: Border.all(color: Colors.grey),
-                                                  borderRadius: BorderRadius.all(Radius.circular(minSpace))),
+                                                  borderRadius: const BorderRadius.all(Radius.circular(minSpace))),
+                                              child: const Center(
+                                                child: Text("Tümünü Listele",
+                                                    style: TextStyle(color: Colors.black, fontSize: 17, fontFamily: contentFont)),
+                                              ),
                                             ),
                                             onTap: () {
                                               date = null;
@@ -156,14 +152,14 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                                             child: Container(
                                               width: deviceWidth(context) / 2.5,
                                               height: deviceHeight(context) * 0.04,
-                                              child: Center(
-                                                child: Text("Tarihe Göre Listele",
-                                                    style: TextStyle(color: Colors.black, fontSize: 17, fontFamily: contentFont)),
-                                              ),
                                               decoration: BoxDecoration(
                                                   color: secondaryColor,
                                                   border: Border.all(color: Colors.grey),
-                                                  borderRadius: BorderRadius.all(Radius.circular(minSpace))),
+                                                  borderRadius: const BorderRadius.all(Radius.circular(minSpace))),
+                                              child: const Center(
+                                                child: Text("Tarihe Göre Listele",
+                                                    style: TextStyle(color: Colors.black, fontSize: 17, fontFamily: contentFont)),
+                                              ),
                                             ),
                                             onTap: () => pickDate(context),
                                           ),
@@ -172,7 +168,7 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                                     ),
                                   ),
                                   ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
+                                      physics: const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemCount: appointmentList == null ? 0 : appointmentList!.length,
                                       itemBuilder: (BuildContext context, int index) {
@@ -225,73 +221,71 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding),
                       //--------------Resmi çevreyelecek container yapısı------------------
-                      child: Container(
+                      child: SizedBox(
                         width: deviceWidth(context),
                         //----------------Resim üzerinde yer alacak yapılar-----------------
                         child: Padding(
                           padding: EdgeInsets.only(top: deviceHeight(context) * 0.01),
                           child: Align(
                             alignment: Alignment.center,
-                            child: Container(
-                              child: Row(
-                                children: [
-                                  Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                            child: Row(
+                              children: [
+                                Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(minSpace),
+                                    child: Text("İsim:", style: reservationText(context)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(minSpace),
+                                    child: Text("Telefon:", style: reservationText(context)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(minSpace),
+                                    child: Text("Randevu Tarihi:", style: reservationText(context)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(minSpace),
+                                    child: Text("Randevu Saati:", style: reservationText(context)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(minSpace),
+                                    child: Text("Yapılacak İşlem:", style: reservationText(context)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: minSpace, right: minSpace, left: minSpace),
+                                    child: Text("Not:", style: reservationText(context)),
+                                  ),
+                                ]),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
                                     Padding(
                                       padding: const EdgeInsets.all(minSpace),
-                                      child: Text("İsim:", style: reservationText(context)),
+                                      child: Text(customerName, style: reservationText(context)),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(minSpace),
-                                      child: Text("Telefon:", style: reservationText(context)),
+                                      child: Text(phone, style: reservationText(context)),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(minSpace),
-                                      child: Text("Randevu Tarihi:", style: reservationText(context)),
+                                      child: Text(appointmentDate, style: reservationText(context)),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(minSpace),
-                                      child: Text("Randevu Saati:", style: reservationText(context)),
+                                      child: Text(appointmentTime, style: reservationText(context)),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(minSpace),
-                                      child: Text("Yapılacak İşlem:", style: reservationText(context)),
+                                      child: Text(operationName, style: reservationText(context)),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(top: minSpace, right: minSpace, left: minSpace),
-                                      child: Text("Not:", style: reservationText(context)),
-                                    ),
-                                  ]),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(minSpace),
-                                        child: Text(customerName, style: reservationText(context)),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(minSpace),
-                                        child: Text(phone, style: reservationText(context)),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(minSpace),
-                                        child: Text(appointmentDate, style: reservationText(context)),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(minSpace),
-                                        child: Text(appointmentTime, style: reservationText(context)),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(minSpace),
-                                        child: Text(operationName, style: reservationText(context)),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: minSpace, right: minSpace, left: minSpace),
-                                        child: Text(operationName, style: reservationText(context)),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
+                                      child: Text(operationName, style: reservationText(context)),
+                                    )
+                                  ],
+                                )
+                              ],
                             ),
                           ),
                         ),
@@ -301,7 +295,7 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                   //-------------------------------------ICONBUTTONLAR PANELİ----------------------------------------
                   Padding(
                     padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding),
-                    child: Container(
+                    child: SizedBox(
                         width: deviceWidth(context),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -321,8 +315,8 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                                       children: [
                                         //------------------------------SİLME ICONBUTTONI----------------------------
                                         IconButton(
-                                          padding: EdgeInsets.all(0),
-                                          icon: Icon(LineIcons.trash, color: primaryColor),
+                                          padding: const EdgeInsets.all(0),
+                                          icon: const Icon(LineIcons.trash, color: primaryColor),
                                           onPressed: () async {
                                             showDialog(
                                                 context: context,
@@ -330,14 +324,14 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                                                   return ProgressHUD(
                                                     child: Builder(
                                                       builder: (context) => AlertDialog(
-                                                        content: Text("Randevu iptal edilsin mi?", style: TextStyle(fontFamily: contentFont)),
+                                                        content: const Text("Randevu iptal edilsin mi?", style: TextStyle(fontFamily: contentFont)),
                                                         actions: <Widget>[
                                                           Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                             children: [
                                                               MaterialButton(
                                                                   color: primaryColor,
-                                                                  child: Text("Evet", style: TextStyle(color: white)),
+                                                                  child: const Text("Evet", style: TextStyle(color: white)),
                                                                   onPressed: () async {
                                                                     final progressHUD = ProgressHUD.of(context);
                                                                     progressHUD!.show();
@@ -354,7 +348,7 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                                                                   }),
                                                               MaterialButton(
                                                                 color: primaryColor,
-                                                                child: Text("Hayır", style: TextStyle(color: white)),
+                                                                child: const Text("Hayır", style: TextStyle(color: white)),
                                                                 onPressed: () {
                                                                   showToast(context, "Randevu iptal edilmedi!");
                                                                   Navigator.of(context).pop();
@@ -372,7 +366,7 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                                         //------------------------------------------------------------------------------
                                         //-----------------------------ONAYLAMA ICONBUTTONI--------------------------------
                                         IconButton(
-                                          padding: EdgeInsets.all(0),
+                                          padding: const EdgeInsets.all(0),
                                           icon: Icon(LineIcons.checkSquare,
                                               color: appointmentData![index].confirmed == true ? Colors.green : primaryColor, size: iconSize),
                                           onPressed: () async {
@@ -386,14 +380,14 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                                                             appointmentData![index].confirmed == true
                                                                 ? "Randevu onayı kaldırılsın mı?"
                                                                 : "Randevu onaylansın mı?",
-                                                            style: TextStyle(fontFamily: contentFont)),
+                                                            style: const TextStyle(fontFamily: contentFont)),
                                                         actions: <Widget>[
                                                           Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                             children: [
                                                               MaterialButton(
                                                                   color: primaryColor,
-                                                                  child: Text("Evet", style: TextStyle(color: white)),
+                                                                  child: const Text("Evet", style: TextStyle(color: white)),
                                                                   onPressed: () async {
                                                                     final progressHUD = ProgressHUD.of(context);
                                                                     progressHUD!.show();
@@ -414,7 +408,7 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                                                                   }),
                                                               MaterialButton(
                                                                 color: primaryColor,
-                                                                child: Text("Hayır", style: TextStyle(color: white)),
+                                                                child: const Text("Hayır", style: TextStyle(color: white)),
                                                                 onPressed: () {
                                                                   showToast(context, "Herhangi bir işlem yapılmadı!");
                                                                   Navigator.of(context).pop();
@@ -440,7 +434,7 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                           ],
                         )),
                   ),
-                  SizedBox(height: maxSpace),
+                  const SizedBox(height: maxSpace),
                 ],
               ),
             ),
@@ -460,8 +454,8 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
       builder: (context, child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(primary: secondaryColor),
-            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            colorScheme: const ColorScheme.light(primary: secondaryColor),
+            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 primary: secondaryColor,
