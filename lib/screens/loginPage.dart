@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:she_wo/JsnClass/loginJsn.dart';
 import 'package:she_wo/screens/locationPage.dart';
 import 'package:she_wo/settings/consts.dart';
@@ -27,6 +28,15 @@ class _LoginPageState extends State<LoginPage> {
     txtUsername.dispose();
     txtPassword.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (kDebugMode) {
+      txtUsername.text = 'emre@aeyazilim.com';
+      txtPassword.text = '1';
+    }
   }
 
   @override
@@ -166,10 +176,13 @@ class _LoginPageState extends State<LoginPage> {
                                                       progressHUD!.show();
                                                       final forgetPasswordData = await forgetPasswordJsnFunc(txtForgetPassword.text.trim());
                                                       if (forgetPasswordData!.success == true) {
+                                                        if (!mounted) return;
                                                         showToast(context, "Lütfen mail aresinizi kontrol ediniz !");
                                                       } else {
+                                                        if (!mounted) return;
                                                         showToast(context, "Bir hata oluştu !");
                                                       }
+                                                      if (!mounted) return;
                                                       Navigator.of(context).pop();
                                                       progressHUD.dismiss();
                                                     }),

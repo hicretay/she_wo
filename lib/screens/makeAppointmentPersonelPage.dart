@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, prefer_final_fields
 
 import 'package:she_wo/screens/makeAppointmentTimePage.dart';
 import 'package:she_wo/model/appointmentModel.dart';
@@ -12,7 +12,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MakeAppointmentPersonelPage extends StatefulWidget {
   final AppointmentObject? appointment;
-  MakeAppointmentPersonelPage({Key? key, this.appointment}) : super(key: key);
+  const MakeAppointmentPersonelPage({Key? key, this.appointment}) : super(key: key);
 
   @override
   _MakeAppointmentPersonelPageState createState() => _MakeAppointmentPersonelPageState(appointment: appointment);
@@ -204,12 +204,14 @@ class _MakeAppointmentPersonelPageState extends State<MakeAppointmentPersonelPag
                     progressHUD!.show();
                     final companyOperationTime = await companyOperationTimeJsnFunc([appointment!.operationId]);
                     if (appointment!.operationId != null) {
+                      if (!mounted) return;
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
                                   MakeAppointmentTimePage(companyOperationTime: companyOperationTime!.result, appointment: appointment!)));
                     } else {
+                      if (!mounted) return;
                       showToast(context, "Lütfen bir personel seçiniz!");
                     }
                     progressHUD.dismiss();

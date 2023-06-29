@@ -62,7 +62,7 @@ dynamic globalHomeContentId;
 var circularBasic = const Center(
     child: Padding(
   padding: EdgeInsets.all(maxSpace),
-  child: CircularProgressIndicator(backgroundColor: primaryColor, valueColor: const AlwaysStoppedAnimation<Color>(secondaryColor)),
+  child: CircularProgressIndicator(backgroundColor: primaryColor, valueColor: AlwaysStoppedAnimation<Color>(secondaryColor)),
 ));
 
 bool isThemeDark = false;

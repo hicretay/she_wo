@@ -95,7 +95,7 @@ class _FavoritePageState extends State<FavoritePage> {
                     //------------------------- Arkaplan containerı---------------------
                     Expanded(
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: primaryColor,
                           borderRadius: BorderRadius.vertical(top: Radius.circular(cardCurved)), //Yalnızca dikeyde yuvarlatılmış
                         ),
@@ -104,11 +104,12 @@ class _FavoritePageState extends State<FavoritePage> {
                           color: primaryColor,
                           backgroundColor: secondaryColor,
                           child: ListView.builder(
-                              padding: EdgeInsets.all(0),
+                              padding: const EdgeInsets.all(0),
                               itemCount: favoriContent == null ? 0 : favoriContent!.length,
                               controller: NavigationProvider.of(context).screens[FAVORITE_PAGE].scrollController,
                               itemBuilder: (BuildContext context, int index) {
                                 return HomeContainerWidget(
+                                  isCategoryWidget: false,
                                   companyLogo: favoriContent![index].companyLogo,
                                   companyName: favoriContent![index].companyName,
                                   contentPicture: favoriContent![index].contentPicture,
@@ -116,7 +117,7 @@ class _FavoritePageState extends State<FavoritePage> {
                                   pinColor: primaryColor,
                                   onPressedPhone: () async {
                                     dynamic number = favoriContent![index].companyPhone.toString(); // arama ekranına yönlendirme
-                                    launch("tel://$number");
+                                    launchUrl(Uri(path: "tel://$number"));
                                   },
                                   //------------------------------------------"DETAYLI BİLGİ İÇİN" BUTONU-----------------------------------------------
                                   onPressed: () async {

@@ -338,11 +338,14 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                                                                     final deleteAppointment =
                                                                         await appointmentDeleteJsnFunc(appointmentData![index].id);
                                                                     if (deleteAppointment!.success == true) {
+                                                                      if (!mounted) return;
                                                                       showToast(context, "Randevu başarıyla iptal edildi!");
                                                                     } else {
+                                                                      if (!mounted) return;
                                                                       showToast(context, "Randevu iptal edilemedi!");
                                                                     }
                                                                     await appointmentListFunc();
+                                                                    if (!mounted) return;
                                                                     Navigator.of(context).pop();
                                                                     progressHUD.dismiss();
                                                                   }),

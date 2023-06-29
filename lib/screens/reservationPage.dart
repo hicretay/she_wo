@@ -15,7 +15,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 class ReservationPage extends StatefulWidget {
   static const route = "reservationPage";
-  ReservationPage({Key? key}) : super(key: key);
+  const ReservationPage({Key? key}) : super(key: key);
 
   @override
   _ReservationPageState createState() => _ReservationPageState();
@@ -35,7 +35,7 @@ class _ReservationPageState extends State<ReservationPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userIdData = prefs.getInt("userIdData");
     String calendarDate =
-        "${_selectedDay.day <= 9 ? "0" + _selectedDay.day.toString() : _selectedDay.day.toString()}.${_selectedDay.month <= 9 ? "0" + _selectedDay.month.toString() : _selectedDay.month.toString()}.${_selectedDay.year}";
+        "${_selectedDay.day <= 9 ? "0${_selectedDay.day}" : _selectedDay.day.toString()}.${_selectedDay.month <= 9 ? "0${_selectedDay.month}" : _selectedDay.month.toString()}.${_selectedDay.year}";
     final AppointmentListJsn? appointmentNewList = await appointmentListJsnFunc(userIdData!, calendarDate);
     setState(() {
       appointmentList = appointmentNewList!.result;
@@ -229,11 +229,14 @@ class _ReservationPageState extends State<ReservationPage> {
                                                                   final deleteAppointment =
                                                                       await appointmentDeleteJsnFunc(appointmentList![index].id);
                                                                   if (deleteAppointment!.success == true) {
+                                                                    if (!mounted) return;
                                                                     showToast(context, "Randevu başarıyla iptal edildi!");
                                                                   } else {
+                                                                    if (!mounted) return;
                                                                     showToast(context, "Randevu iptal edilemedi!");
                                                                   }
                                                                   await appointmentListFunc();
+                                                                  if (!mounted) return;
                                                                   Navigator.of(context).pop();
                                                                   progressHUD.dismiss();
                                                                 }),
@@ -272,9 +275,9 @@ class _ReservationPageState extends State<ReservationPage> {
   }
 }
 
-class Event {
-  final String operation;
-  Event({required this.operation});
+// class Event {
+//   final String operation;
+//   Event({required this.operation});
 
-  String toString() => this.operation;
-}
+//   String toString() => this.operation;
+// }

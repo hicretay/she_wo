@@ -95,9 +95,8 @@ class _LocationPageState extends State<LocationPage> {
                                             onPressed: () async {
                                               SharedPreferences prefs = await SharedPreferences.getInstance();
                                               if (prefs.getString("isFirstLogin") != null) {
+                                                if (!mounted) return;
                                                 Navigator.pop(context, false);
-                                              } else {
-                                                return null;
                                               }
                                             }),
                                       ),
@@ -344,9 +343,11 @@ class _LocationPageState extends State<LocationPage> {
                   await showToast(context, "Seçmiş olduğunuz bölgelere akış başarıyla uygulandı");
                   SharedPreferences prefs = await SharedPreferences.getInstance();
                   if (prefs.getString("isFirstLogin") != null) {
+                    if (!mounted) return;
                     NavigationProvider.of(context).setTab(HOME_PAGE);
                     Navigator.pop(context, false);
                   } else {
+                    if (!mounted) return;
                     Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => Root()));
                   }
 

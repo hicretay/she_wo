@@ -7,12 +7,11 @@ import 'package:she_wo/settings/functions.dart';
 import 'package:she_wo/widgets/textFieldWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class RegisterPage extends StatefulWidget {
   static const route = "/registerPage";
-  RegisterPage({Key? key}) : super(key: key);
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -139,6 +138,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         final userAddData =
                                             await userAddJsnFunc(txtNameSurname.text, txtEMail.text, txtTelephone.text, txtPassword.text, "", "");
                                         if (checkedPrivacy == true) {
+                                          if (!mounted) return;
                                           if (txtPassword.text == txtPasswordAgain.text) {
                                             if (userAddData!.success == true) {
                                               Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
@@ -149,6 +149,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                             showToast(context, "Girilen şifreler birbirinden farklı !");
                                           }
                                         } else {
+                                          if (!mounted) return;
                                           showToast(context, "Gizlilik Sözleşmesini Onaylayınız !");
                                         }
                                       } else {

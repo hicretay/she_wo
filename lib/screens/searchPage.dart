@@ -12,7 +12,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SearchPage extends StatefulWidget {
   static const route = "searchPage";
-  SearchPage({Key? key}) : super(key: key);
+  const SearchPage({Key? key}) : super(key: key);
   @override
   _SearchPageState createState() => _SearchPageState();
 }
@@ -158,7 +158,7 @@ class _SearchPageState extends State<SearchPage> {
                                                 child: Container(
                                                     height: deviceHeight(context) * 0.1,
                                                     decoration: const BoxDecoration(
-                                                        color: Colors.transparent, borderRadius: const BorderRadius.all(Radius.circular(10))),
+                                                        color: Colors.transparent, borderRadius: BorderRadius.all(Radius.circular(10))),
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment.spaceBetween, // Row içindeki widgetların yayılmasını sağlar
@@ -168,19 +168,17 @@ class _SearchPageState extends State<SearchPage> {
                                                             //------------Başlıktaki firma logosu görünümü-----------
                                                             SizedBox(width: deviceWidth(context) * 0.01),
                                                             Container(
-                                                              child: Container(
-                                                                alignment: Alignment.topLeft,
-                                                                width: deviceWidth(context) * 0.15,
-                                                                height: deviceWidth(context) * 0.15,
-                                                                decoration: BoxDecoration(
-                                                                  color: white,
-                                                                  shape: BoxShape.circle,
-                                                                  image: DecorationImage(
-                                                                    image: NetworkImage(
-                                                                      selectedCompanies.length == 0
-                                                                          ? allCompanies[index].companyLogo
-                                                                          : selectedCompanies[index].companyLogo,
-                                                                    ),
+                                                              alignment: Alignment.topLeft,
+                                                              width: deviceWidth(context) * 0.15,
+                                                              height: deviceWidth(context) * 0.15,
+                                                              decoration: BoxDecoration(
+                                                                color: white,
+                                                                shape: BoxShape.circle,
+                                                                image: DecorationImage(
+                                                                  image: NetworkImage(
+                                                                    selectedCompanies.isEmpty
+                                                                        ? allCompanies[index].companyLogo
+                                                                        : selectedCompanies[index].companyLogo,
                                                                   ),
                                                                 ),
                                                               ),
@@ -207,6 +205,7 @@ class _SearchPageState extends State<SearchPage> {
                                               final progressUHD = ProgressHUD.of(context);
                                               progressUHD!.show();
                                               final CompanyProfileJsn? companyProfile = await companyListDetailJsnFunc(selectedCompanies[index].id);
+                                              if (!mounted) return;
                                               Navigator.of(context, rootNavigator: true)
                                                   .push(MaterialPageRoute(builder: (context) => CompanyProfilePage(companyProfile: companyProfile)));
                                               progressUHD.dismiss();

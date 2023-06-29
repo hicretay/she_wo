@@ -4,7 +4,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:she_wo/JsnClass/loginJsn.dart';
 import 'package:she_wo/providers/themeDataProvider.dart';
 import 'package:she_wo/screens/log_reg_choice_page.dart';
-import 'package:she_wo/screens/loginPage.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
 import 'package:she_wo/settings/root.dart';
@@ -14,6 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
   static const route = "/splashPage";
+
+  const SplashPage({Key? key}) : super(key: key);
 
   @override
   _SplashPageState createState() => _SplashPageState();
@@ -32,12 +33,14 @@ class _SplashPageState extends State<SplashPage> {
         String? pass = prefs.getString("pass");
 
         if (user == null) {
+          if (!mounted) return;
           Navigator.of(context).pop();
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LogRegChoicePage()), (route) => false);
         } else {
           // ignore: unused_local_variable
           final LoginJsn? userData = await loginJsnFunc(user, pass!, false);
-          Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => Root()));
+          if (!mounted) return;
+          Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => const Root()));
         }
       } else {
         showDialog(

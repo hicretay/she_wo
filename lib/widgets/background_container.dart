@@ -16,13 +16,7 @@ class _BackGroundContainerState extends State<BackGroundContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(color: primaryColor
-          // gradient: LinearGradient(
-          //   begin: Alignment.topLeft,
-          //   end: Alignment.topRight,
-          //   colors: widget.colors
-          // ),
-          ),
+      decoration: const BoxDecoration(color: primaryColor),
       child: widget.child,
     );
   }

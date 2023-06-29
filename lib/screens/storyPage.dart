@@ -8,7 +8,7 @@ class StoryPage extends StatefulWidget {
   final int? storyIndex;
   final int? lastCompId;
 
-  const StoryPage({@required this.company, this.storyIndex, this.lastCompId});
+  const StoryPage({Key? key, @required this.company, this.storyIndex, this.lastCompId}) : super(key: key);
 
   @override
   _StoryPageState createState() => _StoryPageState(storyIndex: storyIndex, lastCompId: lastCompId);

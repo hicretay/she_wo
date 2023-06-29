@@ -1,5 +1,7 @@
-// ignore_for_file: unrelated_type_equality_checks, unnecessary_null_comparison, avoid_print
+// ignore_for_file: unrelated_type_equality_checks, unnecessary_null_comparison, avoid_print, avoid_function_literals_in_foreach_calls
 import 'dart:async';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:she_wo/JsnClass/companyListJsn.dart';
 import 'package:she_wo/JsnClass/companyProfile.dart';
 import 'package:she_wo/JsnClass/contentStreamDetailJsn.dart';
@@ -18,7 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../settings/consts.dart';
@@ -43,6 +45,11 @@ class _HomePageState extends State<HomePage> {
   List? companyContent;
   int? userIdData;
   bool? isLogin;
+
+  TextEditingController teSearch = TextEditingController();
+
+  List allCompanies = [];
+  List selectedCompanies = [];
 
 //---------------------------INTERNET KONTROLÜ STREAM'I------------------------------
   // ignore: cancel_subscriptions
@@ -132,115 +139,127 @@ class _HomePageState extends State<HomePage> {
               child: (homeContent != null && companyContent != null)
                   ? Builder(
                       builder: (context) => BackGroundContainer(
-                        child: Stack(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             //-----------------------------BAŞLIK-------------------------------
-                            Padding(
-                              padding: EdgeInsets.only(top: deviceWidth(context) * 0.1),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: defaultPadding),
-                                      child: SizedBox(
-                                        child: Text("estetik vitrini", //Büyük Başlık
-                                            style: Theme.of(context).textTheme.headline3!.copyWith(color: white, fontFamily: leadingFont)),
-                                      ),
-                                    )
-                                  ]),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: maxSpace),
-                                    child: Row(children: [
-                                      GestureDetector(
-                                          child: SvgPicture.asset("assets/icons/search.svg", height: 27, width: 27, color: white),
-                                          onTap: () {
-                                            NavigationProvider.of(context).setTab(SEARCH_PAGE);
-                                          }),
-                                      SizedBox(width: deviceWidth(context) * 0.02),
-                                      GestureDetector(
-                                          child: SvgPicture.asset("assets/icons/settings.svg", height: 27, width: 27, color: white),
-                                          onTap: () {
-                                            //NavigationProvider.of(context).setTab(FAVORITE_PAGE);
-                                            Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => SettingsPage()));
-                                          }),
-                                    ]),
+                            Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: deviceWidth(context) * 0.1),
+                                child: SizedBox(
+                                  height: deviceWidth(context) * 0.25,
+                                  child: Center(
+                                    child: Image.asset("assets/images/shewo_logo.png"),
                                   ),
-                                ],
+                                ),
                               ),
                             ),
-                            //------------------------------------------------------------------
-                            //---------------------------Story Paneli---------------------------
+
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: defaultPadding),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      child: Text(
+                                        "Keşfet",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5!
+                                            .copyWith(color: tertiaryColor, fontFamily: leadingFont, fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      child: Text(
+                                        "Farklı yerlere rezervasyon yap",
+                                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey, fontFamily: leadingFont),
+                                      ),
+                                    ),
+                                    const SizedBox(height: minSpace),
+                                    SizedBox(
+                                      child: Text(
+                                        "Popüler Kategoriler",
+                                        style: Theme.of(context).textTheme.headline6!.copyWith(color: tertiaryColor, fontFamily: leadingFont),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            //____________________________________Arama Kısmı____________________________________________
+
                             Padding(
-                              padding: const EdgeInsets.only(left: maxSpace, right: maxSpace, top: 88),
-                              child: ListView.separated(
-                                  shrinkWrap: true,
-                                  itemCount: companyContent!.length,
-                                  scrollDirection: Axis.horizontal,
-                                  separatorBuilder: (BuildContext context, int index) {
-                                    return const SizedBox(width: maxSpace);
-                                  },
-                                  itemBuilder: (BuildContext context, index) {
-                                    return Column(children: [
-                                      GestureDetector(
-                                        child: Stack(children: [
-                                          Container(
-                                            width: deviceWidth(context) * 0.20,
-                                            height: deviceWidth(context) * 0.20,
-                                            decoration: const BoxDecoration(
-                                                gradient: LinearGradient(
-                                                    begin: Alignment.topCenter,
-                                                    end: Alignment.bottomCenter,
-                                                    colors: [Color(0xff63211B), Color(0xffFA6400)]),
-                                                shape: BoxShape.circle),
-                                          ),
-                                          Positioned(
-                                            left: deviceWidth(context) * 0.005,
-                                            top: deviceWidth(context) * 0.005,
-                                            child: Container(
-                                              width: deviceWidth(context) * 0.19,
-                                              height: deviceWidth(context) * 0.19,
-                                              decoration: BoxDecoration(
-                                                color: white,
-                                                border: Border.all(color: primaryColor, width: 3),
-                                                shape: BoxShape.circle,
-                                                image: DecorationImage(
-                                                  fit: BoxFit.contain,
-                                                  image: NetworkImage(companyContent![index].companyLogo),
-                                                ),
+                              padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding, top: minSpace),
+                              child: Container(
+                                decoration: BoxDecoration(color: secondaryColor, borderRadius: BorderRadius.circular(15)),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Flexible(
+                                      child: ListTile(
+                                        visualDensity: const VisualDensity(vertical: -4),
+                                        dense: true,
+                                        title: TextField(
+                                          cursorColor: tertiaryColor,
+                                          controller: teSearch,
+                                          decoration: InputDecoration(
+                                            isDense: true,
+                                            hintText: "Ara",
+                                            hintStyle: const TextStyle(color: tertiaryColor),
+                                            focusedBorder: InputBorder.none,
+                                            enabledBorder: InputBorder.none,
+                                            filled: true,
+                                            fillColor: secondaryColor,
+                                            border: const OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(cardCurved)),
+                                            ),
+                                            icon: CircleAvatar(
+                                              maxRadius: 15,
+                                              backgroundColor: secondaryColor,
+                                              child: IconButton(
+                                                iconSize: iconSize,
+                                                icon: FaIcon(FontAwesomeIcons.search,
+                                                    color: Theme.of(context).hintColor, size: 16, textDirection: TextDirection.ltr),
+                                                onPressed: () {
+                                                  NavigationProvider.of(context).setTab(HOME_PAGE);
+                                                },
                                               ),
                                             ),
                                           ),
-                                        ]),
-                                        //------------------------------------------------STORYE TIKLANDIĞINDA----------------------------------------------------------
-                                        onTap: () async {
-                                          final progressHUD = ProgressHUD.of(context);
-                                          progressHUD!.show();
-                                          //int lastCompId = companyContent.last.id;
-                                          // Navigator.of(context, rootNavigator: true).push(
-                                          // MaterialPageRoute(builder: (context)=>StoryPage(company: companyContent, storyIndex: index, lastCompId: lastCompId)));
-                                          final CompanyProfileJsn? companyProfile = await companyListDetailJsnFunc(companyContent![index].id);
-                                          Navigator.of(context, rootNavigator: true)
-                                              .push(MaterialPageRoute(builder: (context) => CompanyProfilePage(companyProfile: companyProfile)));
-                                          progressHUD.dismiss();
-                                        },
-                                        //------------------------------------------------------------------------------------------------------------------------------
-                                      ),
-                                      SizedBox(
-                                        width: 65.0,
-                                        child: Center(
-                                          child: Text(companyContent![index].companyName,
-                                              overflow: TextOverflow.fade, softWrap: false, style: const TextStyle(color: white)),
+                                          onTap: () {
+                                            selectedCompanies.clear();
+                                            setState(() {
+                                              allCompanies.forEach((element) {
+                                                if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
+                                                  selectedCompanies.add(element);
+                                                }
+                                              });
+                                            });
+                                          },
+                                          onChanged: (value) {
+                                            selectedCompanies.clear();
+                                            setState(() {
+                                              allCompanies.forEach((element) {
+                                                if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
+                                                  selectedCompanies.add(element);
+                                                }
+                                              });
+                                            });
+                                          },
                                         ),
                                       ),
-                                    ]);
-                                  }),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                            //--------------------------------------------------------------------------------------------
+
                             //------------------------------------Anasayfa Postları----------------------------------------
-                            Padding(
-                              padding: EdgeInsets.only(top: 88 + deviceWidth(context) * 0.2 + 20),
+                            Expanded(
                               child: SmartRefresher(
                                 controller: refreshController,
                                 enablePullUp: true,
@@ -282,120 +301,137 @@ class _HomePageState extends State<HomePage> {
                                     refreshController.isLoading;
                                   }
                                 },
-                                child: ListView.builder(
-                                    controller: NavigationProvider.of(context).screens[HOME_PAGE].scrollController,
-                                    shrinkWrap: true,
-                                    itemCount: homeContent.length,
-                                    itemBuilder: (BuildContext context, int index) {
-                                      return HomeContainerWidget(
-                                        companyLogo: homeContent[index].companyLogo,
-                                        companyName: homeContent[index].companyName,
-                                        contentPicture: homeContent[index].contentPicture,
-                                        cardText: homeContent[index].contentTitle,
-                                        pinColor: primaryColor,
-                                        onPressedPhone: () async {
-                                          dynamic number = homeContent[index].companyPhone.toString(); // arama ekranına yönlendirme
-                                          launchUrl(Uri(path: "tel://$number"));
-                                        },
-                                        //--------------------------------------------------------"DETAYLI BİLGİ İÇİN" BUTONU-------------------------------------------------------------
-                                        onPressed: () async {
-                                          final progressUHD = ProgressHUD.of(context);
-                                          progressUHD!.show();
-                                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                                          userIdData = prefs.getInt("userIdData");
-                                          final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
-                                              homeContent[index].companyId, homeContent[index].campaingId, userIdData!);
-                                          // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
-                                          Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                              builder: (context) => HomeDetailPage(
-                                                  homeDetailContent: homeDetailContent!.result,
-                                                  campaingId: homeContent[index].campaingId,
-                                                  companyId: homeContent[index].companyId,
-                                                  companyLogo: homeContent[index].companyLogo,
-                                                  companyName: homeContent[index].companyName,
-                                                  contentTitle: homeContent[index].contentTitle,
-                                                  googleAdressLink: homeContent[index].googleAdressLink,
-                                                  companyPhone: homeContent[index].companyPhone.toString())));
-                                          progressUHD.dismiss();
-                                        },
-                                        //---------------------------------------------------------------------------------------------------------------------------------------------------
-                                        //--------------------------------------KONUM ICONBUTTON'I----------------------------------------------------------------------
-                                        onPressedLocation: () {
-                                          final progressHUD = ProgressHUD.of(context);
-                                          progressHUD!.show();
-                                          Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                              builder: (context) => WebViewWidget(locationUrl: homeContent[index].googleAdressLink)));
-                                          progressHUD.dismiss();
-                                        },
-                                        //-----------------------------------------------------------------------------------------------------------------------------------------------------
-                                        //----------------------------------------LİKE BUTTON----------------------------------------
-                                        likeButton: IconButton(
-                                            icon: homeContent[index].liked
-                                                ? SvgPicture.asset("assets/icons/heart-focus.svg", height: 22, width: 22, color: secondaryColor)
-                                                : SvgPicture.asset("assets/icons/heart.svg", height: 25, width: 25, color: white),
-                                            padding: const EdgeInsets.all(0),
-                                            onPressed: () async {
-                                              SharedPreferences prefs = await SharedPreferences.getInstance();
-                                              userIdData = prefs.getInt("userIdData");
-                                              if (userIdData != 0) {
-                                                LikeJsn? likePostData = await likeJsnFunc(userIdData!, homeContent[index].campaingId);
-                                                print(likePostData!.success);
-                                                print(likePostData.result);
-                                                await refreshContentStream();
-                                              } else {
-                                                showNotMemberAlert(context);
-                                              }
-                                            }),
-                                        //--------------------------------------------------------------------------------------
-                                        //----------------------------------------FAVORİTE BUTTON--------------------------------
-                                        starButton: IconButton(
-                                            icon: homeContent[index].favoriStatus
-                                                ? SvgPicture.asset("assets/icons/star-focus.svg", height: 22, width: 22, color: primaryColor)
-                                                : SvgPicture.asset("assets/icons/star.svg", height: 25, width: 25),
-                                            onPressed: () async {
-                                              SharedPreferences prefs = await SharedPreferences.getInstance();
-                                              userIdData = prefs.getInt("userIdData");
-                                              if (userIdData != 0) {
-                                                final favoriteAdd = await favoriteAddJsnFunc(userIdData!, homeContent[index].companyId);
-                                                print(favoriteAdd!.success);
-                                                print(favoriteAdd.result);
-                                                await refreshContentStream();
-                                              } else {
-                                                showNotMemberAlert(context);
-                                              }
-                                            }),
-                                        //----------------------------------------------------------------------------------------------------------------------
-                                        homeDetailOntap: () async {
-                                          final progressUHD = ProgressHUD.of(context);
-                                          progressUHD!.show();
-                                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                                          userIdData = prefs.getInt("userIdData");
-                                          final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
-                                              homeContent[index].companyId, homeContent[index].campaingId, userIdData!);
-                                          // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
-                                          Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                              builder: (context) => HomeDetailPage(
-                                                  homeDetailContent: homeDetailContent!.result,
-                                                  campaingId: homeContent[index].campaingId,
-                                                  companyId: homeContent[index].companyId,
-                                                  companyLogo: homeContent[index].companyLogo,
-                                                  companyName: homeContent[index].companyName,
-                                                  contentTitle: homeContent[index].contentTitle,
-                                                  googleAdressLink: homeContent[index].googleAdressLink,
-                                                  companyPhone: homeContent[index].companyPhone.toString())));
-                                          progressUHD.dismiss();
-                                        },
-                                        logoOnTap: () async {
-                                          final progressUHD = ProgressHUD.of(context);
-                                          progressUHD!.show();
-                                          final CompanyProfileJsn? companyProfile = await companyListDetailJsnFunc(homeContent[index].companyId);
-                                          Navigator.of(context, rootNavigator: true)
-                                              .push(MaterialPageRoute(builder: (context) => CompanyProfilePage(companyProfile: companyProfile)));
-                                          progressUHD.dismiss();
-                                        },
-                                      );
-                                      //-------------------------------------------------------------------------------------------------------------------------
-                                    }),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+                                  child: GridView.builder(
+                                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                                          maxCrossAxisExtent: 200, childAspectRatio: 3 / 2, crossAxisSpacing: 20, mainAxisSpacing: 20),
+                                      itemCount: homeContent.length,
+                                      itemBuilder: (BuildContext ctx, index) {
+                                        return HomeContainerWidget(
+                                          isCategoryWidget: true,
+                                          companyLogo: homeContent[index].companyLogo,
+                                          companyName: homeContent[index].companyName,
+                                          contentPicture: homeContent[index].contentPicture,
+                                          cardText: homeContent[index].contentTitle,
+                                          pinColor: primaryColor,
+                                          onPressedPhone: () async {
+                                            dynamic number = homeContent[index].companyPhone.toString(); // arama ekranına yönlendirme
+                                            launchUrl(Uri(path: "tel://$number"));
+                                          },
+                                          //--------------------------------------------------------"DETAYLI BİLGİ İÇİN" BUTONU-------------------------------------------------------------
+                                          onPressed: () async {
+                                            final progressUHD = ProgressHUD.of(context);
+                                            progressUHD!.show();
+                                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                                            userIdData = prefs.getInt("userIdData");
+                                            final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
+                                                homeContent[index].companyId, homeContent[index].campaingId, userIdData!);
+                                            // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
+                                            if (!mounted) return;
+                                            Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                                builder: (context) => HomeDetailPage(
+                                                    homeDetailContent: homeDetailContent!.result,
+                                                    campaingId: homeContent[index].campaingId,
+                                                    companyId: homeContent[index].companyId,
+                                                    companyLogo: homeContent[index].companyLogo,
+                                                    companyName: homeContent[index].companyName,
+                                                    contentTitle: homeContent[index].contentTitle,
+                                                    googleAdressLink: homeContent[index].googleAdressLink,
+                                                    companyPhone: homeContent[index].companyPhone.toString())));
+                                            progressUHD.dismiss();
+                                          },
+                                          //---------------------------------------------------------------------------------------------------------------------------------------------------
+                                          //--------------------------------------KONUM ICONBUTTON'I----------------------------------------------------------------------
+                                          onPressedLocation: () {
+                                            final progressHUD = ProgressHUD.of(context);
+                                            progressHUD!.show();
+                                            Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                                builder: (context) => WebViewWidget(locationUrl: homeContent[index].googleAdressLink)));
+                                            progressHUD.dismiss();
+                                          },
+                                          //-----------------------------------------------------------------------------------------------------------------------------------------------------
+                                          //----------------------------------------LİKE BUTTON----------------------------------------
+                                          likeButton: IconButton(
+                                              icon: homeContent[index].liked
+                                                  ? SvgPicture.asset("assets/icons/heart-focus.svg", height: 22, width: 22, color: secondaryColor)
+                                                  : SvgPicture.asset("assets/icons/heart.svg", height: 25, width: 25, color: white),
+                                              padding: const EdgeInsets.all(0),
+                                              onPressed: () async {
+                                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                userIdData = prefs.getInt("userIdData");
+                                                if (userIdData != 0) {
+                                                  LikeJsn? likePostData = await likeJsnFunc(userIdData!, homeContent[index].campaingId);
+                                                  print(likePostData!.success);
+                                                  print(likePostData.result);
+                                                  await refreshContentStream();
+                                                } else {
+                                                  if (!mounted) return;
+                                                  showNotMemberAlert(context);
+                                                }
+                                              }),
+                                          //--------------------------------------------------------------------------------------
+                                          //----------------------------------------FAVORİTE BUTTON--------------------------------
+                                          starButton: IconButton(
+                                              icon: homeContent[index].favoriStatus
+                                                  ? SvgPicture.asset("assets/icons/star-focus.svg", height: 22, width: 22, color: primaryColor)
+                                                  : SvgPicture.asset("assets/icons/star.svg", height: 25, width: 25),
+                                              onPressed: () async {
+                                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                userIdData = prefs.getInt("userIdData");
+                                                if (userIdData != 0) {
+                                                  final favoriteAdd = await favoriteAddJsnFunc(userIdData!, homeContent[index].companyId);
+                                                  print(favoriteAdd!.success);
+                                                  print(favoriteAdd.result);
+                                                  await refreshContentStream();
+                                                } else {
+                                                  if (!mounted) return;
+                                                  showNotMemberAlert(context);
+                                                }
+                                              }),
+                                          //----------------------------------------------------------------------------------------------------------------------
+                                          homeDetailOntap: () async {
+                                            final progressUHD = ProgressHUD.of(context);
+                                            progressUHD!.show();
+                                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                                            userIdData = prefs.getInt("userIdData");
+                                            final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
+                                                homeContent[index].companyId, homeContent[index].campaingId, userIdData!);
+                                            // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
+                                            if (!mounted) return;
+                                            Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                                builder: (context) => HomeDetailPage(
+                                                    homeDetailContent: homeDetailContent!.result,
+                                                    campaingId: homeContent[index].campaingId,
+                                                    companyId: homeContent[index].companyId,
+                                                    companyLogo: homeContent[index].companyLogo,
+                                                    companyName: homeContent[index].companyName,
+                                                    contentTitle: homeContent[index].contentTitle,
+                                                    googleAdressLink: homeContent[index].googleAdressLink,
+                                                    companyPhone: homeContent[index].companyPhone.toString())));
+                                            progressUHD.dismiss();
+                                          },
+                                          logoOnTap: () async {
+                                            final progressUHD = ProgressHUD.of(context);
+                                            progressUHD!.show();
+                                            final CompanyProfileJsn? companyProfile = await companyListDetailJsnFunc(homeContent[index].companyId);
+                                            if (!mounted) return;
+                                            Navigator.of(context, rootNavigator: true)
+                                                .push(MaterialPageRoute(builder: (context) => CompanyProfilePage(companyProfile: companyProfile)));
+                                            progressUHD.dismiss();
+                                          },
+                                        );
+                                      }),
+
+                                  // ListView.builder(
+                                  //     controller: NavigationProvider.of(context).screens[HOME_PAGE].scrollController,
+                                  //     shrinkWrap: true,
+                                  //     itemCount: homeContent.length,
+                                  //     itemBuilder: (BuildContext context, int index) {
+
+                                  //       //-------------------------------------------------------------------------------------------------------------------------
+                                  //     }),
+                                ),
                               ),
                             )
                           ],

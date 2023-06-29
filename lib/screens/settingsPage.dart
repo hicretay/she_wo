@@ -21,7 +21,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   static const route = "settingsPage";
-  SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({Key? key}) : super(key: key);
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
@@ -90,11 +90,11 @@ class _SettingsPageState extends State<SettingsPage> {
                             ],
                           ),
                           Column(
-                            children: [
-                              const CircleAvatar(
+                            children: const [
+                              CircleAvatar(
                                 radius: 32,
                                 backgroundColor: primaryColor,
-                                child: const CircleAvatar(
+                                child: CircleAvatar(
                                   backgroundColor: secondaryColor,
                                   radius: 30,
                                   child: Icon(Icons.person, color: primaryColor, size: 40),
@@ -109,7 +109,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).backgroundColor,
-                          borderRadius: const BorderRadius.vertical(top: const Radius.circular(cardCurved)), //Yalnızca dikeyde yuvarlatılmış
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(cardCurved)), //Yalnızca dikeyde yuvarlatılmış
                         ),
                         child: ListView(
                           controller: NavigationProvider.of(context).screens[LIKED_PAGE].scrollController,
@@ -128,6 +128,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                         // ignore: unused_local_variable
                                         int? userIdData = prefs.getInt("userIdData");
                                         final CompanyProfileJsn? companyProfile = await companyListDetailJsnFunc(1); //userIdData
+                                        if (!mounted) return;
                                         Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
                                             builder: (context) => CampaignOperationPage(
                                                   companyProfile: companyProfile,
@@ -141,8 +142,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                       onTap: () {
                                         final progressHUD = ProgressHUD.of(context);
                                         progressHUD!.show();
+                                        if (!mounted) return;
                                         Navigator.of(context, rootNavigator: true)
-                                            .push(MaterialPageRoute(builder: (context) => AppointmentOperationPage()));
+                                            .push(MaterialPageRoute(builder: (context) => const AppointmentOperationPage()));
                                         progressHUD.dismiss();
                                       },
                                     ),
@@ -153,6 +155,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                         final progressHUD = ProgressHUD.of(context);
                                         progressHUD!.show();
                                         final CompanyProfileJsn? companyProfile = await companyListDetailJsnFunc(1); // companyContent![index].id
+                                        if (!mounted) return;
                                         Navigator.of(context, rootNavigator: true)
                                             .push(MaterialPageRoute(builder: (context) => CompanyInformationPage(companyProfile: companyProfile)));
                                         progressHUD.dismiss();
@@ -217,6 +220,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               onTap: () async {
                                 SharedPreferences prefs = await SharedPreferences.getInstance();
                                 prefs.setString("isFirstLogin", "Favori Konumlar");
+                                if (!mounted) return;
                                 Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => LocationPage()));
                               },
                             ),
@@ -243,6 +247,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   prefs.remove("namesurname");
                                   prefs.remove("isFirstLogin");
                                   prefs.remove("isAdmin");
+                                  if (!mounted) return;
                                   Navigator.of(context, rootNavigator: true)
                                       .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
                                   progressUHD.dismiss();

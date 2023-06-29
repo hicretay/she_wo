@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 
 class Root extends StatefulWidget {
   static const route = '/rootPage';
+
+  const Root({Key? key}) : super(key: key);
   @override
   _RootState createState() => _RootState();
 }

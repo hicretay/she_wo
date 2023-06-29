@@ -284,9 +284,11 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
                                           0, 1, getStartDate(), getFinishedDate(), teLeading.text, teContent.text, base64imagesList);
                                       print(addCampaignData);
                                       if (addCampaignData!.success == true) {
+                                        if (!mounted) return;
                                         showToast(context, "Kampanya başarıyla kaydedildi !");
                                         Navigator.of(context).pop();
                                       } else {
+                                        if (!mounted) return;
                                         showToast(context, "Kampanya kaydı başarısız !");
                                       }
                                     } else {

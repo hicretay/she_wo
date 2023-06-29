@@ -14,7 +14,7 @@ class MakeAppointmentTimePage extends StatefulWidget {
   final AppointmentObject? appointment;
   final List? companyOperationTime;
 
-  MakeAppointmentTimePage({Key? key, this.companyOperationTime, this.appointment}) : super(key: key);
+  const MakeAppointmentTimePage({Key? key, this.companyOperationTime, this.appointment}) : super(key: key);
 
   @override
   _MakeAppointmentTimePageState createState() => _MakeAppointmentTimePageState(companyOperationTime: companyOperationTime, appointment: appointment);

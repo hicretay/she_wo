@@ -8,7 +8,7 @@ class InformationRowWidget extends StatefulWidget {
   final Widget? child;
   final Color? containerColor;
 
-  const InformationRowWidget({Key? key, this.operationName, this.width, this.height, this.child, this.containerColor});
+  const InformationRowWidget({Key? key, this.operationName, this.width, this.height, this.child, this.containerColor}) : super(key: key);
 
   @override
   _InformationRowWidgetState createState() => _InformationRowWidgetState();

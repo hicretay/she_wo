@@ -19,7 +19,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class LikedCampaignPage extends StatefulWidget {
   static const route = "/likedPage";
-  LikedCampaignPage({Key? key}) : super(key: key);
+  const LikedCampaignPage({Key? key}) : super(key: key);
 
   @override
   _LikedCampaignPageState createState() => _LikedCampaignPageState();
@@ -110,6 +110,7 @@ class _LikedCampaignPageState extends State<LikedCampaignPage> {
                               controller: NavigationProvider.of(context).screens[FAVORITE_PAGE].scrollController,
                               itemBuilder: (BuildContext context, int index) {
                                 return HomeContainerWidget(
+                                  isCategoryWidget: false,
                                   companyLogo: likedContent![index].companyLogo,
                                   companyName: likedContent![index].companyName,
                                   contentPicture: likedContent![index].contentPicture,

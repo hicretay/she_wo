@@ -50,9 +50,9 @@ class NavigationProvider extends ChangeNotifier {
       scrollController: ScrollController(),
       child: HomePage(),
       title: "",
-      icon: SvgPicture.asset("assets/icons/home.svg", height: 25, width: 25, color: white),
+      icon: SvgPicture.asset("assets/icons/home.svg", height: 25, width: 25, color: tertiaryColor),
       activeIcon: CircleAvatar(
-        backgroundColor: secondaryColor,
+        backgroundColor: tertiaryColor,
         child: SvgPicture.asset("assets/icons/home.svg", height: 25, width: 25, color: primaryColor),
       ),
       initialRoute: HomePage.route,
@@ -63,10 +63,10 @@ class NavigationProvider extends ChangeNotifier {
     ),
     FAVORITE_PAGE: Screen(
       scrollController: ScrollController(),
-      icon: SvgPicture.asset("assets/icons/star.svg", height: 25, width: 25, color: white),
+      icon: SvgPicture.asset("assets/icons/star.svg", height: 25, width: 25, color: tertiaryColor),
       title: "",
       activeIcon: CircleAvatar(
-        backgroundColor: secondaryColor,
+        backgroundColor: tertiaryColor,
         child: SvgPicture.asset("assets/icons/star.svg", height: 25, width: 25, color: primaryColor),
       ),
       child: FavoritePage(),
@@ -78,47 +78,47 @@ class NavigationProvider extends ChangeNotifier {
     ),
     RESERVATION_PAGE: Screen(
       scrollController: ScrollController(),
-      icon: SvgPicture.asset("assets/icons/calendar.svg", height: 25, width: 25, color: white),
+      icon: SvgPicture.asset("assets/icons/calendar.svg", height: 25, width: 25, color: tertiaryColor),
       title: "",
       activeIcon: CircleAvatar(
-        backgroundColor: secondaryColor,
+        backgroundColor: tertiaryColor,
         child: SvgPicture.asset("assets/icons/calendar.svg", height: 25, width: 25, color: primaryColor),
       ),
-      child: ReservationPage(),
+      child: const ReservationPage(),
       initialRoute: ReservationPage.route,
       navigatorState: GlobalKey<NavigatorState>(),
       onGenerateRoute: (_) {
-        return MaterialPageRoute(builder: (_) => ReservationPage());
+        return MaterialPageRoute(builder: (_) => const ReservationPage());
       },
     ),
     SEARCH_PAGE: Screen(
       scrollController: ScrollController(),
-      icon: SvgPicture.asset("assets/icons/search.svg", height: 25, width: 25, color: white),
+      icon: SvgPicture.asset("assets/icons/search.svg", height: 25, width: 25, color: tertiaryColor),
       title: "",
       activeIcon: CircleAvatar(
-        backgroundColor: secondaryColor,
+        backgroundColor: tertiaryColor,
         child: SvgPicture.asset("assets/icons/search.svg", height: 25, width: 25, color: primaryColor),
       ),
-      child: SearchPage(),
+      child: const SearchPage(),
       initialRoute: SearchPage.route,
       navigatorState: GlobalKey<NavigatorState>(),
       onGenerateRoute: (_) {
-        return MaterialPageRoute(builder: (_) => SearchPage());
+        return MaterialPageRoute(builder: (_) => const SearchPage());
       },
     ),
     LIKED_PAGE: Screen(
       scrollController: ScrollController(),
-      icon: SvgPicture.asset("assets/icons/heart.svg", height: 25, width: 25, color: white),
+      icon: SvgPicture.asset("assets/icons/heart.svg", height: 25, width: 25, color: tertiaryColor),
       title: "",
       activeIcon: CircleAvatar(
-        backgroundColor: secondaryColor,
+        backgroundColor: tertiaryColor,
         child: SvgPicture.asset("assets/icons/heart.svg", height: 25, width: 25, color: primaryColor),
       ),
-      child: SettingsPage(),
+      child: const SettingsPage(),
       initialRoute: SettingsPage.route,
       navigatorState: GlobalKey<NavigatorState>(),
       onGenerateRoute: (_) {
-        return MaterialPageRoute(builder: (_) => LikedCampaignPage());
+        return MaterialPageRoute(builder: (_) => const LikedCampaignPage());
       },
     ),
   };

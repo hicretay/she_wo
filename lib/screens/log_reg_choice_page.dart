@@ -1,14 +1,8 @@
-import 'package:she_wo/JsnClass/loginJsn.dart';
-import 'package:she_wo/screens/locationPage.dart';
 import 'package:she_wo/screens/loginPage.dart';
 import 'package:she_wo/screens/registerPage.dart';
 import 'package:she_wo/settings/consts.dart';
-import 'package:she_wo/settings/functions.dart';
-import 'package:she_wo/widgets/textFieldWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-//import 'package:provider/provider.dart';
 
 class LogRegChoicePage extends StatefulWidget {
   static const route = "/logRegPage";
@@ -23,6 +17,7 @@ class _LogRegChoicePageState extends State<LogRegChoicePage> {
   TextEditingController txtPassword = TextEditingController();
   TextEditingController txtForgetPassword = TextEditingController();
   bool isOnline = false;
+  bool isPressed = false;
 
   @override
   void dispose() {
@@ -59,31 +54,47 @@ class _LogRegChoicePageState extends State<LogRegChoicePage> {
                         child: SingleChildScrollView(
                           child: Column(children: [
                             Material(
-                              color: tertiaryColor,
-                              borderRadius: BorderRadius.circular(16.0),
+                              color: isPressed ? tertiaryColor : secondaryColor,
+                              borderRadius: BorderRadius.circular(10.0),
                               //--------------------------------------------------GİRİŞ BUTONU---------------------------------------------------------------
                               child: MaterialButton(
-                                  minWidth: deviceWidth(context) * 0.3, //Buton minimum genişliği
+                                  minWidth: deviceWidth(context), //Buton minimum genişliği
                                   child: Text("Üye Girişi",
-                                      style: Theme.of(context).textTheme.button!.copyWith(color: white, fontFamily: contentFont, fontSize: 20)),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .button!
+                                          .copyWith(color: isPressed ? white : tertiaryColor, fontFamily: contentFont, fontSize: 20)),
                                   //-----------------------------GİRİŞ BUTONU ONPRESSEDİ---------------------------------------------
                                   onPressed: () async {
+                                    setState(() {
+                                      isPressed = true;
+                                    });
                                     Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                                    Future.delayed(const Duration(seconds: 2)).whenComplete(() => setState(() {
+                                          isPressed = false;
+                                        }));
                                   }),
                               //-----------------------------------------------------------------------------------------------------------------------------
                             ),
                             const SizedBox(height: maxSpace),
                             Material(
-                              color: tertiaryColor,
-                              borderRadius: BorderRadius.circular(16.0),
+                              color: secondaryColor,
+                              borderRadius: BorderRadius.circular(10.0),
                               //--------------------------------------------------GİRİŞ BUTONU---------------------------------------------------------------
                               child: MaterialButton(
-                                  minWidth: deviceWidth(context) * 0.3, //Buton minimum genişliği
+                                  minWidth: deviceWidth(context), //Buton minimum genişliği
                                   child: Text("Kayıt Ol",
-                                      style: Theme.of(context).textTheme.button!.copyWith(color: white, fontFamily: contentFont, fontSize: 20)),
+                                      style:
+                                          Theme.of(context).textTheme.button!.copyWith(color: tertiaryColor, fontFamily: contentFont, fontSize: 20)),
                                   //-----------------------------GİRİŞ BUTONU ONPRESSEDİ---------------------------------------------
                                   onPressed: () async {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
+                                    setState(() {
+                                      isPressed = true;
+                                    });
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
+                                    Future.delayed(const Duration(seconds: 2)).whenComplete(() => setState(() {
+                                          isPressed = false;
+                                        }));
                                   }),
                               //-----------------------------------------------------------------------------------------------------------------------------
                             ),

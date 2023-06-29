@@ -13,7 +13,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class MakeAppointmentOperationPage extends StatefulWidget {
   final AppointmentObject? appointment;
   final List? companyOperation;
-  MakeAppointmentOperationPage({Key? key, this.companyOperation, this.appointment}) : super(key: key);
+  const MakeAppointmentOperationPage({Key? key, this.companyOperation, this.appointment}) : super(key: key);
 
   @override
   _MakeAppointmentOperationPageState createState() =>

@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison
-
 import 'package:she_wo/JsnClass/appointmentList.dart';
 import 'package:she_wo/model/appointmentModel.dart';
 import 'package:she_wo/settings/consts.dart';
@@ -13,7 +11,7 @@ import 'package:she_wo/settings/functions.dart';
 class MakeAppointmentCheckPage extends StatefulWidget {
   final AppointmentObject? appointment;
   final int? indexx;
-  MakeAppointmentCheckPage({Key? key, this.appointment, this.indexx}) : super(key: key);
+  const MakeAppointmentCheckPage({Key? key, this.appointment, this.indexx}) : super(key: key);
 
   @override
   _MakeAppointmentCheckPageState createState() => _MakeAppointmentCheckPageState(appointment: appointment!);
@@ -94,7 +92,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                               width: deviceWidth(context) * 0.6,
                               height: deviceWidth(context) * 0.15,
                               child: Text(
-                                appointment.appointmentDate! != null ? appointment.appointmentDate! : "tarih",
+                                appointment.appointmentDate ?? "tarih",
                                 style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
@@ -167,23 +165,27 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                                       onPressed: () async {
                                         SharedPreferences prefs = await SharedPreferences.getInstance();
                                         userIdData = prefs.getInt("userIdData");
+                                        if (!mounted) return;
                                         final progressHUD = ProgressHUD.of(context);
                                         progressHUD!.show();
                                         if (userIdData != 0) {
                                           final appointmentAddData = await appointmentAddJsnFunc(
                                               userIdData!,
                                               appointment.companyId!,
-                                              appointment.campaignId! == null ? 0 : appointment.campaignId!,
+                                              appointment.campaignId == null ? 0 : appointment.campaignId!,
                                               appointment.appointmentDate!,
                                               appointment.appointmentTimeId!,
                                               appointment.operationId!,
                                               teNote.text);
                                           if (appointmentAddData!.success == true) {
+                                            if (!mounted) return;
                                             await showToast(context, "Randevu başarıyla kaydedildi!");
                                           } else {
+                                            if (!mounted) return;
                                             await showToast(context, "Randevu kaydı başarısız!");
                                           }
                                           await appointmentListFunc();
+                                          if (!mounted) return;
                                           Navigator.pop(context);
                                           Navigator.pop(context);
                                           Navigator.pop(context);
