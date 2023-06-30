@@ -1,5 +1,5 @@
-import 'package:she_wo/screens/loginPage.dart';
-import 'package:she_wo/screens/registerPage.dart';
+import 'package:she_wo/screens/login_page.dart';
+import 'package:she_wo/screens/register_page.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -9,6 +9,7 @@ class LogRegChoicePage extends StatefulWidget {
   const LogRegChoicePage({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _LogRegChoicePageState createState() => _LogRegChoicePageState();
 }
 
@@ -69,7 +70,7 @@ class _LogRegChoicePageState extends State<LogRegChoicePage> {
                                     setState(() {
                                       isPressed = true;
                                     });
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
                                     Future.delayed(const Duration(seconds: 2)).whenComplete(() => setState(() {
                                           isPressed = false;
                                         }));

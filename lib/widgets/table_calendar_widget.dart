@@ -1,0 +1,85 @@
+// ignore_for_file: library_private_types_in_public_api
+
+import 'package:she_wo/settings/consts.dart';
+import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+// ignore: must_be_immutable
+class TableCalendarWidget extends StatefulWidget {
+  final CalendarFormat? calendarFormat;
+  TableCalendarWidget({Key? key, this.calendarFormat}) : super(key: key);
+  late String selectedDay;
+
+  @override
+  _TableCalendarWidgetState createState() => _TableCalendarWidgetState();
+}
+
+class _TableCalendarWidgetState extends State<TableCalendarWidget> {
+  DateTime _selectedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
+  late Map<DateTime, List<Event>> selectedEvents;
+
+  List<Event> _getEventsForDay(DateTime date) {
+    return selectedEvents[date] ?? [];
+  }
+
+  @override
+  void initState() {
+    selectedEvents = {};
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TableCalendar(
+      locale: "tr",
+      focusedDay: _focusedDay,
+      firstDay: DateTime.utc(2010, 10, 16),
+      lastDay: DateTime.utc(2030, 3, 14),
+      shouldFillViewport: false,
+      startingDayOfWeek: StartingDayOfWeek.monday,
+      calendarFormat: widget.calendarFormat!,
+      calendarStyle: CalendarStyle(
+        isTodayHighlighted: true,
+        selectedDecoration: BoxDecoration(
+          color: primaryColor,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(minCurved),
+        ),
+        outsideDecoration: boxDecoration,
+        defaultDecoration: boxDecoration,
+        weekendDecoration: boxDecoration,
+        selectedTextStyle: const TextStyle(
+          color: Colors.white,
+        ),
+        todayDecoration: BoxDecoration(
+          color: secondaryColor,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(minCurved),
+        ),
+      ),
+      selectedDayPredicate: (day) {
+        return isSameDay(_selectedDay, day);
+      },
+      onDaySelected: (selectedDay, focusedDay) {
+        setState(() {
+          _selectedDay = selectedDay;
+          _focusedDay = focusedDay;
+        });
+      },
+      headerStyle: const HeaderStyle(
+        formatButtonVisible: false,
+        titleCentered: true,
+      ),
+      eventLoader: _getEventsForDay,
+    );
+  }
+}
+
+class Event {
+  final String? operation;
+  Event({this.operation});
+
+  @override
+  String toString() => operation!;
+}

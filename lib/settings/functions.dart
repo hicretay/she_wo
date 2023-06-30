@@ -3,29 +3,29 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:she_wo/JsnClass/addUserCityJsn.dart';
-import 'package:she_wo/JsnClass/addUserJsn.dart';
-import 'package:she_wo/JsnClass/appointmentAddJsn.dart';
-import 'package:she_wo/JsnClass/appointmentDeleteJsn.dart';
-import 'package:she_wo/JsnClass/appointmentList.dart';
-import 'package:she_wo/JsnClass/cityJsn.dart';
-import 'package:she_wo/JsnClass/companyAppointmentListJsn.dart';
-import 'package:she_wo/JsnClass/companyInfUpdateJsn.dart';
-import 'package:she_wo/JsnClass/companyListJsn.dart';
-import 'package:she_wo/JsnClass/companyOperationJsn.dart';
-import 'package:she_wo/JsnClass/companyOperationTime.dart';
-import 'package:she_wo/JsnClass/companyProfile.dart';
-import 'package:she_wo/JsnClass/contentStreamDetailJsn.dart';
-import 'package:she_wo/JsnClass/contentStreamJsn.dart';
-import 'package:she_wo/JsnClass/countyJsn.dart';
-import 'package:she_wo/JsnClass/favoriteJsn.dart';
-import 'package:she_wo/JsnClass/forgetPasswordJsn.dart';
-import 'package:she_wo/JsnClass/likeJsn.dart';
-import 'package:she_wo/JsnClass/likedCampaingJsn.dart';
-import 'package:she_wo/JsnClass/loginJsn.dart';
-import 'package:she_wo/JsnClass/storyContentJsn.dart';
-import 'package:she_wo/JsnClass/userfavoriAreaJsn.dart';
-import 'package:she_wo/screens/loginPage.dart';
+import 'package:she_wo/JsnClass/add_user_city_jsn.dart';
+import 'package:she_wo/JsnClass/add_user_jsn.dart';
+import 'package:she_wo/JsnClass/appointment_add_jsn.dart';
+import 'package:she_wo/JsnClass/appointment_delete_jsn.dart';
+import 'package:she_wo/JsnClass/appointment_list.dart';
+import 'package:she_wo/JsnClass/city_jsn.dart';
+import 'package:she_wo/JsnClass/company_appointment_list_jsn.dart';
+import 'package:she_wo/JsnClass/company_inf_update_jsn.dart';
+import 'package:she_wo/JsnClass/company_list_jsn.dart';
+import 'package:she_wo/JsnClass/company_operation_jsn.dart';
+import 'package:she_wo/JsnClass/company_operation_time.dart';
+import 'package:she_wo/JsnClass/company_profile.dart';
+import 'package:she_wo/JsnClass/content_stream_detail_jsn.dart';
+import 'package:she_wo/JsnClass/content_stream_jsn.dart';
+import 'package:she_wo/JsnClass/county_jsn.dart';
+import 'package:she_wo/JsnClass/favorite_jsn.dart';
+import 'package:she_wo/JsnClass/forget_password_jsn.dart';
+import 'package:she_wo/JsnClass/like_jsn.dart';
+import 'package:she_wo/JsnClass/liked_campaing_jsn.dart';
+import 'package:she_wo/JsnClass/login_jsn.dart';
+import 'package:she_wo/JsnClass/story_content_jsn.dart';
+import 'package:she_wo/JsnClass/user_favori_area_jsn.dart';
+import 'package:she_wo/screens/login_page.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -454,7 +454,7 @@ showNotMemberAlert(BuildContext context) {
                   child: const Text("Kayıt Ol", style: TextStyle(fontFamily: leadingFont, color: white)),
                   onPressed: () async {
                     Navigator.of(context, rootNavigator: true)
-                        .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
+                        .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const LoginPage()), (route) => false);
                   }),
               MaterialButton(
                   color: primaryColor,

@@ -1,11 +1,11 @@
-import 'package:she_wo/screens/splashPage.dart';
-import 'package:she_wo/providers/navigationProvider.dart';
+import 'package:she_wo/screens/splash_page.dart';
+import 'package:she_wo/providers/navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
-import 'providers/themeDataProvider.dart';
+import 'providers/theme_data_provider.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized(); // main de runApp'ten önce işlem yapılabilmesini sağlar
@@ -33,7 +33,7 @@ class App extends StatelessWidget {
             theme: Provider.of<ThemeDataProvider>(context).themeColor,
             onGenerateRoute: NavigationProvider.of(context).onGenerateRoute,
             debugShowCheckedModeBanner: false,
-            home: SplashPage(),
+            home: const SplashPage(),
           );
         },
       ),

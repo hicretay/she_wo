@@ -1,5 +1,7 @@
-import 'package:she_wo/providers/navigationProvider.dart';
-import 'package:she_wo/providers/themeDataProvider.dart';
+// ignore_for_file: library_private_types_in_public_api
+
+import 'package:she_wo/providers/navigation_provider.dart';
+import 'package:she_wo/providers/theme_data_provider.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +47,7 @@ class _RootState extends State<Root> {
               children: screens,
             ),
             bottomNavigationBar: BottomNavigationBar(
-              backgroundColor: primaryColor,
+              backgroundColor: secondaryColor,
               selectedItemColor: Provider.of<ThemeDataProvider>(context, listen: true).isLightTheme ? Colors.amber : Colors.pink,
               elevation: 10,
               items: bottomNavigationBarItems,
