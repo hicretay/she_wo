@@ -67,10 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
               builder: (context) => BackGroundContainer(
                 child: Column(
                   children: [
-                    SizedBox(height: deviceHeight(context) * 0.02),
-                    const BackLeadingWidget(
-                      backColor: tertiaryColor,
-                    ),
+                    SizedBox(height: deviceHeight(context) * 0.03),
                     Padding(
                       padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding),
                       child: Row(

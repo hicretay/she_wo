@@ -20,14 +20,14 @@ class BackLeadingWidget extends StatelessWidget {
             children: [
               IconButton(
                   iconSize: iconSize,
-                  icon: SvgPicture.asset("assets/icons/back.svg", height: 27, width: 27, color: white),
+                  icon: SvgPicture.asset("assets/icons/back.svg", height: 27, width: 27, color: tertiaryColor),
                   onPressed: () {
                     Navigator.pop(context, false);
                   }),
               const SizedBox(width: maxSpace),
               const Text(
-                "estetik vitrini",
-                style: TextStyle(fontFamily: leadingFont, fontSize: 30, color: Colors.white),
+                "She Wo",
+                style: TextStyle(fontFamily: leadingFont, fontSize: 30, color: tertiaryColor),
               ),
             ],
           ),

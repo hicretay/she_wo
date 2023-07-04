@@ -1,24 +1,24 @@
 // ignore_for_file: avoid_print, library_private_types_in_public_api, no_logic_in_create_state
 
 import 'package:carousel_nullsafety/carousel_nullsafety.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_progress_hud/flutter_progress_hud.dart';
+import 'package:line_icons/line_icons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:she_wo/JsnClass/company_profile.dart';
 import 'package:she_wo/JsnClass/content_stream_detail_jsn.dart';
 import 'package:she_wo/JsnClass/like_jsn.dart';
-import 'package:she_wo/screens/company_profile_page.dart';
-import 'package:she_wo/widgets/webview_widget.dart';
-import 'package:she_wo/screens/make_appointment_calendar_page.dart';
 import 'package:she_wo/model/appointment_model.dart';
+import 'package:she_wo/screens/company_profile_page.dart';
+import 'package:she_wo/screens/make_appointment_calendar_page.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
 import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/backleading_widget.dart';
 import 'package:she_wo/widgets/leading_row_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:she_wo/widgets/webview_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_html/flutter_html.dart';
 
 class HomeDetailPage extends StatefulWidget {
   final List? homeDetailContent;
@@ -110,7 +110,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
               child: Column(
                 children: [
                   const BackLeadingWidget(
-                    backColor: primaryColor,
+                    backColor: tertiaryColor,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: maxSpace),
@@ -120,14 +120,14 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             "kampanyalar", //Büyük Başlık
-                            style: Theme.of(context).textTheme.headline4!.copyWith(color: white, fontFamily: leadingFont),
+                            style: Theme.of(context).textTheme.headline4!.copyWith(color: tertiaryColor, fontFamily: leadingFont),
                           ),
                         ),
                         Align(
                           alignment: Alignment.topLeft,
                           child: Text(
                             companyName!,
-                            style: const TextStyle(color: Colors.white),
+                            style: const TextStyle(color: tertiaryColor),
                           ),
                         ),
                         const SizedBox(height: maxSpace)
@@ -137,7 +137,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                   Expanded(
                     child: Container(
                         decoration: const BoxDecoration(
-                          color: passivePurple, //Theme.of(context).backgroundColor,
+                          color: secondaryColor, //Theme.of(context).backgroundColor,
                           borderRadius: BorderRadius.vertical(top: Radius.circular(cardCurved)), //Yalnızca dikeyde yuvarlatılmış
                         ),
                         child: FutureBuilder<dynamic>(
@@ -238,10 +238,10 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                 maxRadius: deviceWidth(context) * 0.05,
                                                 backgroundColor: homeDetailContent!.first.liked
                                                     ? primaryColor
-                                                    : passivePurple, // seçili ise koyu, değilse açık renk verildi
+                                                    : tertiaryColor, // seçili ise koyu, değilse açık renk verildi
                                                 child: IconButton(
                                                     icon: homeDetailContent!.first.liked
-                                                        ? const Icon(LineIcons.heart, color: white)
+                                                        ? const Icon(LineIcons.heart, color: tertiaryColor)
                                                         : const Icon(LineIcons.heart, color: darkWhite),
                                                     onPressed: () async {
                                                       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -277,7 +277,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                               child: IconButton(
                                                   padding: EdgeInsets.zero,
                                                   constraints: const BoxConstraints(),
-                                                  icon: const Icon(LineIcons.phone, color: darkWhite, size: iconSize),
+                                                  icon: const Icon(LineIcons.phone, color: tertiaryColor, size: iconSize),
                                                   onPressed: () async {
                                                     dynamic number = companyPhone; // arama ekranına yönlendirme
                                                     launchUrl(Uri(path: "tel://$number"));
@@ -290,7 +290,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                               child: IconButton(
                                                   padding: EdgeInsets.zero,
                                                   constraints: const BoxConstraints(),
-                                                  icon: const Icon(LineIcons.locationArrow, color: darkWhite, size: iconSize),
+                                                  icon: const Icon(LineIcons.locationArrow, color: tertiaryColor, size: iconSize),
                                                   onPressed: () async {
                                                     final progressUHD = ProgressHUD.of(context);
                                                     progressUHD!.show();
@@ -306,7 +306,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                         //-------------------------RANDEVU AL BUTONU----------------------------
                                         homeDetailContent!.first.appointmentStatus == true
                                             ? Material(
-                                                color: primaryColor,
+                                                color: tertiaryColor,
                                                 borderRadius: BorderRadius.circular(30.0),
                                                 child: MaterialButton(
                                                   minWidth: deviceWidth(context) * 0.4, //Buton minimum genişliği
@@ -340,7 +340,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                       Text("Randevu Al", style: Theme.of(context).textTheme.button!.copyWith(color: white)),
                                                       //---------------------------------------------------------------------------------
                                                       const SizedBox(width: 10), //butondaki Text ve icon arası boşluk
-                                                      const Icon(LineIcons.arrowRight, color: passivePurple),
+                                                      const Icon(LineIcons.arrowRight, color: primaryColor),
                                                     ],
                                                   ),
                                                 ),
@@ -357,10 +357,10 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                         children: [
                                           const Icon(Icons.favorite, // Beğeni İcon'ı
                                               size: iconSize,
-                                              color: darkWhite),
+                                              color: tertiaryColor),
                                           const SizedBox(width: minSpace),
                                           Text("${homeDetailContent!.first.likeCount} kişi tarafından beğenildi",
-                                              style: const TextStyle(color: darkWhite)),
+                                              style: const TextStyle(color: tertiaryColor)),
                                           // counter ile gösterilecek beğeni sayısı
                                         ],
                                       ),
@@ -374,7 +374,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                             alignment: Alignment.bottomLeft,
                                             child: Text(
                                               contentTitle!,
-                                              style: const TextStyle(fontSize: 22, color: darkWhite),
+                                              style: const TextStyle(fontSize: 22, color: tertiaryColor),
                                             ),
                                           ),
                                           Align(

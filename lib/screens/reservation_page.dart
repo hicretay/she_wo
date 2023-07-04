@@ -99,12 +99,15 @@ class _ReservationPageState extends State<ReservationPage> {
           resizeToAvoidBottomInset: false,
           floatingActionButton: SingleChildScrollView(
             child: FloatingActionButton.extended(
-                backgroundColor: primaryColor,
+                backgroundColor: secondaryColor,
                 onPressed: () async {
                   Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => CompaniesPage(date: calendarDate)));
                 },
-                label: const Text("Randevu Al"),
-                icon: const FaIcon(FontAwesomeIcons.calendar, size: 18, color: white)),
+                label: const Text(
+                  "Randevu Al",
+                  style: TextStyle(color: tertiaryColor),
+                ),
+                icon: const FaIcon(FontAwesomeIcons.calendar, size: 18, color: tertiaryColor)),
           ),
           body: ProgressHUD(
             child: Builder(
@@ -112,13 +115,18 @@ class _ReservationPageState extends State<ReservationPage> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding, top: defaultPadding * 2, bottom: defaultPadding),
+                      padding: const EdgeInsets.only(
+                        left: defaultPadding,
+                        right: defaultPadding,
+                        top: defaultPadding * 2,
+                        bottom: defaultPadding,
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             "randevularım", //Büyük Başlık
-                            style: Theme.of(context).textTheme.headline3!.copyWith(color: white, fontFamily: leadingFont),
+                            style: Theme.of(context).textTheme.headline4!.copyWith(color: tertiaryColor, fontFamily: leadingFont),
                             maxLines: 2,
                           ),
                         ],
@@ -127,7 +135,7 @@ class _ReservationPageState extends State<ReservationPage> {
                     Expanded(
                       child: Container(
                         decoration: const BoxDecoration(
-                          color: passivePurple,
+                          color: secondaryColor,
                           borderRadius: BorderRadius.vertical(
                             top: Radius.circular(cardCurved),
                           ),
@@ -157,7 +165,7 @@ class _ReservationPageState extends State<ReservationPage> {
                                     defaultTextStyle: const TextStyle(color: darkWhite),
                                     outsideTextStyle: const TextStyle(color: darkWhite),
                                     selectedTextStyle: const TextStyle(
-                                      color: Colors.white,
+                                      color: tertiaryColor,
                                     ),
                                     todayDecoration: BoxDecoration(
                                       color: secondaryColor,

@@ -1,30 +1,26 @@
 // ignore_for_file: unrelated_type_equality_checks, unnecessary_null_comparison, avoid_print, avoid_function_literals_in_foreach_calls, library_private_types_in_public_api
 import 'dart:async';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:she_wo/JsnClass/company_list_jsn.dart';
-import 'package:she_wo/JsnClass/company_profile.dart';
-import 'package:she_wo/JsnClass/content_stream_detail_jsn.dart';
-import 'package:she_wo/JsnClass/content_stream_jsn.dart';
-import 'package:she_wo/JsnClass/like_jsn.dart';
-import 'package:she_wo/providers/navigation_provider.dart';
-import 'package:she_wo/providers/theme_data_provider.dart';
-import 'package:she_wo/screens/company_profile_page.dart';
-import 'package:she_wo/widgets/webview_widget.dart';
-import 'package:she_wo/screens/home_detail_page.dart';
-import 'package:she_wo/settings/connection.dart';
-import 'package:she_wo/widgets/background_container.dart';
-import 'package:she_wo/widgets/home_container_widget.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../settings/consts.dart';
-import 'package:she_wo/settings/functions.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:she_wo/JsnClass/company_list_jsn.dart';
+import 'package:she_wo/JsnClass/content_stream_detail_jsn.dart';
+import 'package:she_wo/JsnClass/content_stream_jsn.dart';
+import 'package:she_wo/providers/navigation_provider.dart';
+import 'package:she_wo/providers/theme_data_provider.dart';
+import 'package:she_wo/screens/home_detail_page.dart';
+import 'package:she_wo/settings/connection.dart';
+import 'package:she_wo/settings/functions.dart';
+import 'package:she_wo/widgets/background_container.dart';
+import 'package:she_wo/widgets/home_container_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../settings/consts.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -96,12 +92,18 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
     ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton.getInstance();
     _connectionChangeStream = connectionStatus.connectionChange.listen(connectionChanged);
+
+    getAllCategories();
   }
 
   void connectionChanged(dynamic hasConnection) {
     setState(() {
       isOffline = !hasConnection;
     });
+  }
+
+  void getAllCategories() async {
+    await getHomeData();
   }
 
   @override
@@ -127,6 +129,8 @@ class _HomePageState extends State<HomePage> {
   }
 
 //-------------------------------------------------------------------------------------
+
+  ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -181,7 +185,10 @@ class _HomePageState extends State<HomePage> {
                                     SizedBox(
                                       child: Text(
                                         "Popüler Kategoriler",
-                                        style: Theme.of(context).textTheme.headline6!.copyWith(color: tertiaryColor, fontFamily: leadingFont),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6!
+                                            .copyWith(color: tertiaryColor, fontFamily: leadingFont, fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                   ],
@@ -257,182 +264,175 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
 
-                            //------------------------------------Anasayfa Postları----------------------------------------
                             Expanded(
-                              child: SmartRefresher(
-                                controller: refreshController,
-                                enablePullUp: true,
-                                header: CustomHeader(
-                                  builder: (c, m) => circularBasic,
-                                ),
-                                footer: CustomFooter(
-                                  builder: (BuildContext context, LoadStatus? mode) {
-                                    Widget body;
-                                    if (mode == LoadStatus.idle) {
-                                      body = circularBasic;
-                                    } else if (mode == LoadStatus.loading) {
-                                      body = circularBasic;
-                                    } else if (mode == LoadStatus.failed) {
-                                      body = const Text("Yükleme Hatası");
-                                    } else if (mode == LoadStatus.canLoading) {
-                                      body = circularBasic;
-                                    } else if (mode == LoadStatus.noMore) {
-                                      body = const Text("Hepsini gördün", style: TextStyle(color: secondaryColor));
-                                    } else {
-                                      body = circularBasic;
-                                    }
-                                    return Center(child: body);
-                                  },
-                                ),
-                                onRefresh: () async {
-                                  final result = await getHomeData(isRefresh: true);
-                                  if (result) {
-                                    refreshController.refreshCompleted();
-                                  } else {
-                                    refreshController.refreshFailed();
-                                  }
-                                },
-                                onLoading: () async {
-                                  final result = await getHomeData();
-                                  if (result) {
-                                    refreshController.loadComplete();
-                                  } else {
-                                    refreshController.isLoading;
-                                  }
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-                                  child: GridView.builder(
-                                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                                          maxCrossAxisExtent: 200, childAspectRatio: 3 / 2, crossAxisSpacing: 20, mainAxisSpacing: 20),
-                                      itemCount: homeContent.length,
-                                      itemBuilder: (BuildContext ctx, index) {
-                                        return HomeContainerWidget(
-                                          isCategoryWidget: true,
-                                          companyLogo: homeContent[index].companyLogo,
-                                          companyName: homeContent[index].companyName,
-                                          contentPicture: homeContent[index].contentPicture,
-                                          cardText: homeContent[index].contentTitle,
-                                          pinColor: primaryColor,
-                                          onPressedPhone: () async {
-                                            dynamic number = homeContent[index].companyPhone.toString(); // arama ekranına yönlendirme
-                                            launchUrl(Uri(path: "tel://$number"));
-                                          },
-                                          //--------------------------------------------------------"DETAYLI BİLGİ İÇİN" BUTONU-------------------------------------------------------------
-                                          onPressed: () async {
-                                            final progressUHD = ProgressHUD.of(context);
-                                            progressUHD!.show();
-                                            SharedPreferences prefs = await SharedPreferences.getInstance();
-                                            userIdData = prefs.getInt("userIdData");
-                                            final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
-                                                homeContent[index].companyId, homeContent[index].campaingId, userIdData!);
-                                            // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
-                                            if (!mounted) return;
-                                            Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                                builder: (context) => HomeDetailPage(
-                                                    homeDetailContent: homeDetailContent!.result,
-                                                    campaingId: homeContent[index].campaingId,
-                                                    companyId: homeContent[index].companyId,
-                                                    companyLogo: homeContent[index].companyLogo,
-                                                    companyName: homeContent[index].companyName,
-                                                    contentTitle: homeContent[index].contentTitle,
-                                                    googleAdressLink: homeContent[index].googleAdressLink,
-                                                    companyPhone: homeContent[index].companyPhone.toString())));
-                                            progressUHD.dismiss();
-                                          },
-                                          //---------------------------------------------------------------------------------------------------------------------------------------------------
-                                          //--------------------------------------KONUM ICONBUTTON'I----------------------------------------------------------------------
-                                          onPressedLocation: () {
-                                            final progressHUD = ProgressHUD.of(context);
-                                            progressHUD!.show();
-                                            Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                                builder: (context) => WebViewWidget(locationUrl: homeContent[index].googleAdressLink)));
-                                            progressHUD.dismiss();
-                                          },
-                                          //-----------------------------------------------------------------------------------------------------------------------------------------------------
-                                          //----------------------------------------LİKE BUTTON----------------------------------------
-                                          likeButton: IconButton(
-                                              icon: homeContent[index].liked
-                                                  ? SvgPicture.asset("assets/icons/heart-focus.svg", height: 22, width: 22, color: secondaryColor)
-                                                  : SvgPicture.asset("assets/icons/heart.svg", height: 25, width: 25, color: white),
-                                              padding: const EdgeInsets.all(0),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+                                      child: GridView.builder(
+                                          physics: const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                                            maxCrossAxisExtent: 218,
+                                            childAspectRatio: 3 / 2,
+                                            crossAxisSpacing: 16,
+                                            mainAxisSpacing: 16,
+                                            mainAxisExtent: 120,
+                                          ),
+                                          itemCount: 4,
+                                          itemBuilder: (BuildContext ctx, index) {
+                                            return HomeContainerWidget(
+                                              isCategoryWidget: true,
+                                              companyLogo: homeContent[index].companyLogo,
+                                              companyName: homeContent[index].companyName,
+                                              contentPicture: homeContent[index].contentPicture,
+                                              cardText: homeContent[index].contentTitle,
+                                              pinColor: primaryColor,
+                                              onPressedPhone: () async {
+                                                dynamic number = homeContent[index].companyPhone.toString(); // arama ekranına yönlendirme
+                                                launchUrl(Uri(path: "tel://$number"));
+                                              },
+                                              //--------------------------------------------------------"DETAYLI BİLGİ İÇİN" BUTONU-------------------------------------------------------------
                                               onPressed: () async {
+                                                final progressUHD = ProgressHUD.of(context);
+                                                progressUHD!.show();
                                                 SharedPreferences prefs = await SharedPreferences.getInstance();
                                                 userIdData = prefs.getInt("userIdData");
-                                                if (userIdData != 0) {
-                                                  LikeJsn? likePostData = await likeJsnFunc(userIdData!, homeContent[index].campaingId);
-                                                  print(likePostData!.success);
-                                                  print(likePostData.result);
-                                                  await refreshContentStream();
-                                                } else {
-                                                  if (!mounted) return;
-                                                  showNotMemberAlert(context);
-                                                }
-                                              }),
-                                          //--------------------------------------------------------------------------------------
-                                          //----------------------------------------FAVORİTE BUTTON--------------------------------
-                                          starButton: IconButton(
-                                              icon: homeContent[index].favoriStatus
-                                                  ? SvgPicture.asset("assets/icons/star-focus.svg", height: 22, width: 22, color: primaryColor)
-                                                  : SvgPicture.asset("assets/icons/star.svg", height: 25, width: 25),
-                                              onPressed: () async {
+                                                final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
+                                                    homeContent[index].companyId, homeContent[index].campaingId, userIdData!);
+                                                // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
+                                                if (!mounted) return;
+                                                Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                                    builder: (context) => HomeDetailPage(
+                                                        homeDetailContent: homeDetailContent!.result,
+                                                        campaingId: homeContent[index].campaingId,
+                                                        companyId: homeContent[index].companyId,
+                                                        companyLogo: homeContent[index].companyLogo,
+                                                        companyName: homeContent[index].companyName,
+                                                        contentTitle: homeContent[index].contentTitle,
+                                                        googleAdressLink: homeContent[index].googleAdressLink,
+                                                        companyPhone: homeContent[index].companyPhone.toString())));
+                                                progressUHD.dismiss();
+                                              },
+                                              //----------------------------------------------------------------------------------------------------------------------
+                                              homeDetailOntap: () async {
+                                                final progressUHD = ProgressHUD.of(context);
+                                                progressUHD!.show();
                                                 SharedPreferences prefs = await SharedPreferences.getInstance();
                                                 userIdData = prefs.getInt("userIdData");
-                                                if (userIdData != 0) {
-                                                  final favoriteAdd = await favoriteAddJsnFunc(userIdData!, homeContent[index].companyId);
-                                                  print(favoriteAdd!.success);
-                                                  print(favoriteAdd.result);
-                                                  await refreshContentStream();
-                                                } else {
-                                                  if (!mounted) return;
-                                                  showNotMemberAlert(context);
-                                                }
-                                              }),
-                                          //----------------------------------------------------------------------------------------------------------------------
-                                          homeDetailOntap: () async {
-                                            final progressUHD = ProgressHUD.of(context);
-                                            progressUHD!.show();
-                                            SharedPreferences prefs = await SharedPreferences.getInstance();
-                                            userIdData = prefs.getInt("userIdData");
-                                            final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
-                                                homeContent[index].companyId, homeContent[index].campaingId, userIdData!);
-                                            // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
-                                            if (!mounted) return;
-                                            Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                                builder: (context) => HomeDetailPage(
-                                                    homeDetailContent: homeDetailContent!.result,
-                                                    campaingId: homeContent[index].campaingId,
-                                                    companyId: homeContent[index].companyId,
-                                                    companyLogo: homeContent[index].companyLogo,
-                                                    companyName: homeContent[index].companyName,
-                                                    contentTitle: homeContent[index].contentTitle,
-                                                    googleAdressLink: homeContent[index].googleAdressLink,
-                                                    companyPhone: homeContent[index].companyPhone.toString())));
-                                            progressUHD.dismiss();
-                                          },
-                                          logoOnTap: () async {
-                                            final progressUHD = ProgressHUD.of(context);
-                                            progressUHD!.show();
-                                            final CompanyProfileJsn? companyProfile = await companyListDetailJsnFunc(homeContent[index].companyId);
-                                            if (!mounted) return;
-                                            Navigator.of(context, rootNavigator: true)
-                                                .push(MaterialPageRoute(builder: (context) => CompanyProfilePage(companyProfile: companyProfile)));
-                                            progressUHD.dismiss();
-                                          },
-                                        );
-                                      }),
+                                                final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
+                                                    homeContent[index].companyId, homeContent[index].campaingId, userIdData!);
+                                                // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
+                                                if (!mounted) return;
+                                                Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                                    builder: (context) => HomeDetailPage(
+                                                        homeDetailContent: homeDetailContent!.result,
+                                                        campaingId: homeContent[index].campaingId,
+                                                        companyId: homeContent[index].companyId,
+                                                        companyLogo: homeContent[index].companyLogo,
+                                                        companyName: homeContent[index].companyName,
+                                                        contentTitle: homeContent[index].contentTitle,
+                                                        googleAdressLink: homeContent[index].googleAdressLink,
+                                                        companyPhone: homeContent[index].companyPhone.toString())));
+                                                progressUHD.dismiss();
+                                              },
+                                            );
+                                          }),
+                                    ),
 
-                                  // ListView.builder(
-                                  //     controller: NavigationProvider.of(context).screens[HOME_PAGE].scrollController,
-                                  //     shrinkWrap: true,
-                                  //     itemCount: homeContent.length,
-                                  //     itemBuilder: (BuildContext context, int index) {
+                                    const SizedBox(height: maxSpace),
 
-                                  //       //-------------------------------------------------------------------------------------------------------------------------
-                                  //     }),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding, top: minSpace),
+                                      child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'Tüm Kategoriler',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!
+                                                .copyWith(color: tertiaryColor, fontFamily: leadingFont, fontWeight: FontWeight.bold),
+                                          )),
+                                    ),
+
+                                    //------------------------------------Anasayfa Postları----------------------------------------
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+                                      child: GridView.builder(
+                                          physics: const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                                            maxCrossAxisExtent: 200,
+                                            childAspectRatio: 3 / 2,
+                                            crossAxisSpacing: 16,
+                                            mainAxisSpacing: 16,
+                                            mainAxisExtent: 120,
+                                          ),
+                                          itemCount: homeContent.length,
+                                          itemBuilder: (BuildContext ctx, index) {
+                                            return HomeContainerWidget(
+                                              isCategoryWidget: true,
+                                              companyLogo: homeContent[index].companyLogo,
+                                              companyName: homeContent[index].companyName,
+                                              contentPicture: homeContent[index].contentPicture,
+                                              cardText: homeContent[index].contentTitle,
+                                              pinColor: primaryColor,
+                                              onPressedPhone: () async {
+                                                dynamic number = homeContent[index].companyPhone.toString(); // arama ekranına yönlendirme
+                                                launchUrl(Uri(path: "tel://$number"));
+                                              },
+                                              //--------------------------------------------------------"DETAYLI BİLGİ İÇİN" BUTONU-------------------------------------------------------------
+                                              onPressed: () async {
+                                                final progressUHD = ProgressHUD.of(context);
+                                                progressUHD!.show();
+                                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                userIdData = prefs.getInt("userIdData");
+                                                final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
+                                                    homeContent[index].companyId, homeContent[index].campaingId, userIdData!);
+                                                // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
+                                                if (!mounted) return;
+                                                Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                                    builder: (context) => HomeDetailPage(
+                                                        homeDetailContent: homeDetailContent!.result,
+                                                        campaingId: homeContent[index].campaingId,
+                                                        companyId: homeContent[index].companyId,
+                                                        companyLogo: homeContent[index].companyLogo,
+                                                        companyName: homeContent[index].companyName,
+                                                        contentTitle: homeContent[index].contentTitle,
+                                                        googleAdressLink: homeContent[index].googleAdressLink,
+                                                        companyPhone: homeContent[index].companyPhone.toString())));
+                                                progressUHD.dismiss();
+                                              },
+                                              //----------------------------------------------------------------------------------------------------------------------
+                                              homeDetailOntap: () async {
+                                                final progressUHD = ProgressHUD.of(context);
+                                                progressUHD!.show();
+                                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                userIdData = prefs.getInt("userIdData");
+                                                final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
+                                                    homeContent[index].companyId, homeContent[index].campaingId, userIdData!);
+                                                // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
+                                                if (!mounted) return;
+                                                Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                                    builder: (context) => HomeDetailPage(
+                                                        homeDetailContent: homeDetailContent!.result,
+                                                        campaingId: homeContent[index].campaingId,
+                                                        companyId: homeContent[index].companyId,
+                                                        companyLogo: homeContent[index].companyLogo,
+                                                        companyName: homeContent[index].companyName,
+                                                        contentTitle: homeContent[index].contentTitle,
+                                                        googleAdressLink: homeContent[index].googleAdressLink,
+                                                        companyPhone: homeContent[index].companyPhone.toString())));
+                                                progressUHD.dismiss();
+                                              },
+                                            );
+                                          }),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),

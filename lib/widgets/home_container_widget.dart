@@ -51,7 +51,7 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
         AspectRatio(
           aspectRatio: 1.5,
           child: Material(
-            elevation: 10,
+            elevation: 5,
             borderRadius: BorderRadius.circular(maxSpace),
             child: Container(
               width: double.infinity, //genişlik: container genişliği kadar
@@ -73,7 +73,7 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                           });
                         },
                         child: AspectRatio(
-                          aspectRatio: 2.4,
+                          aspectRatio: 2.3,
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: const BorderRadius.vertical(top: Radius.circular(maxSpace)),
@@ -88,19 +88,22 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                     ),
                   ),
                   widget.cardText != ""
-                      ? Padding(
-                          padding: const EdgeInsets.only(left: minSpace, right: minSpace),
-                          child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Container(
-                              width: deviceWidth(context),
-                              padding: const EdgeInsets.all(minSpace),
-                              decoration: const BoxDecoration(
-                                color: primaryColor,
-                              ),
-                              child: Text(
-                                widget.companyName ?? '',
-                                style: const TextStyle(fontFamily: contentFont, color: tertiaryColor, fontSize: 16),
+                      ? Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            width: deviceWidth(context),
+                            padding: const EdgeInsets.all(minSpace),
+                            decoration: const BoxDecoration(
+                              color: primaryColor,
+                            ),
+                            child: Text(
+                              widget.companyName ?? '',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontFamily: contentFont,
+                                color: tertiaryColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),

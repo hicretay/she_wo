@@ -57,7 +57,7 @@ class _LeadingRowWidgetState extends State<LeadingRowWidget> {
                     overflow: TextOverflow.fade,
                     softWrap: false,
                     style: const TextStyle(
-                        fontSize: 17, fontFamily: headerFont, color: Colors.white) // widget.leadingColor firma adı rengi düzenleniyor.
+                        fontSize: 17, fontFamily: headerFont, color: tertiaryColor) // widget.leadingColor firma adı rengi düzenleniyor.
                     ),
               ),
             ],

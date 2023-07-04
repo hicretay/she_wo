@@ -46,10 +46,12 @@ class NavigationProvider extends ChangeNotifier {
       scrollController: ScrollController(),
       child: const HomePage(),
       title: "",
-      icon: SvgPicture.asset("assets/icons/home.svg", height: 25, width: 25, color: tertiaryColor),
-      activeIcon: CircleAvatar(
+      icon: const Icon(Icons.explore,
+          size: 25, color: tertiaryColor), //SvgPicture.asset("assets/icons/home.svg", height: 25, width: 25, color: tertiaryColor),
+      activeIcon: const CircleAvatar(
         backgroundColor: tertiaryColor,
-        child: SvgPicture.asset("assets/icons/home.svg", height: 25, width: 25, color: primaryColor),
+        child: Icon(Icons.explore,
+            size: 25, color: primaryColor), //SvgPicture.asset("assets/icons/home.svg", height: 25, width: 25, color: primaryColor),
       ),
       initialRoute: HomePage.route,
       navigatorState: GlobalKey<NavigatorState>(),
@@ -57,21 +59,6 @@ class NavigationProvider extends ChangeNotifier {
         return MaterialPageRoute(builder: (_) => const HomePage());
       },
     ),
-    // FAVORITE_PAGE: Screen(
-    //   scrollController: ScrollController(),
-    //   icon: SvgPicture.asset("assets/icons/star.svg", height: 25, width: 25, color: tertiaryColor),
-    //   title: "",
-    //   activeIcon: CircleAvatar(
-    //     backgroundColor: tertiaryColor,
-    //     child: SvgPicture.asset("assets/icons/star.svg", height: 25, width: 25, color: primaryColor),
-    //   ),
-    //   child: FavoritePage(),
-    //   initialRoute: FavoritePage.route,
-    //   navigatorState: GlobalKey<NavigatorState>(),
-    //   onGenerateRoute: (_) {
-    //     return MaterialPageRoute(builder: (_) => FavoritePage());
-    //   },
-    // ),
     RESERVATION_PAGE: Screen(
       scrollController: ScrollController(),
       icon: SvgPicture.asset("assets/icons/calendar.svg", height: 25, width: 25, color: tertiaryColor),
@@ -87,28 +74,13 @@ class NavigationProvider extends ChangeNotifier {
         return MaterialPageRoute(builder: (_) => const ReservationPage());
       },
     ),
-    // SEARCH_PAGE: Screen(
-    //   scrollController: ScrollController(),
-    //   icon: SvgPicture.asset("assets/icons/search.svg", height: 25, width: 25, color: tertiaryColor),
-    //   title: "",
-    //   activeIcon: CircleAvatar(
-    //     backgroundColor: tertiaryColor,
-    //     child: SvgPicture.asset("assets/icons/search.svg", height: 25, width: 25, color: primaryColor),
-    //   ),
-    //   child: const SearchPage(),
-    //   initialRoute: SearchPage.route,
-    //   navigatorState: GlobalKey<NavigatorState>(),
-    //   onGenerateRoute: (_) {
-    //     return MaterialPageRoute(builder: (_) => const SearchPage());
-    //   },
-    // ),
     SETTINGS_PAGE: Screen(
       scrollController: ScrollController(),
-      icon: SvgPicture.asset("assets/icons/settings.svg", height: 25, width: 25, color: tertiaryColor),
+      icon: const Icon(Icons.person, size: 25, color: tertiaryColor),
       title: "",
-      activeIcon: CircleAvatar(
+      activeIcon: const CircleAvatar(
         backgroundColor: tertiaryColor,
-        child: SvgPicture.asset("assets/icons/settings.svg", height: 25, width: 25, color: primaryColor),
+        child: Icon(Icons.person, size: 25, color: primaryColor),
       ),
       child: const SettingsPage(),
       initialRoute: SettingsPage.route,
