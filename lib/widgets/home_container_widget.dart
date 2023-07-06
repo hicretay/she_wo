@@ -16,24 +16,26 @@ class HomeContainerWidget extends StatefulWidget {
   final Color? pinColor;
   final VoidCallback? onPressedLocation, onPressedPhone, homeDetailOntap, logoOnTap;
   final bool isCategoryWidget;
+  final bool? isPopular;
 
-  const HomeContainerWidget(
-      {Key? key,
-      this.cardText,
-      this.onPressed,
-      this.child,
-      this.pinColor,
-      this.companyLogo,
-      this.companyName,
-      this.contentPicture,
-      this.onPressedLocation,
-      this.onPressedPhone,
-      this.likeButton,
-      this.starButton,
-      this.homeDetailOntap,
-      this.logoOnTap,
-      required this.isCategoryWidget})
-      : super(key: key);
+  const HomeContainerWidget({
+    Key? key,
+    this.cardText,
+    this.onPressed,
+    this.child,
+    this.pinColor,
+    this.companyLogo,
+    this.companyName,
+    this.contentPicture,
+    this.onPressedLocation,
+    this.onPressedPhone,
+    this.likeButton,
+    this.starButton,
+    this.homeDetailOntap,
+    this.logoOnTap,
+    required this.isCategoryWidget,
+    this.isPopular,
+  }) : super(key: key);
 
   @override
   _HomeContainerWidgetState createState() => _HomeContainerWidgetState();
@@ -76,12 +78,16 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                           aspectRatio: 2.3,
                           child: Container(
                             decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.vertical(top: Radius.circular(maxSpace)),
-                              image: DecorationImage(
-                                fit: BoxFit.fitWidth,
-                                image: NetworkImage(widget.contentPicture!),
-                              ),
-                            ),
+                                borderRadius: const BorderRadius.vertical(top: Radius.circular(maxSpace)),
+                                image: (widget.isPopular ?? false)
+                                    ? DecorationImage(
+                                        fit: BoxFit.fitWidth,
+                                        image: AssetImage(widget.contentPicture!),
+                                      )
+                                    : DecorationImage(
+                                        fit: BoxFit.fitWidth,
+                                        image: NetworkImage(widget.contentPicture!),
+                                      )),
                           ),
                         ),
                       ),
@@ -132,7 +138,7 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                                       child: Row(
                                         children: [
                                           //------------------------------BEĞEN ICONBUTTONI-------------------------------
-                                          widget.likeButton!,
+                                          widget.likeButton ?? const SizedBox(),
                                           //------------------------------------------------------------------------------
                                           // //------------------------------PAYLAŞ ICONBUTTONI---------------------------
                                           //   IconButton(icon: Icon(Icons.share_outlined,color: primaryColor),

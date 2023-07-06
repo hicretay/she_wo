@@ -20,6 +20,7 @@ import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/home_container_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../model/category_model.dart';
 import '../settings/consts.dart';
 
 // ignore: must_be_immutable
@@ -280,19 +281,13 @@ class _HomePageState extends State<HomePage> {
                                             mainAxisSpacing: 16,
                                             mainAxisExtent: 120,
                                           ),
-                                          itemCount: 4,
+                                          itemCount: homeCategoryList.length,
                                           itemBuilder: (BuildContext ctx, index) {
                                             return HomeContainerWidget(
+                                              isPopular: true,
                                               isCategoryWidget: true,
-                                              companyLogo: homeContent[index].companyLogo,
-                                              companyName: homeContent[index].companyName,
-                                              contentPicture: homeContent[index].contentPicture,
-                                              cardText: homeContent[index].contentTitle,
-                                              pinColor: primaryColor,
-                                              onPressedPhone: () async {
-                                                dynamic number = homeContent[index].companyPhone.toString(); // arama ekranına yönlendirme
-                                                launchUrl(Uri(path: "tel://$number"));
-                                              },
+                                              companyName: homeCategoryList[index].leading,
+                                              contentPicture: homeCategoryList[index].image,
                                               //--------------------------------------------------------"DETAYLI BİLGİ İÇİN" BUTONU-------------------------------------------------------------
                                               onPressed: () async {
                                                 final progressUHD = ProgressHUD.of(context);

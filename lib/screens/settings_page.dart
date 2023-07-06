@@ -5,7 +5,6 @@ import 'package:she_wo/screens/campaign_operation_page.dart';
 import 'package:she_wo/screens/company_information_page.dart';
 import 'package:she_wo/screens/location_page.dart';
 import 'package:she_wo/settings/functions.dart';
-import 'package:she_wo/widgets/backleading_widget.dart';
 import 'package:she_wo/widgets/webview_widget.dart';
 import 'package:she_wo/screens/login_page.dart';
 import 'package:she_wo/settings/consts.dart';
@@ -225,15 +224,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                 Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => const LocationPage()));
                               },
                             ),
-                            // ListTileWidget(
-                            //   text: Provider.of<ThemeDataProvider>(context, listen: true).isLightTheme ? "Koyu temaya geç" : "Açık temaya geç",
-                            //   child: Switch(
-                            //     activeColor: secondaryColor,
-                            //     onChanged: (_) async{
-                            //     Provider.of<ThemeDataProvider>(context, listen: false).toggleTheme();
-                            //   },
-                            //   value: Provider.of<ThemeDataProvider>(context, listen: true).isLightTheme),
-                            // ),
                             ListTileWidget(
                                 text: "Uygulamadan çıkış yap",
                                 child: const Icon(Icons.exit_to_app, color: primaryColor),
