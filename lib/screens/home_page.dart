@@ -1,27 +1,21 @@
-// ignore_for_file: unrelated_type_equality_checks, unnecessary_null_comparison, avoid_print, avoid_function_literals_in_foreach_calls, library_private_types_in_public_api
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:she_wo/JsnClass/company_list_jsn.dart';
-import 'package:she_wo/JsnClass/content_stream_detail_jsn.dart';
-import 'package:she_wo/JsnClass/content_stream_jsn.dart';
-import 'package:she_wo/providers/navigation_provider.dart';
-import 'package:she_wo/providers/theme_data_provider.dart';
-import 'package:she_wo/screens/home_detail_page.dart';
-import 'package:she_wo/settings/connection.dart';
-import 'package:she_wo/settings/functions.dart';
-import 'package:she_wo/widgets/background_container.dart';
-import 'package:she_wo/widgets/home_container_widget.dart';
+import 'package:she_wo/screens/search_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../JsnClass/content_stream_detail_jsn.dart';
+import '../JsnClass/content_stream_jsn.dart';
 import '../model/category_model.dart';
 import '../settings/consts.dart';
+import '../settings/functions.dart';
+import '../widgets/background_container.dart';
+import '../widgets/home_container_widget.dart';
+import 'home_detail_page.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -30,103 +24,45 @@ class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   List homeContent = [];
   int pageIndex = 1;
-  int totalPage = 1;
-  bool textFieldTapped = false;
-  List? companyContent;
   int? userIdData;
   bool? isLogin;
 
   TextEditingController teSearch = TextEditingController();
 
-  List allCompanies = [];
   List selectedCompanies = [];
 
-//---------------------------INTERNET KONTROLÜ STREAM'I------------------------------
-  // ignore: cancel_subscriptions
-  StreamSubscription? _connectionChangeStream;
-  bool isOffline = false;
 //-----------------------------------------
-  final RefreshController refreshController = RefreshController(initialRefresh: true);
 
-  Future<bool> getHomeData({bool isRefresh = false}) async {
+  Future getHomeData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userIdData = prefs.getInt("userIdData");
-    if (isRefresh) {
-      pageIndex = 1;
-    } else {
-      if (pageIndex > totalPage) {
-        refreshController.loadNoData();
-        return false;
-      }
-    }
-
+    pageIndex = 1;
     final response = await http.post(Uri.parse("${url}ContentStream/List"), body: '{"userId":$userIdData,"page":$pageIndex}', headers: header);
 
     if (response.statusCode == 200) {
       final result = contentStreamJsnFromJson(response.body);
-      if (isRefresh) {
-        homeContent = result.result!;
-      } else {
-        homeContent.addAll(result.result!);
-      }
-      pageIndex++;
-      totalPage = result.totalPage!;
 
-      setState(() {});
-      return true;
-    } else {
-      return false;
+      setState(() {
+        homeContent = result.result!;
+      });
     }
   }
 
   @override
   void initState() {
     super.initState();
-    Provider.of<ThemeDataProvider>(context, listen: false).loadTheme();
-    companyStoryList();
-    setState(() {});
-    ConnectionStatusSingleton connectionStatus = ConnectionStatusSingleton.getInstance();
-    _connectionChangeStream = connectionStatus.connectionChange.listen(connectionChanged);
-
     getAllCategories();
   }
 
-  void connectionChanged(dynamic hasConnection) {
-    setState(() {
-      isOffline = !hasConnection;
-    });
-  }
-
-  void getAllCategories() async {
+  Future getAllCategories() async {
     await getHomeData();
-  }
-
-  @override
-  void dispose() {
-    _connectionChangeStream!.cancel();
-    super.dispose();
-  }
-
-  Future companyStoryList() async {
-    final CompanyListJsn? companyNewList = await companyListJsnFunc();
-    setState(() {
-      companyContent = companyNewList!.result;
-    });
-  }
-
-  Future refreshContentStream() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userIdData = prefs.getInt("userIdData")!;
-    final ContentStreamJsn? companyNewList = await contentStreamJsnFunc(userIdData!, 0);
-    setState(() {
-      homeContent = companyNewList!.result!;
-    });
   }
 
 //-------------------------------------------------------------------------------------
@@ -140,7 +76,7 @@ class _HomePageState extends State<HomePage> {
         top: false,
         child: Scaffold(
           body: ProgressHUD(
-              child: (homeContent != null && companyContent != null)
+              child: (homeContent != [])
                   ? Builder(
                       builder: (context) => BackGroundContainer(
                         child: Column(
@@ -211,8 +147,8 @@ class _HomePageState extends State<HomePage> {
                                         visualDensity: const VisualDensity(vertical: -4),
                                         dense: true,
                                         title: TextField(
+                                          readOnly: true,
                                           cursorColor: tertiaryColor,
-                                          controller: teSearch,
                                           decoration: InputDecoration(
                                             isDense: true,
                                             hintText: "Ara",
@@ -232,30 +168,13 @@ class _HomePageState extends State<HomePage> {
                                                 icon: FaIcon(FontAwesomeIcons.search,
                                                     color: Theme.of(context).hintColor, size: 16, textDirection: TextDirection.ltr),
                                                 onPressed: () {
-                                                  NavigationProvider.of(context).setTab(HOME_PAGE);
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPage()));
                                                 },
                                               ),
                                             ),
                                           ),
                                           onTap: () {
-                                            selectedCompanies.clear();
-                                            setState(() {
-                                              allCompanies.forEach((element) {
-                                                if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
-                                                  selectedCompanies.add(element);
-                                                }
-                                              });
-                                            });
-                                          },
-                                          onChanged: (value) {
-                                            selectedCompanies.clear();
-                                            setState(() {
-                                              allCompanies.forEach((element) {
-                                                if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
-                                                  selectedCompanies.add(element);
-                                                }
-                                              });
-                                            });
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPage()));
                                           },
                                         ),
                                       ),
@@ -289,49 +208,9 @@ class _HomePageState extends State<HomePage> {
                                               companyName: homeCategoryList[index].leading,
                                               contentPicture: homeCategoryList[index].image,
                                               //--------------------------------------------------------"DETAYLI BİLGİ İÇİN" BUTONU-------------------------------------------------------------
-                                              onPressed: () async {
-                                                final progressUHD = ProgressHUD.of(context);
-                                                progressUHD!.show();
-                                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                userIdData = prefs.getInt("userIdData");
-                                                final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
-                                                    homeContent[index].companyId, homeContent[index].campaingId, userIdData!);
-                                                // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
-                                                if (!mounted) return;
-                                                Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                                    builder: (context) => HomeDetailPage(
-                                                        homeDetailContent: homeDetailContent!.result,
-                                                        campaingId: homeContent[index].campaingId,
-                                                        companyId: homeContent[index].companyId,
-                                                        companyLogo: homeContent[index].companyLogo,
-                                                        companyName: homeContent[index].companyName,
-                                                        contentTitle: homeContent[index].contentTitle,
-                                                        googleAdressLink: homeContent[index].googleAdressLink,
-                                                        companyPhone: homeContent[index].companyPhone.toString())));
-                                                progressUHD.dismiss();
-                                              },
+                                              onPressed: () {},
                                               //----------------------------------------------------------------------------------------------------------------------
-                                              homeDetailOntap: () async {
-                                                final progressUHD = ProgressHUD.of(context);
-                                                progressUHD!.show();
-                                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                userIdData = prefs.getInt("userIdData");
-                                                final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
-                                                    homeContent[index].companyId, homeContent[index].campaingId, userIdData!);
-                                                // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
-                                                if (!mounted) return;
-                                                Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                                    builder: (context) => HomeDetailPage(
-                                                        homeDetailContent: homeDetailContent!.result,
-                                                        campaingId: homeContent[index].campaingId,
-                                                        companyId: homeContent[index].companyId,
-                                                        companyLogo: homeContent[index].companyLogo,
-                                                        companyName: homeContent[index].companyName,
-                                                        contentTitle: homeContent[index].contentTitle,
-                                                        googleAdressLink: homeContent[index].googleAdressLink,
-                                                        companyPhone: homeContent[index].companyPhone.toString())));
-                                                progressUHD.dismiss();
-                                              },
+                                              homeDetailOntap: () {},
                                             );
                                           }),
                                     ),

@@ -1,9 +1,6 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'package:she_wo/JsnClass/company_list_jsn.dart';
-import 'package:she_wo/JsnClass/company_profile.dart';
-import 'package:she_wo/providers/navigation_provider.dart';
-import 'package:she_wo/screens/company_profile_page.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
 import 'package:flutter/material.dart';
@@ -34,12 +31,6 @@ class _SearchPageState extends State<SearchPage> {
     return companyNewList;
   }
 
-  //  @override
-  //  void initState() {
-  //    super.initState();
-  //    allCompaniesList();
-  //  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<CompanyListJsn?>(
@@ -67,164 +58,150 @@ class _SearchPageState extends State<SearchPage> {
                           child: Padding(
                             padding: EdgeInsets.only(top: deviceHeight(context) * 0.03),
                             child: Column(
+                              // mainAxisAlignment: MainAxisAlignment.center,
+                              // crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(maxSpace),
-                                  child: Container(
-                                    decoration: BoxDecoration(color: white, borderRadius: BorderRadius.circular(25)),
-                                    child: Row(
-                                      children: [
-                                        CircleAvatar(
-                                          maxRadius: 25,
-                                          backgroundColor: Colors.transparent,
-                                          child: IconButton(
-                                            iconSize: iconSize,
-                                            icon: const Icon(Icons.arrow_back, color: primaryColor, size: 30),
-                                            onPressed: () {
-                                              NavigationProvider.of(context).setTab(HOME_PAGE);
-                                            },
-                                          ),
-                                        ),
-                                        Flexible(
-                                          child: ListTile(
-                                            title: TextField(
-                                              cursorColor: primaryColor,
-                                              controller: teSearch,
-                                              decoration: InputDecoration(
-                                                hintText: "Ara",
-                                                hintStyle: const TextStyle(color: primaryColor),
-                                                focusedBorder: InputBorder.none,
-                                                enabledBorder: InputBorder.none,
-                                                contentPadding: const EdgeInsets.all(maxSpace),
-                                                filled: true,
-                                                fillColor: Colors.white,
-                                                border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(cardCurved),
-                                                ),
-                                              ),
-                                              onTap: () {
-                                                selectedCompanies.clear();
-                                                setState(() {
-                                                  allCompanies.forEach((element) {
-                                                    if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
-                                                      selectedCompanies.add(element);
-                                                    }
-                                                  });
-                                                });
-                                              },
-                                              onChanged: (value) {
-                                                selectedCompanies.clear();
-                                                setState(() {
-                                                  allCompanies.forEach((element) {
-                                                    if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
-                                                      selectedCompanies.add(element);
-                                                    }
-                                                  });
-                                                });
-                                              },
-                                            ),
-                                            trailing: IconButton(
-                                                icon: FaIcon(FontAwesomeIcons.search,
-                                                    color: Theme.of(context).hintColor, size: 20, textDirection: TextDirection.ltr),
-                                                onPressed: () {
-                                                  selectedCompanies.clear();
-                                                  setState(() {
-                                                    allCompanies.forEach((element) {
-                                                      if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
-                                                        selectedCompanies.add(element);
-                                                      }
-                                                    });
-                                                  });
-                                                }),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Flexible(
+                                Center(
                                   child: Padding(
-                                    padding: const EdgeInsets.only(right: maxSpace, left: maxSpace, bottom: maxSpace / 2),
-                                    child: Container(
-                                      decoration: const BoxDecoration(color: passivePurple, borderRadius: BorderRadius.all(Radius.circular(20))),
-                                      child: ListView.separated(
-                                        padding: const EdgeInsets.all(0),
-                                        controller: NavigationProvider.of(context).screens[SETTINGS_PAGE].scrollController,
-                                        shrinkWrap: true,
-                                        itemCount: selectedCompanies.isEmpty ? allCompanies.length : selectedCompanies.length,
-                                        itemBuilder: (BuildContext context, int index) {
-                                          return GestureDetector(
-                                            child: Padding(
-                                                padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding),
-                                                child: Container(
-                                                    height: deviceHeight(context) * 0.1,
-                                                    decoration: const BoxDecoration(
-                                                        color: Colors.transparent, borderRadius: BorderRadius.all(Radius.circular(10))),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.spaceBetween, // Row içindeki widgetların yayılmasını sağlar
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            //------------Başlıktaki firma logosu görünümü-----------
-                                                            SizedBox(width: deviceWidth(context) * 0.01),
-                                                            Container(
-                                                              alignment: Alignment.topLeft,
-                                                              width: deviceWidth(context) * 0.15,
-                                                              height: deviceWidth(context) * 0.15,
-                                                              decoration: BoxDecoration(
-                                                                color: white,
-                                                                shape: BoxShape.circle,
-                                                                image: DecorationImage(
-                                                                  image: NetworkImage(
-                                                                    selectedCompanies.isEmpty
-                                                                        ? allCompanies[index].companyLogo
-                                                                        : selectedCompanies[index].companyLogo,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            //-----------------------------------------------------
-                                                            SizedBox(width: deviceWidth(context) * 0.03), //başlık iconu - texti arası boşluk
-
-                                                            SizedBox(
-                                                              width: deviceWidth(context) * 0.60,
-                                                              child: Text(
-                                                                  selectedCompanies.isEmpty
-                                                                      ? allCompanies[index].companyName
-                                                                      : selectedCompanies[index].companyName,
-                                                                  overflow: TextOverflow.fade,
-                                                                  softWrap: false,
-                                                                  style: const TextStyle(fontSize: 17, fontFamily: headerFont, color: darkWhite)),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        SizedBox(width: deviceWidth(context) * 0.01),
-                                                      ],
-                                                    ))),
-                                            onTap: () async {
-                                              final progressUHD = ProgressHUD.of(context);
-                                              progressUHD!.show();
-                                              final CompanyProfileJsn? companyProfile = await companyListDetailJsnFunc(selectedCompanies[index].id);
-                                              if (!mounted) return;
-                                              Navigator.of(context, rootNavigator: true)
-                                                  .push(MaterialPageRoute(builder: (context) => CompanyProfilePage(companyProfile: companyProfile)));
-                                              progressUHD.dismiss();
-                                            },
-                                          );
-                                        },
-                                        separatorBuilder: (BuildContext context, int index) {
-                                          return const SizedBox(
-                                              height: 0,
-                                              child: Padding(
-                                                padding: EdgeInsets.only(right: defaultPadding * 3, left: defaultPadding * 2),
-                                                child: Divider(color: Colors.black12, thickness: 1.5),
-                                              ));
-                                        },
+                                    padding: EdgeInsets.only(top: deviceWidth(context) * 0.1),
+                                    child: SizedBox(
+                                      height: deviceWidth(context) * 0.25,
+                                      child: Center(
+                                        child: Image.asset("assets/images/shewo_logo.png"),
                                       ),
                                     ),
                                   ),
-                                )
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: deviceHeight(context) * 0.1),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: defaultPadding,
+                                          right: defaultPadding,
+                                          bottom: defaultPadding,
+                                        ),
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            "Arama",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline5!
+                                                .copyWith(color: tertiaryColor, fontFamily: leadingFont, fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding, top: minSpace),
+                                        child: Container(
+                                          decoration: BoxDecoration(color: secondaryColor, borderRadius: BorderRadius.circular(15)),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Flexible(
+                                                child: ListTile(
+                                                  title: TextField(
+                                                    cursorColor: tertiaryColor,
+                                                    decoration: InputDecoration(
+                                                      isDense: true,
+                                                      hintText: "Hizmet veya mekan arayın",
+                                                      hintStyle: const TextStyle(color: Colors.grey),
+                                                      focusedBorder: InputBorder.none,
+                                                      enabledBorder: InputBorder.none,
+                                                      filled: true,
+                                                      fillColor: secondaryColor,
+                                                      border: const OutlineInputBorder(
+                                                        borderRadius: BorderRadius.all(Radius.circular(cardCurved)),
+                                                      ),
+                                                      icon: CircleAvatar(
+                                                        maxRadius: 15,
+                                                        backgroundColor: secondaryColor,
+                                                        child: IconButton(
+                                                          iconSize: iconSize,
+                                                          icon: FaIcon(FontAwesomeIcons.search,
+                                                              color: Theme.of(context).hintColor, size: 16, textDirection: TextDirection.ltr),
+                                                          onPressed: () {
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPage()));
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    onTap: () {},
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding, top: minSpace),
+                                        child: Container(
+                                          decoration: BoxDecoration(color: secondaryColor, borderRadius: BorderRadius.circular(15)),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Flexible(
+                                                child: ListTile(
+                                                  title: TextField(
+                                                    cursorColor: tertiaryColor,
+                                                    decoration: InputDecoration(
+                                                      isDense: true,
+                                                      hintText: "Mevcut konum",
+                                                      hintStyle: const TextStyle(color: Colors.grey),
+                                                      focusedBorder: InputBorder.none,
+                                                      enabledBorder: InputBorder.none,
+                                                      filled: true,
+                                                      fillColor: secondaryColor,
+                                                      border: const OutlineInputBorder(
+                                                        borderRadius: BorderRadius.all(Radius.circular(cardCurved)),
+                                                      ),
+                                                      icon: CircleAvatar(
+                                                        maxRadius: 15,
+                                                        backgroundColor: secondaryColor,
+                                                        child: IconButton(
+                                                          iconSize: iconSize,
+                                                          icon: FaIcon(FontAwesomeIcons.locationArrow,
+                                                              color: Theme.of(context).hintColor, size: 16, textDirection: TextDirection.ltr),
+                                                          onPressed: () {
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPage()));
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    onTap: () {},
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(top: deviceHeight(context) * 0.03),
+                                        child: Material(
+                                          color: tertiaryColor,
+                                          borderRadius: BorderRadius.circular(16.0),
+                                          //--------------------------------------------------GİRİŞ BUTONU---------------------------------------------------------------
+                                          child: MaterialButton(
+                                              minWidth: deviceWidth(context) * 0.35, //Buton minimum genişliği
+                                              child: Text("UYGULA",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .button!
+                                                      .copyWith(color: white, fontFamily: contentFont, fontSize: 18, fontWeight: FontWeight.bold)),
+                                              //-----------------------------GİRİŞ BUTONU ONPRESSEDİ---------------------------------------------
+                                              onPressed: () {}),
+                                          //-----------------------------------------------------------------------------------------------------------------------------
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),

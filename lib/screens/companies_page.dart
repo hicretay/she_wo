@@ -67,7 +67,7 @@ class _CompaniesPageState extends State<CompaniesPage> {
                         child: Column(
                           children: [
                             const BackLeadingWidget(
-                              backColor: primaryColor,
+                              backColor: tertiaryColor,
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: maxSpace),
@@ -77,14 +77,14 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                     alignment: Alignment.topLeft,
                                     child: Text(
                                       "firmalar",
-                                      style: Theme.of(context).textTheme.headline4!.copyWith(color: white, fontFamily: leadingFont),
+                                      style: Theme.of(context).textTheme.headline4!.copyWith(color: tertiaryColor, fontFamily: leadingFont),
                                     ),
                                   ),
                                   const Align(
                                     alignment: Alignment.topLeft,
                                     child: Text(
                                       "randevu alınacak firmayı seçiniz",
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(color: Colors.black),
                                     ),
                                   ),
                                   const SizedBox(height: maxSpace)
@@ -94,7 +94,7 @@ class _CompaniesPageState extends State<CompaniesPage> {
                             Expanded(
                               child: Container(
                                   decoration: const BoxDecoration(
-                                    color: passivePurple,
+                                    color: tertiaryColor,
                                     borderRadius: BorderRadius.vertical(top: Radius.circular(cardCurved)),
                                   ),
                                   child: Padding(
@@ -108,7 +108,7 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                               controller: teSearch,
                                               decoration: InputDecoration(
                                                 hintText: "Ara",
-                                                hintStyle: const TextStyle(color: primaryColor),
+                                                hintStyle: const TextStyle(color: tertiaryColor),
                                                 focusedBorder: InputBorder.none,
                                                 enabledBorder: InputBorder.none,
                                                 contentPadding: const EdgeInsets.all(maxSpace),
@@ -175,7 +175,7 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                                             ? allCompanies[index].companyName
                                                             : selectedCompanies[index].companyName,
                                                         textAlign: TextAlign.center,
-                                                        style: const TextStyle(fontSize: 18, color: darkWhite),
+                                                        style: const TextStyle(fontSize: 18, color: tertiaryColor),
                                                       ),
                                                     ),
                                                   ),
