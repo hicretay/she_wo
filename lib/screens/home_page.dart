@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../JsnClass/content_stream_detail_jsn.dart';
 import '../JsnClass/content_stream_jsn.dart';
+import '../JsnClass/content_stream_jsn.dart' as r;
 import '../model/category_model.dart';
 import '../settings/consts.dart';
 import '../settings/functions.dart';
@@ -29,10 +32,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List homeContent = [];
+  List<r.Result> homeContent = [];
   int pageIndex = 1;
   int? userIdData;
   bool? isLogin;
+  bool isLoading = false;
 
   TextEditingController teSearch = TextEditingController();
 
@@ -41,16 +45,23 @@ class _HomePageState extends State<HomePage> {
 //-----------------------------------------
 
   Future getHomeData() async {
+    setState(() {
+      isLoading = true;
+    });
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userIdData = prefs.getInt("userIdData");
     pageIndex = 1;
     final response = await http.post(Uri.parse("${url}ContentStream/List"), body: '{"userId":$userIdData,"page":$pageIndex}', headers: header);
 
     if (response.statusCode == 200) {
-      final result = contentStreamJsnFromJson(response.body);
-
       setState(() {
-        homeContent = result.result!;
+        homeContent = contentStreamJsnFromJson(response.body).result ?? [];
+        isLoading = false;
+      });
+    } else {
+      print('an error occured');
+      setState(() {
+        isLoading = false;
       });
     }
   }
@@ -76,7 +87,7 @@ class _HomePageState extends State<HomePage> {
         top: false,
         child: Scaffold(
           body: ProgressHUD(
-              child: (homeContent != [])
+              child: isLoading == false
                   ? Builder(
                       builder: (context) => BackGroundContainer(
                         child: Column(
@@ -203,6 +214,7 @@ class _HomePageState extends State<HomePage> {
                                           itemCount: homeCategoryList.length,
                                           itemBuilder: (BuildContext ctx, index) {
                                             return HomeContainerWidget(
+                                              homeContent: homeContent[index],
                                               isPopular: true,
                                               isCategoryWidget: true,
                                               companyName: homeCategoryList[index].leading,
@@ -246,6 +258,7 @@ class _HomePageState extends State<HomePage> {
                                           itemCount: homeContent.length,
                                           itemBuilder: (BuildContext ctx, index) {
                                             return HomeContainerWidget(
+                                              homeContent: homeContent[index],
                                               isCategoryWidget: true,
                                               companyLogo: homeContent[index].companyLogo,
                                               companyName: homeContent[index].companyName,
@@ -263,7 +276,7 @@ class _HomePageState extends State<HomePage> {
                                                 SharedPreferences prefs = await SharedPreferences.getInstance();
                                                 userIdData = prefs.getInt("userIdData");
                                                 final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
-                                                    homeContent[index].companyId, homeContent[index].campaingId, userIdData!);
+                                                    homeContent[index].companyId ?? 1, homeContent[index].campaingId ?? 1, userIdData!);
                                                 // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
                                                 if (!mounted) return;
                                                 Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
@@ -285,7 +298,7 @@ class _HomePageState extends State<HomePage> {
                                                 SharedPreferences prefs = await SharedPreferences.getInstance();
                                                 userIdData = prefs.getInt("userIdData");
                                                 final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
-                                                    homeContent[index].companyId, homeContent[index].campaingId, userIdData!);
+                                                    homeContent[index].companyId ?? 1, homeContent[index].campaingId ?? 1, userIdData!);
                                                 // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
                                                 if (!mounted) return;
                                                 Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
@@ -302,6 +315,99 @@ class _HomePageState extends State<HomePage> {
                                               },
                                             );
                                           }),
+                                    ),
+                                    const SizedBox(height: minSpace),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: defaultPadding),
+                                      child: Align(
+                                        alignment: Alignment.topLeft,
+                                        child: SizedBox(
+                                          child: Text(
+                                            "En Favorileriler",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!
+                                                .copyWith(color: tertiaryColor, fontFamily: leadingFont, fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    SizedBox(
+                                      height: 250,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding),
+                                        child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            physics: const ClampingScrollPhysics(),
+                                            shrinkWrap: true,
+                                            itemCount: homeContent.length,
+                                            itemBuilder: (BuildContext ctx, index) {
+                                              return Padding(
+                                                padding: const EdgeInsets.only(right: maxSpace),
+                                                child: SizedBox(
+                                                  width: 300,
+                                                  child: HomeContainerWidget(
+                                                    homeContent: homeContent[index],
+                                                    isCategoryWidget: false,
+                                                    companyLogo: homeContent[index].companyLogo,
+                                                    companyName: homeContent[index].companyName,
+                                                    contentPicture: homeContent[index].contentPicture,
+                                                    cardText: homeContent[index].contentTitle,
+                                                    pinColor: primaryColor,
+                                                    onPressedPhone: () async {
+                                                      dynamic number = homeContent[index].companyPhone.toString(); // arama ekranına yönlendirme
+                                                      launchUrl(Uri(path: "tel://$number"));
+                                                    },
+                                                    //--------------------------------------------------------"DETAYLI BİLGİ İÇİN" BUTONU-------------------------------------------------------------
+                                                    onPressed: () async {
+                                                      final progressUHD = ProgressHUD.of(context);
+                                                      progressUHD!.show();
+                                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                      userIdData = prefs.getInt("userIdData");
+                                                      final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
+                                                          homeContent[index].companyId ?? 1, homeContent[index].campaingId ?? 1, userIdData!);
+                                                      // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
+                                                      if (!mounted) return;
+                                                      Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                                          builder: (context) => HomeDetailPage(
+                                                              homeDetailContent: homeDetailContent!.result,
+                                                              campaingId: homeContent[index].campaingId,
+                                                              companyId: homeContent[index].companyId,
+                                                              companyLogo: homeContent[index].companyLogo,
+                                                              companyName: homeContent[index].companyName,
+                                                              contentTitle: homeContent[index].contentTitle,
+                                                              googleAdressLink: homeContent[index].googleAdressLink,
+                                                              companyPhone: homeContent[index].companyPhone.toString())));
+                                                      progressUHD.dismiss();
+                                                    },
+                                                    //----------------------------------------------------------------------------------------------------------------------
+                                                    homeDetailOntap: () async {
+                                                      final progressUHD = ProgressHUD.of(context);
+                                                      progressUHD!.show();
+                                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                      userIdData = prefs.getInt("userIdData");
+                                                      final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
+                                                          homeContent[index].companyId ?? 1, homeContent[index].campaingId ?? 1, userIdData!);
+                                                      // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
+                                                      if (!mounted) return;
+                                                      Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                                          builder: (context) => HomeDetailPage(
+                                                              homeDetailContent: homeDetailContent!.result,
+                                                              campaingId: homeContent[index].campaingId,
+                                                              companyId: homeContent[index].companyId,
+                                                              companyLogo: homeContent[index].companyLogo,
+                                                              companyName: homeContent[index].companyName,
+                                                              contentTitle: homeContent[index].contentTitle,
+                                                              googleAdressLink: homeContent[index].googleAdressLink,
+                                                              companyPhone: homeContent[index].companyPhone.toString())));
+                                                      progressUHD.dismiss();
+                                                    },
+                                                  ),
+                                                ),
+                                              );
+                                            }),
+                                      ),
                                     ),
                                   ],
                                 ),

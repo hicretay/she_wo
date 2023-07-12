@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:she_wo/JsnClass/login_jsn.dart';
-import 'package:she_wo/screens/location_page.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
 import 'package:she_wo/widgets/textfield_widget.dart';
+
+import '../providers/navigation_provider.dart';
+import '../settings/root.dart';
 
 class LoginPage extends StatefulWidget {
   static const route = "/loginPage";
@@ -110,8 +112,14 @@ class _LoginPageState extends State<LoginPage> {
                                         prefs.setInt("userIdData", userData.result!.id!);
                                         if (!mounted) return;
 
-                                        Navigator.pushAndRemoveUntil(
-                                            context, MaterialPageRoute(builder: (context) => const LocationPage()), (route) => false);
+                                        if (prefs.getString("isFirstLogin") != null) {
+                                          if (!mounted) return;
+                                          NavigationProvider.of(context).setTab(HOME_PAGE);
+                                          Navigator.pop(context, false);
+                                        } else {
+                                          if (!mounted) return;
+                                          Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => const Root()));
+                                        }
                                         showToast(context, "Giriş Başarılı!");
                                         progressHUD.dismiss();
                                       } else {

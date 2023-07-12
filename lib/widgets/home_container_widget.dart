@@ -1,9 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:line_icons/line_icons.dart';
+
+import '../JsnClass/content_stream_jsn.dart' as r;
 import '../settings/consts.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class HomeContainerWidget extends StatefulWidget {
   //homePage sayfasında post görünümü oluşturulmasında kullanıldı
@@ -17,6 +18,7 @@ class HomeContainerWidget extends StatefulWidget {
   final VoidCallback? onPressedLocation, onPressedPhone, homeDetailOntap, logoOnTap;
   final bool isCategoryWidget;
   final bool? isPopular;
+  final r.Result? homeContent;
 
   const HomeContainerWidget({
     Key? key,
@@ -35,6 +37,7 @@ class HomeContainerWidget extends StatefulWidget {
     this.logoOnTap,
     required this.isCategoryWidget,
     this.isPopular,
+    this.homeContent,
   }) : super(key: key);
 
   @override
@@ -51,15 +54,15 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
       children: [
         //-----------------------------Postu çevreleyecek container yapısı-----------------------------
         AspectRatio(
-          aspectRatio: 1.5,
+          aspectRatio: 1.6,
           child: Material(
             elevation: 5,
-            borderRadius: BorderRadius.circular(maxSpace),
+            borderRadius: const BorderRadius.all(Radius.circular(maxSpace)),
             child: Container(
               width: double.infinity, //genişlik: container genişliği kadar
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: primaryColor,
-                borderRadius: BorderRadius.circular(maxSpace), //container kenarlarının yuvarlatılması
+                borderRadius: BorderRadius.all(Radius.circular(maxSpace)),
               ),
               child: Column(
                 children: [
@@ -74,116 +77,145 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                             transformationController.toScene(Offset.zero);
                           });
                         },
-                        child: AspectRatio(
-                          aspectRatio: 2.3,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.vertical(top: Radius.circular(maxSpace)),
-                                image: (widget.isPopular ?? false)
-                                    ? DecorationImage(
-                                        fit: BoxFit.fitWidth,
-                                        image: AssetImage(widget.contentPicture!),
-                                      )
-                                    : DecorationImage(
-                                        fit: BoxFit.fitWidth,
-                                        image: NetworkImage(widget.contentPicture!),
-                                      )),
-                          ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: widget.cardText != ''
+                                  ? const BorderRadius.vertical(top: Radius.circular(maxSpace))
+                                  : const BorderRadius.all(Radius.circular(maxSpace)),
+                              image: (widget.isPopular ?? false)
+                                  ? DecorationImage(
+                                      fit: BoxFit.fitWidth,
+                                      image: AssetImage(widget.contentPicture!),
+                                    )
+                                  : DecorationImage(
+                                      fit: BoxFit.fitWidth,
+                                      image: NetworkImage(widget.contentPicture!),
+                                    )),
                         ),
                       ),
                     ),
                   ),
-                  widget.cardText != ""
-                      ? Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            width: deviceWidth(context),
-                            padding: const EdgeInsets.all(minSpace),
-                            decoration: const BoxDecoration(
-                              color: primaryColor,
-                            ),
-                            child: Text(
-                              widget.companyName ?? '',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontFamily: contentFont,
-                                color: tertiaryColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                  if (widget.cardText != "" && widget.isCategoryWidget)
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: deviceWidth(context),
+                        padding: const EdgeInsets.all(minSpace),
+                        decoration: const BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.all(Radius.circular(maxSpace)),
+                        ),
+                        child: Text(
+                          widget.companyName ?? '',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontFamily: contentFont,
+                            color: tertiaryColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                        )
-                      : Container(),
+                        ),
+                      ),
+                    ),
+
                   //-------------------------------------ICONBUTTONLAR PANELİ----------------------------------------
-                  if (!(widget.isCategoryWidget))
-                    Padding(
-                      padding: const EdgeInsets.only(left: minSpace, right: minSpace),
-                      child: SizedBox(
-                          width: deviceWidth(context),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end, //Tüm widgetlar container altına konumlandırılsın
-                            children: [
-                              //-----------------Butonların yer aldığı container--------------------
-                              Container(
-                                decoration: const BoxDecoration(
-                                  color: secondaryTransparentColor, // Colors.white,
-                                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(maxSpace)),
-                                ),
-                                width: double.infinity, // genişlik: container kadar
-                                height: 40,
-                                child: Row(
-                                  children: [
-                                    Flexible(
-                                      child: Row(
-                                        children: [
-                                          //------------------------------BEĞEN ICONBUTTONI-------------------------------
-                                          widget.likeButton ?? const SizedBox(),
-                                          //------------------------------------------------------------------------------
-                                          // //------------------------------PAYLAŞ ICONBUTTONI---------------------------
-                                          //   IconButton(icon: Icon(Icons.share_outlined,color: primaryColor),
-                                          //   onPressed: () {}),
-                                          // //---------------------------------------------------------------------------
-                                          //------------------------------İLETİŞİM ICONBUTTONI----------------------------
-                                          IconButton(
-                                              padding: const EdgeInsets.all(0),
-                                              icon: SvgPicture.asset("assets/icons/telephone.svg", height: 22, width: 22, color: darkWhite),
-                                              onPressed: widget.onPressedPhone),
-                                          //------------------------------------------------------------------------------
-                                          //-----------------------------KONUM ICONBUTTONI--------------------------------
-                                          IconButton(
-                                              padding: const EdgeInsets.all(0),
-                                              icon: SvgPicture.asset("assets/icons/pin.svg", height: 22, width: 22, color: darkWhite),
-                                              onPressed: widget.onPressedLocation)
-                                          //------------------------------------------------------------------------------
-                                        ],
+                  if (!widget.isCategoryWidget)
+                    SizedBox(
+                        width: 300,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //-----------------Butonların yer aldığı container--------------------
+                            Container(
+                              decoration: const BoxDecoration(
+                                color: primaryColor,
+                                borderRadius: BorderRadius.vertical(bottom: Radius.circular(maxSpace)),
+                              ),
+                              width: 300,
+                              height: 60,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: maxSpace, top: minSpace),
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          widget.companyName ?? '',
+                                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
-                                    ),
-                                    TextButton(
-                                      onPressed: widget.onPressed,
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            "Detaylı Bilgi İçin",
-                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(color: darkWhite),
-                                          ),
-                                          const Icon(
-                                            LineIcons.arrowRight, // sağa ok ikonu
-                                            color: darkWhite,
-                                          ),
-                                        ],
+                                      //? TODO Apiden Adres eklenecek
+                                      const Expanded(
+                                        child: Text(
+                                          //widget.homeContent?.googleAdressLink ?? '',
+                                          'Çınardere Mah, Oba Sk No:2/1-2-3-4, 34896 Pendik/İstanbul',
+                                          style: TextStyle(fontSize: 10),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(right: maxSpace),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  RatingBar(
+                                                    updateOnDrag: false,
+                                                    itemSize: 15,
+                                                    initialRating: 4.5,
+                                                    direction: Axis.horizontal,
+                                                    allowHalfRating: true,
+                                                    itemCount: 5,
+                                                    ratingWidget: RatingWidget(
+                                                        full: const Icon(Icons.star, color: Colors.black),
+                                                        half: const Icon(Icons.star_half),
+                                                        empty: const Icon(Icons.star_outline)),
+                                                    itemPadding: EdgeInsets.zero,
+                                                    onRatingUpdate: (rating) {},
+                                                  ),
+                                                  const Text(
+                                                    //? TODO firma puanı eklenecek
+                                                    '4.5 Harika',
+                                                    style: TextStyle(fontSize: 10),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: const [
+                                                  Icon(
+                                                    Icons.remove_red_eye_sharp,
+                                                    size: 15,
+                                                  ),
+                                                  Text(
+                                                    //? TODO görüntülenme sayısı eklenecek
+                                                    '500 Görüntülenme',
+                                                    style: TextStyle(fontSize: 10),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: maxSpace)
+                                    ],
+                                  ),
                                 ),
                               ),
-                              //------------------------------------------------------------------
-                            ],
-                          )),
-                    ),
-                  //-------------------------------------------------------------------------------------------------
-                  // Post ana containeri - resim containerı arası alt boşluk
-                  const SizedBox(height: maxSpace),
+                            ),
+                            //------------------------------------------------------------------
+                          ],
+                        )),
                 ],
               ),
             ),
@@ -191,15 +223,15 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
         ),
         //-----------------------------Post Containerı sonu------------------------------------
         if (!(widget.isCategoryWidget)) const SizedBox(height: maxSpace), //Post altı - divider arası boşluk
-        if (!(widget.isCategoryWidget))
-          const Divider(
-            //İki post arasında yer alan çizgi
-            indent: 130.0,
-            endIndent: 130.0,
-            height: 1,
-            color: passivePurple,
-            thickness: 1.5,
-          ),
+        // if (!(widget.isCategoryWidget))
+        //   const Divider(
+        //     //İki post arasında yer alan çizgi
+        //     indent: 130.0,
+        //     endIndent: 130.0,
+        //     height: 1,
+        //     color: passivePurple,
+        //     thickness: 1.5,
+        //   ),
         if (!(widget.isCategoryWidget)) const SizedBox(height: maxSpace), // Post üstü - divider arası boşluk
       ],
     );

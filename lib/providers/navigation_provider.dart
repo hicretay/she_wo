@@ -46,12 +46,10 @@ class NavigationProvider extends ChangeNotifier {
       scrollController: ScrollController(),
       child: const HomePage(),
       title: "",
-      icon: const Icon(Icons.explore,
-          size: 25, color: tertiaryColor), //SvgPicture.asset("assets/icons/home.svg", height: 25, width: 25, color: tertiaryColor),
-      activeIcon: const CircleAvatar(
+      icon: SvgPicture.asset("assets/icons2/Compass.svg", height: 25, width: 25, color: tertiaryColor),
+      activeIcon: CircleAvatar(
         backgroundColor: tertiaryColor,
-        child: Icon(Icons.explore,
-            size: 25, color: primaryColor), //SvgPicture.asset("assets/icons/home.svg", height: 25, width: 25, color: primaryColor),
+        child: SvgPicture.asset("assets/icons2/Compass.svg", height: 25, width: 25, color: primaryColor),
       ),
       initialRoute: HomePage.route,
       navigatorState: GlobalKey<NavigatorState>(),
@@ -61,11 +59,11 @@ class NavigationProvider extends ChangeNotifier {
     ),
     RESERVATION_PAGE: Screen(
       scrollController: ScrollController(),
-      icon: SvgPicture.asset("assets/icons/calendar.svg", height: 25, width: 25, color: tertiaryColor),
+      icon: SvgPicture.asset("assets/icons2/calendar.svg", height: 25, width: 25, color: tertiaryColor),
       title: "",
       activeIcon: CircleAvatar(
         backgroundColor: tertiaryColor,
-        child: SvgPicture.asset("assets/icons/calendar.svg", height: 25, width: 25, color: primaryColor),
+        child: SvgPicture.asset("assets/icons2/calendar.svg", height: 25, width: 25, color: primaryColor),
       ),
       child: const ReservationPage(),
       initialRoute: ReservationPage.route,
@@ -76,11 +74,11 @@ class NavigationProvider extends ChangeNotifier {
     ),
     SETTINGS_PAGE: Screen(
       scrollController: ScrollController(),
-      icon: const Icon(Icons.person, size: 25, color: tertiaryColor),
+      icon: SvgPicture.asset("assets/icons2/User.svg", height: 25, width: 25, color: tertiaryColor),
       title: "",
-      activeIcon: const CircleAvatar(
+      activeIcon: CircleAvatar(
         backgroundColor: tertiaryColor,
-        child: Icon(Icons.person, size: 25, color: primaryColor),
+        child: SvgPicture.asset("assets/icons2/User.svg", height: 25, width: 25, color: primaryColor),
       ),
       child: const SettingsPage(),
       initialRoute: SettingsPage.route,

@@ -258,19 +258,6 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                     }),
                                               ),
                                             ),
-
-                                            // //-----------------------Paylaşım iconButton'ı----------------------------
-                                            //         Padding(
-                                            //           padding: const EdgeInsets.all(minSpace),
-                                            //           child: IconButton(
-                                            //                 padding    : EdgeInsets.zero,
-                                            //                 constraints: BoxConstraints(),
-                                            //                 icon       : Icon(Icons.share_outlined,
-                                            //                 color      : primaryColor,
-                                            //                 size       : iconSize),
-                                            //                 onPressed  : () {}),
-                                            //         ),
-                                            // //------------------------------------------------------------------------
                                             //----------------------İletişim iconButton'ı-----------------------------
                                             Padding(
                                               padding: const EdgeInsets.all(minSpace),

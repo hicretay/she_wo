@@ -42,6 +42,7 @@ class _RootState extends State<Root> {
         return WillPopScope(
           onWillPop: () async => provider.onWillPop(context),
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             body: IndexedStack(
               index: provider.currentTabIndex,
               children: screens,
