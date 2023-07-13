@@ -410,7 +410,7 @@ Future<LikedCampaingJsn?> likedCampaingJsnFunc(int userId) async {
 showToast(BuildContext context, String content) {
   return Fluttertoast.showToast(
     msg: content,
-    backgroundColor: darkWhite,
+    backgroundColor: tertiaryColor,
     timeInSecForIosWeb: 3,
     textColor: primaryColor,
     gravity: ToastGravity.CENTER,

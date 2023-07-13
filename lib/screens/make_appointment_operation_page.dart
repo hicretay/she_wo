@@ -23,7 +23,7 @@ class MakeAppointmentOperationPage extends StatefulWidget {
 class _MakeAppointmentOperationPageState extends State<MakeAppointmentOperationPage> {
   AppointmentObject? appointment;
   List? checkedOperation = [];
-  int _checked = -1;
+  int _checked = 0;
 
   List? companyOperation;
   _MakeAppointmentOperationPageState({this.companyOperation, this.appointment});
@@ -70,7 +70,7 @@ class _MakeAppointmentOperationPageState extends State<MakeAppointmentOperationP
                           alignment: Alignment.topLeft,
                           child: Text(
                             appointment!.companyNameS!,
-                            style: const TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.black),
                           ),
                         ),
                         const SizedBox(
@@ -82,7 +82,7 @@ class _MakeAppointmentOperationPageState extends State<MakeAppointmentOperationP
                   Expanded(
                     child: Container(
                       decoration: const BoxDecoration(
-                        color: passivePurple,
+                        color: secondaryColor,
                         borderRadius: BorderRadius.vertical(
                           top: Radius.circular(cardCurved),
                         ),
@@ -119,15 +119,7 @@ class _MakeAppointmentOperationPageState extends State<MakeAppointmentOperationP
                                             decoration: BoxDecoration(
                                               // Container rengi gradient ile verildi
                                               borderRadius: const BorderRadius.all(Radius.circular(15)),
-                                              gradient: LinearGradient(
-                                                //soldan sağa doğru color listteki renkleri yaydı
-                                                begin: Alignment.topLeft,
-                                                end: Alignment.topRight,
-                                                //operationListMap mapinin value(true - false) değerlerinin indexine göre rengi kontrol ediyor
-                                                colors: _checked == index
-                                                    ? backGroundColor1 // true ise(seçili) ise renk koyu
-                                                    : backGroundColor3, // false ise seçilmemişse açık
-                                              ),
+                                              color: _checked == index ? tertiaryColor : primaryColor,
                                             ),
                                             child: Center(
                                               //Bir seçim radiosu ve text yapısından oluşan Row
@@ -141,20 +133,15 @@ class _MakeAppointmentOperationPageState extends State<MakeAppointmentOperationP
                                                     height: deviceHeight(context) * 0.06,
                                                     decoration: BoxDecoration(
                                                       shape: BoxShape.circle,
-                                                      gradient: LinearGradient(
-                                                        begin: Alignment.topLeft,
-                                                        end: Alignment.topRight,
-                                                        //operationListMap mapinin valuelarının index değerine göre renk belirler
-                                                        colors: _checked == index
-                                                            ? backGroundColor1 // true ise(seçili) ise renk koyu
-                                                            : backGroundColor3, // false ise seçilmemişse açık
-                                                      ),
+                                                      color: _checked == index ? tertiaryColor : primaryColor,
                                                     ),
                                                     //Dış container yapısı
                                                     child: Container(
                                                       decoration: BoxDecoration(
                                                         shape: BoxShape.circle,
-                                                        border: Border.all(color: passivePurple, width: 4.5), // mor dairenin genişliği
+                                                        border: Border.all(
+                                                            color: _checked == index ? primaryColor : tertiaryColor,
+                                                            width: 4.5), // mor dairenin genişliği
                                                       ),
                                                     ),
                                                   ),
@@ -171,7 +158,7 @@ class _MakeAppointmentOperationPageState extends State<MakeAppointmentOperationP
                                                               fontSize: 16, // operationların fontu
                                                               color: _checked == index
                                                                   ? Colors.white // seçili ise açık text
-                                                                  : darkWhite, // seçili değilse koyu
+                                                                  : tertiaryColor, // seçili değilse koyu
                                                             ),
                                                           ),
                                                         ),
@@ -202,10 +189,10 @@ class _MakeAppointmentOperationPageState extends State<MakeAppointmentOperationP
             ),
             //-----------------------------------RANDEVU SAATİNİ SEÇ BUTONU-------------------------------------------
             bottomNavigationBar: Container(
-              color: passivePurple,
+              color: primaryColor,
               child: TextButtonWidget(
                   buttonText: "Saat Seç",
-                  icon: const FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: white),
+                  icon: const FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: primaryColor),
                   onPressed: () async {
                     final progressHUD = ProgressHUD.of(context);
                     progressHUD!.show();

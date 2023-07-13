@@ -61,7 +61,7 @@ class _MakeAppointmentTimePageState extends State<MakeAppointmentTimePage> {
                   Expanded(
                     child: Container(
                       decoration: const BoxDecoration(
-                        color: passivePurple,
+                        color: secondaryColor,
                         borderRadius: BorderRadius.vertical(
                           top: Radius.circular(cardCurved),
                         ),
@@ -84,13 +84,16 @@ class _MakeAppointmentTimePageState extends State<MakeAppointmentTimePage> {
                                       ),
                                       itemBuilder: (BuildContext context, int index) {
                                         return Container(
-                                          color: _checked == index ? secondaryColor : passivePurple,
+                                          decoration: BoxDecoration(
+                                            borderRadius: const BorderRadius.all(Radius.circular(maxSpace)),
+                                            color: _checked == index ? primaryColor : tertiaryColor,
+                                          ),
                                           child: TextButton(
                                             child: Center(
                                               child: Text(
                                                 companyOperationTime![index].operationStartTime,
-                                                style: const TextStyle(
-                                                  color: darkWhite,
+                                                style: TextStyle(
+                                                  color: _checked == index ? tertiaryColor : primaryColor,
                                                 ),
                                               ),
                                             ),
@@ -117,10 +120,10 @@ class _MakeAppointmentTimePageState extends State<MakeAppointmentTimePage> {
             ),
             //--------------------------------RANDEVUYU TAMAMLA BUTONU-----------------------------------
             bottomNavigationBar: Container(
-              color: passivePurple,
+              color: secondaryColor,
               child: TextButtonWidget(
                   buttonText: "Randevuyu Tamamla",
-                  icon: const FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: white),
+                  icon: const FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: primaryColor),
                   onPressed: () {
                     print(appointment!.timeS);
                     final progressHUD = ProgressHUD.of(context);

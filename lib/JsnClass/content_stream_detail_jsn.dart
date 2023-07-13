@@ -11,11 +11,11 @@ class ContentStreamDetailJsn {
     });
 
     bool? success;
-    List<Result>? result;
+    List<HomeDetailResult>? result;
 
     factory ContentStreamDetailJsn.fromJson(Map<String, dynamic> json) => ContentStreamDetailJsn(
         success: json["success"],
-        result: List<Result>.from(json["result"].map((x) => Result.fromJson(x))),
+        result: List<HomeDetailResult>.from(json["result"].map((x) => HomeDetailResult.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -24,8 +24,8 @@ class ContentStreamDetailJsn {
     };
 }
 
-class Result {
-    Result({
+class HomeDetailResult {
+    HomeDetailResult({
         this.campaingId,
         this.campaingTitle,
         this.campaingDetail,
@@ -47,7 +47,7 @@ class Result {
     String? campaignEndDate;
     String? campaignStartDate;
 
-    factory Result.fromJson(Map<String, dynamic> json) => Result(
+    factory HomeDetailResult.fromJson(Map<String, dynamic> json) => HomeDetailResult(
         campaingId: json["campaingId"],
         campaingTitle: json["campaingTitle"],
         campaingDetail: json["campaingDetail"],

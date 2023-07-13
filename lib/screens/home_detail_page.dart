@@ -1,24 +1,18 @@
-// ignore_for_file: avoid_print, library_private_types_in_public_api, no_logic_in_create_state
+// ignore_for_file: avoid_print, library_private_types_in_public_api, no_logic_in_create_state, unused_local_variable
 
-import 'package:carousel_nullsafety/carousel_nullsafety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:she_wo/JsnClass/company_profile.dart';
 import 'package:she_wo/JsnClass/content_stream_detail_jsn.dart';
-import 'package:she_wo/JsnClass/like_jsn.dart';
 import 'package:she_wo/model/appointment_model.dart';
-import 'package:she_wo/screens/company_profile_page.dart';
 import 'package:she_wo/screens/make_appointment_calendar_page.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
 import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/backleading_widget.dart';
-import 'package:she_wo/widgets/leading_row_widget.dart';
-import 'package:she_wo/widgets/webview_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HomeDetailPage extends StatefulWidget {
   final List? homeDetailContent;
@@ -102,8 +96,36 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
     }
     //-------------------------------------------------------
 
+    double rating = 4.5;
+
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        floatingActionButton: SingleChildScrollView(
+          child: FloatingActionButton.extended(
+              backgroundColor: tertiaryColor,
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                userIdData = prefs.getInt("userIdData")!;
+                if (userIdData != 0) {
+                  AppointmentObject appointment =
+                      AppointmentObject(companyId: companyId!, userId: userIdData, companyNameS: companyName!, campaignId: campaingId!);
+                  if (!mounted) return;
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MakeAppointmentCalendarPage(appointment: appointment)));
+
+                  //Buton tıklandığında randevu al sayfasına yönlendirilecek
+                } else {
+                  if (!mounted) return;
+                  showNotMemberAlert(context);
+                }
+              },
+              label: const Text(
+                "Randevu Al",
+                style: TextStyle(color: primaryColor),
+              ),
+              icon: const FaIcon(FontAwesomeIcons.calendar, size: 18, color: primaryColor)),
+        ),
         body: ProgressHUD(
           child: Builder(
             builder: (context) => BackGroundContainer(
@@ -112,271 +134,165 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                   const BackLeadingWidget(
                     backColor: tertiaryColor,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: maxSpace),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            "kampanyalar", //Büyük Başlık
-                            style: Theme.of(context).textTheme.headline4!.copyWith(color: tertiaryColor, fontFamily: leadingFont),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            companyName!,
-                            style: const TextStyle(color: tertiaryColor),
-                          ),
-                        ),
-                        const SizedBox(height: maxSpace)
-                      ],
-                    ),
-                  ),
                   Expanded(
-                    child: Container(
-                        decoration: const BoxDecoration(
-                          color: secondaryColor, //Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.vertical(top: Radius.circular(cardCurved)), //Yalnızca dikeyde yuvarlatılmış
-                        ),
-                        child: FutureBuilder<dynamic>(
-                            future: homeDetailRefresh(),
-                            builder: (context, snapshot) {
-                              return SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    const SizedBox(height: maxSpace),
-                                    LeadingRowWidget(
-                                      companyName: companyName!,
-                                      companyLogo: companyLogo!,
-                                      leadingColor: Theme.of(context).hintColor,
-                                      starButton: Container(),
-                                      logoOnTap: () async {
-                                        final progressUHD = ProgressHUD.of(context);
-                                        progressUHD!.show();
-                                        final CompanyProfileJsn? companyProfile = await companyListDetailJsnFunc(companyId!);
-                                        if (!mounted) return;
-                                        Navigator.of(context, rootNavigator: true)
-                                            .push(MaterialPageRoute(builder: (context) => CompanyProfilePage(companyProfile: companyProfile)));
-                                        progressUHD.dismiss();
-                                      },
-                                    ), //leading widgetı
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: maxSpace, left: maxSpace, bottom: maxSpace, top: maxSpace / 2),
-                                      child: Center(
-                                        //-----------------------Carousel Containerı------------------------
-                                        child: SizedBox(
-                                            width: double.infinity, //genişlik: container genişliği
-                                            height: deviceHeight(context) * 0.3, //container yüksekliği
-                                            child: homeDetailContent == null
-                                                ? circularBasic
-                                                : // ana sayfa içeriği boş ise circular, ekli görsel sayısı 1 ise Image.network
-                                                sliderImg.length == 1
-                                                    ? InteractiveViewer(
-                                                        panEnabled: false,
-                                                        clipBehavior: Clip.none,
-                                                        transformationController: transformationController,
-                                                        onInteractionEnd: (details) {
-                                                          setState(() {
-                                                            transformationController.toScene(Offset.zero);
-                                                          });
-                                                        },
-                                                        child: AspectRatio(
-                                                          aspectRatio: 16 / 9,
-                                                          child: Container(
-                                                            decoration: BoxDecoration(
-                                                                borderRadius: const BorderRadius.all(Radius.circular(maxSpace)),
-                                                                image: DecorationImage(
-                                                                    fit: BoxFit.fitWidth,
-                                                                    image: NetworkImage(homeDetailContent!.first.contentPictures.first.cPicture))),
-                                                          ),
-                                                        ))
-                                                    : //  ekli görsel sayısı 1den fazla ise carousel
-                                                    InteractiveViewer(
-                                                        panEnabled: false,
-                                                        clipBehavior: Clip.none,
-                                                        transformationController: transformationController,
-                                                        onInteractionEnd: (details) {
-                                                          setState(() {
-                                                            transformationController.toScene(Offset.zero);
-                                                          });
-                                                        },
-                                                        child: Carousel(
-                                                            borderRadius: true,
-                                                            radius: const Radius.circular(maxSpace),
-                                                            boxFit: BoxFit.fitWidth,
-                                                            autoplay: false,
-                                                            animationCurve: Curves.bounceInOut, // animasyon efekti
-                                                            animationDuration: const Duration(milliseconds: 1000), // animasyon süresi
-                                                            dotSize: 6.0, //Nokta büyüklüğü
-                                                            dotIncreasedColor: primaryColor, // Seçili sayfa noktası rengi
-                                                            dotColor: secondaryColor,
-                                                            dotBgColor: Colors.transparent, //Carousel alt bar rengi
-                                                            dotPosition: DotPosition.bottomCenter, // Noktaların konumu
-                                                            dotVerticalPadding: 10.0, //noktaların dikey uzaklığı
-                                                            showIndicator: true, // sayfa geçişi noktaları gösterilsin mi = true
-                                                            indicatorBgPadding: 7.0, // noktaların Carousel zemininden uzaklığı
-                                                            images: sliderImg),
-                                                      )),
-                                      ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          //leading widgetı
+                          Padding(
+                            padding: const EdgeInsets.only(right: maxSpace, left: maxSpace, bottom: maxSpace, top: maxSpace / 2),
+                            child: Center(
+                              //-----------------------Carousel Containerı------------------------
+                              child: SizedBox(
+                                  width: double.infinity, //genişlik: container genişliği
+                                  height: deviceHeight(context) * 0.3, //container yüksekliği
+                                  child: homeDetailContent == null
+                                      ? circularBasic
+                                      : InteractiveViewer(
+                                          panEnabled: false,
+                                          clipBehavior: Clip.none,
+                                          transformationController: transformationController,
+                                          onInteractionEnd: (details) {
+                                            setState(() {
+                                              transformationController.toScene(Offset.zero);
+                                            });
+                                          },
+                                          child: AspectRatio(
+                                            aspectRatio: 16 / 9,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius: const BorderRadius.all(Radius.circular(maxSpace)),
+                                                  image: DecorationImage(
+                                                      fit: BoxFit.fitWidth,
+                                                      image: NetworkImage(homeDetailContent!.first.contentPictures.first.cPicture))),
+                                            ),
+                                          ))),
+                            ),
+                          ),
+                          SizedBox(
+                              width: double.infinity,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  //-----------------Butonların yer aldığı container--------------------
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                      color: primaryColor,
+                                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(maxSpace)),
                                     ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                        //-----------------Alt Header-----------------------
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                          mainAxisSize: MainAxisSize.min,
+                                    width: double.infinity,
+                                    height: 80,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: maxSpace, top: minSpace),
+                                      child: Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Padding(
-                                              padding: const EdgeInsets.all(minSpace),
-                                              //-----------------------Beğeni iconButton'ı----------------------------
-                                              child: CircleAvatar(
-                                                //Beğeni butonunu kaplayan circleAvatar yapısı
-                                                maxRadius: deviceWidth(context) * 0.05,
-                                                backgroundColor: homeDetailContent!.first.liked
-                                                    ? primaryColor
-                                                    : tertiaryColor, // seçili ise koyu, değilse açık renk verildi
-                                                child: IconButton(
-                                                    icon: homeDetailContent!.first.liked
-                                                        ? const Icon(LineIcons.heart, color: tertiaryColor)
-                                                        : const Icon(LineIcons.heart, color: darkWhite),
-                                                    onPressed: () async {
-                                                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                      userIdData = prefs.getInt("userIdData")!;
-                                                      if (userIdData != 0) {
-                                                        LikeJsn? likePostData = await likeJsnFunc(userIdData, campaingId!);
-                                                        print(likePostData!.success);
-                                                        print(likePostData.result);
-                                                        await homeDetailRefresh();
-                                                      } else {
-                                                        if (!mounted) return;
-                                                        showNotMemberAlert(context);
-                                                      }
-                                                    }),
+                                            Expanded(
+                                              child: Text(
+                                                widget.companyName ?? '',
+                                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                                overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
-                                            //----------------------İletişim iconButton'ı-----------------------------
-                                            Padding(
-                                              padding: const EdgeInsets.all(minSpace),
-                                              child: IconButton(
-                                                  padding: EdgeInsets.zero,
-                                                  constraints: const BoxConstraints(),
-                                                  icon: const Icon(LineIcons.phone, color: tertiaryColor, size: iconSize),
-                                                  onPressed: () async {
-                                                    dynamic number = companyPhone; // arama ekranına yönlendirme
-                                                    launchUrl(Uri(path: "tel://$number"));
-                                                  }),
+                                            //? TODO Apiden Adres eklenecek
+                                            const Expanded(
+                                              child: Text(
+                                                'Çınardere Mah, Oba Sk No:2/1, 34896 Pendik/İstanbul',
+                                                style: TextStyle(fontSize: 13),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                             ),
-                                            //------------------------------------------------------------------------
-                                            //----------------------Konum iconButton'ı-------------------------------
-                                            Padding(
-                                              padding: const EdgeInsets.all(minSpace),
-                                              child: IconButton(
-                                                  padding: EdgeInsets.zero,
-                                                  constraints: const BoxConstraints(),
-                                                  icon: const Icon(LineIcons.locationArrow, color: tertiaryColor, size: iconSize),
-                                                  onPressed: () async {
-                                                    final progressUHD = ProgressHUD.of(context);
-                                                    progressUHD!.show();
-                                                    Navigator.of(context, rootNavigator: true)
-                                                        .push(MaterialPageRoute(builder: (context) => WebViewWidget(locationUrl: googleAdressLink!)));
-                                                    progressUHD.dismiss();
-                                                  }),
+
+                                            const SizedBox(height: maxSpace),
+
+                                            Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(right: maxSpace),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        RatingBar(
+                                                          itemSize: 20,
+                                                          initialRating: 4.5,
+                                                          direction: Axis.horizontal,
+                                                          allowHalfRating: true,
+                                                          itemCount: 5,
+                                                          ratingWidget: RatingWidget(
+                                                              full: const Icon(Icons.star, color: Colors.black),
+                                                              half: const Icon(Icons.star_half),
+                                                              empty: const Icon(Icons.star_outline)),
+                                                          itemPadding: EdgeInsets.zero,
+                                                          onRatingUpdate: (rating) {
+                                                            setState(() {
+                                                              rating = rating;
+                                                            });
+                                                          },
+                                                        ),
+                                                        const Text(
+                                                          //? TODO firma puanı eklenecek
+                                                          '4.5 Harika',
+                                                          style: TextStyle(fontSize: 10),
+                                                          overflow: TextOverflow.ellipsis,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: const [
+                                                        Icon(
+                                                          Icons.remove_red_eye_sharp,
+                                                          size: 15,
+                                                        ),
+                                                        Text(
+                                                          //? TODO görüntülenme sayısı eklenecek
+                                                          '500 Görüntülenme',
+                                                          style: TextStyle(fontSize: 10),
+                                                          overflow: TextOverflow.ellipsis,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             ),
-                                            //------------------------------------------------------------------------
+                                            const SizedBox(height: maxSpace)
                                           ],
                                         ),
-
-                                        //-------------------------RANDEVU AL BUTONU----------------------------
-                                        homeDetailContent!.first.appointmentStatus == true
-                                            ? Material(
-                                                color: tertiaryColor,
-                                                borderRadius: BorderRadius.circular(30.0),
-                                                child: MaterialButton(
-                                                  minWidth: deviceWidth(context) * 0.4, //Buton minimum genişliği
-                                                  onPressed: () async {
-                                                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                    userIdData = prefs.getInt("userIdData")!;
-                                                    if (userIdData != 0) {
-                                                      AppointmentObject appointment = AppointmentObject(
-                                                          companyId: companyId!,
-                                                          userId: userIdData,
-                                                          companyNameS: companyName!,
-                                                          campaignId: campaingId!);
-                                                      if (!mounted) return;
-                                                      final progressHUD = ProgressHUD.of(context);
-                                                      progressHUD!.show();
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) => MakeAppointmentCalendarPage(appointment: appointment)));
-                                                      progressHUD.dismiss();
-
-                                                      //Buton tıklandığında randevu al sayfasına yönlendirilecek
-                                                    } else {
-                                                      if (!mounted) return;
-                                                      showNotMemberAlert(context);
-                                                    }
-                                                  },
-                                                  child: Row(
-                                                    children: [
-                                                      //----------------------------Buton Metni------------------------------------------
-                                                      Text("Randevu Al", style: Theme.of(context).textTheme.button!.copyWith(color: white)),
-                                                      //---------------------------------------------------------------------------------
-                                                      const SizedBox(width: 10), //butondaki Text ve icon arası boşluk
-                                                      const Icon(LineIcons.arrowRight, color: primaryColor),
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
-                                            : Container(
-                                                width: deviceWidth(context) * 0.4,
-                                              ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: maxSpace), // Alt Header ve beğeni metni arasındaki boşluk
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: maxSpace),
-                                      child: Row(
-                                        children: [
-                                          const Icon(Icons.favorite, // Beğeni İcon'ı
-                                              size: iconSize,
-                                              color: tertiaryColor),
-                                          const SizedBox(width: minSpace),
-                                          Text("${homeDetailContent!.first.likeCount} kişi tarafından beğenildi",
-                                              style: const TextStyle(color: tertiaryColor)),
-                                          // counter ile gösterilecek beğeni sayısı
-                                        ],
                                       ),
                                     ),
-                                    //------------------Açıklama Metni----------------------
-                                    Padding(
-                                      padding: const EdgeInsets.all(maxSpace),
-                                      child: Column(
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.bottomLeft,
-                                            child: Text(
-                                              contentTitle!,
-                                              style: const TextStyle(fontSize: 22, color: tertiaryColor),
-                                            ),
-                                          ),
-                                          Align(
-                                              alignment: Alignment.bottomLeft,
-                                              child: Html(
-                                                  data: homeDetailContent!.first
-                                                      .campaingDetail)), //Text(homeDetailContent.first.campaingDetail, style: TextStyle(fontSize: 18, color: Theme.of(context).hintColor))),
-                                        ],
-                                      ),
-                                    ),
-                                    //------------------------------------------------------
-                                  ],
+                                  ),
+                                  //------------------------------------------------------------------
+                                ],
+                              )),
+                          //------------------Açıklama Metni----------------------
+                          Padding(
+                            padding: const EdgeInsets.all(maxSpace),
+                            child: Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Text(
+                                    contentTitle!,
+                                    style: const TextStyle(fontSize: 22, color: tertiaryColor),
+                                  ),
                                 ),
-                              );
-                            })),
+                                Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Html(
+                                        data: homeDetailContent!.first
+                                            .campaingDetail)), //Text(homeDetailContent.first.campaingDetail, style: TextStyle(fontSize: 18, color: Theme.of(context).hintColor))),
+                              ],
+                            ),
+                          ),
+                          //------------------------------------------------------
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),

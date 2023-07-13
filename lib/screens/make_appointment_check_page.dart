@@ -68,7 +68,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                         alignment: Alignment.topLeft,
                         child: Text(
                           appointment.companyNameS!,
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: tertiaryColor),
                         ),
                       ),
                       const SizedBox(height: maxSpace)
@@ -78,7 +78,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                 Expanded(
                   child: Container(
                     decoration: const BoxDecoration(
-                      color: passivePurple,
+                      color: secondaryColor,
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(cardCurved),
                       ),
@@ -95,7 +95,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                               height: deviceWidth(context) * 0.15,
                               child: Text(
                                 appointment.appointmentDate ?? "tarih",
-                                style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                                style: const TextStyle(color: tertiaryColor, fontSize: 18),
                               ),
                             ),
                             InformationRowWidget(
@@ -105,7 +105,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                               operationName: "Saat",
                               child: Text(
                                 appointment.timeS!,
-                                style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                                style: const TextStyle(color: tertiaryColor, fontSize: 18),
                               ),
                             ),
                             InformationRowWidget(
@@ -118,7 +118,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                                   padding: EdgeInsets.all(deviceWidth(context) * 0.01),
                                   child: Text(
                                     appointment.operationS!,
-                                    style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                                    style: const TextStyle(color: tertiaryColor, fontSize: 16),
                                   ),
                                 ),
                               ),
@@ -153,7 +153,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                                   width: deviceWidth(context) * 0.6,
                                   height: deviceWidth(context) * 0.15,
                                   decoration: const BoxDecoration(
-                                    gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.topRight, colors: backGroundColor1),
+                                    color: tertiaryColor,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(5.0),
                                     ),
@@ -161,7 +161,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                                   child: Center(
                                     child: MaterialButton(
                                       child: const Text(
-                                        "Randevu Olustur",
+                                        "Randevu Oluştur",
                                         style: TextStyle(fontFamily: leadingFont, color: Colors.white, fontSize: 18),
                                       ),
                                       onPressed: () async {
@@ -192,8 +192,6 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                                           Navigator.pop(context);
                                           Navigator.pop(context);
                                           Navigator.pop(context);
-                                          //Navigator.pop(context);
-                                          //Navigator.pop(context);
                                           progressHUD.dismiss();
                                         } else {
                                           showNotMemberAlert(context);

@@ -26,7 +26,7 @@ class ResevationResultWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-          color: Provider.of<ThemeDataProvider>(context, listen: true).isLightTheme ? passivePurple : darkBg,
+          color: Provider.of<ThemeDataProvider>(context, listen: true).isLightTheme ? secondaryColor : darkBg,
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.all(defaultPadding),

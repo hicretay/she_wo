@@ -94,7 +94,7 @@ class _CompaniesPageState extends State<CompaniesPage> {
                             Expanded(
                               child: Container(
                                   decoration: const BoxDecoration(
-                                    color: tertiaryColor,
+                                    color: secondaryColor,
                                     borderRadius: BorderRadius.vertical(top: Radius.circular(cardCurved)),
                                   ),
                                   child: Padding(
@@ -103,19 +103,40 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                       child: Column(
                                         children: [
                                           ListTile(
+                                            visualDensity: const VisualDensity(vertical: -4),
+                                            dense: true,
                                             title: TextField(
-                                              cursorColor: primaryColor,
                                               controller: teSearch,
+                                              cursorColor: tertiaryColor,
                                               decoration: InputDecoration(
+                                                isDense: true,
                                                 hintText: "Ara",
                                                 hintStyle: const TextStyle(color: tertiaryColor),
                                                 focusedBorder: InputBorder.none,
                                                 enabledBorder: InputBorder.none,
-                                                contentPadding: const EdgeInsets.all(maxSpace),
                                                 filled: true,
-                                                fillColor: white,
-                                                border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(cardCurved),
+                                                fillColor: secondaryColor,
+                                                border: const OutlineInputBorder(
+                                                  borderRadius: BorderRadius.all(Radius.circular(cardCurved)),
+                                                ),
+                                                icon: CircleAvatar(
+                                                  maxRadius: 15,
+                                                  backgroundColor: secondaryColor,
+                                                  child: IconButton(
+                                                    iconSize: iconSize,
+                                                    icon: FaIcon(FontAwesomeIcons.search,
+                                                        color: Theme.of(context).hintColor, size: 16, textDirection: TextDirection.ltr),
+                                                    onPressed: () {
+                                                      selectedCompanies.clear();
+                                                      setState(() {
+                                                        for (var element in allCompanies) {
+                                                          if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
+                                                            selectedCompanies.add(element);
+                                                          }
+                                                        }
+                                                      });
+                                                    },
+                                                  ),
                                                 ),
                                               ),
                                               onTap: () {
@@ -139,19 +160,6 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                                 });
                                               },
                                             ),
-                                            trailing: IconButton(
-                                                icon: const FaIcon(FontAwesomeIcons.search,
-                                                    color: darkWhite, size: 20, textDirection: TextDirection.ltr),
-                                                onPressed: () {
-                                                  selectedCompanies.clear();
-                                                  setState(() {
-                                                    for (var element in allCompanies) {
-                                                      if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
-                                                        selectedCompanies.add(element);
-                                                      }
-                                                    }
-                                                  });
-                                                }),
                                           ),
                                           ListView.separated(
                                             padding: const EdgeInsets.all(0),

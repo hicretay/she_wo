@@ -93,7 +93,7 @@ class _MakeAppointmentCalendarPageState extends State<MakeAppointmentCalendarPag
                                 calendarStyle: CalendarStyle(
                                   isTodayHighlighted: true,
                                   selectedDecoration: BoxDecoration(
-                                    color: primaryColor,
+                                    color: tertiaryColor,
                                     shape: BoxShape.rectangle,
                                     borderRadius: BorderRadius.circular(minCurved),
                                   ),
@@ -105,7 +105,7 @@ class _MakeAppointmentCalendarPageState extends State<MakeAppointmentCalendarPag
                                     color: Colors.white,
                                   ),
                                   todayDecoration: BoxDecoration(
-                                    color: secondaryColor,
+                                    color: Colors.grey,
                                     shape: BoxShape.rectangle,
                                     borderRadius: BorderRadius.circular(minCurved),
                                   ),
@@ -137,7 +137,7 @@ class _MakeAppointmentCalendarPageState extends State<MakeAppointmentCalendarPag
                 color: Theme.of(context).backgroundColor,
                 child: TextButtonWidget(
                     buttonText: "Randevu alınacak işlemi seçiniz",
-                    icon: const FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: white),
+                    icon: const FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: primaryColor),
                     //-----------------------------Randevu alınacak işlemi seçiniz butonu------------------------------
                     onPressed: () async {
                       appointment.appointmentDate =

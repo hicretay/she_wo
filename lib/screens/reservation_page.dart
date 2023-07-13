@@ -155,7 +155,7 @@ class _ReservationPageState extends State<ReservationPage> {
                                   calendarStyle: CalendarStyle(
                                     isTodayHighlighted: true,
                                     selectedDecoration: BoxDecoration(
-                                      color: primaryColor,
+                                      color: tertiaryColor,
                                       shape: BoxShape.rectangle,
                                       borderRadius: BorderRadius.circular(minCurved),
                                     ),
@@ -165,10 +165,10 @@ class _ReservationPageState extends State<ReservationPage> {
                                     defaultTextStyle: const TextStyle(color: darkWhite),
                                     outsideTextStyle: const TextStyle(color: darkWhite),
                                     selectedTextStyle: const TextStyle(
-                                      color: tertiaryColor,
+                                      color: primaryColor,
                                     ),
                                     todayDecoration: BoxDecoration(
-                                      color: secondaryColor,
+                                      color: Colors.grey,
                                       shape: BoxShape.rectangle,
                                       borderRadius: BorderRadius.circular(minCurved),
                                     ),
@@ -284,10 +284,3 @@ class _ReservationPageState extends State<ReservationPage> {
     );
   }
 }
-
-// class Event {
-//   final String operation;
-//   Event({required this.operation});
-
-//   String toString() => this.operation;
-// }

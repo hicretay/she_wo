@@ -269,29 +269,7 @@ class _HomePageState extends State<HomePage> {
                                                 dynamic number = homeContent[index].companyPhone.toString(); // arama ekranına yönlendirme
                                                 launchUrl(Uri(path: "tel://$number"));
                                               },
-                                              //--------------------------------------------------------"DETAYLI BİLGİ İÇİN" BUTONU-------------------------------------------------------------
-                                              onPressed: () async {
-                                                final progressUHD = ProgressHUD.of(context);
-                                                progressUHD!.show();
-                                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                userIdData = prefs.getInt("userIdData");
-                                                final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
-                                                    homeContent[index].companyId ?? 1, homeContent[index].campaingId ?? 1, userIdData!);
-                                                // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
-                                                if (!mounted) return;
-                                                Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                                    builder: (context) => HomeDetailPage(
-                                                        homeDetailContent: homeDetailContent!.result,
-                                                        campaingId: homeContent[index].campaingId,
-                                                        companyId: homeContent[index].companyId,
-                                                        companyLogo: homeContent[index].companyLogo,
-                                                        companyName: homeContent[index].companyName,
-                                                        contentTitle: homeContent[index].contentTitle,
-                                                        googleAdressLink: homeContent[index].googleAdressLink,
-                                                        companyPhone: homeContent[index].companyPhone.toString())));
-                                                progressUHD.dismiss();
-                                              },
-                                              //----------------------------------------------------------------------------------------------------------------------
+                                              
                                               homeDetailOntap: () async {
                                                 final progressUHD = ProgressHUD.of(context);
                                                 progressUHD!.show();
