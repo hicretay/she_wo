@@ -42,10 +42,10 @@ Map<String, String> header = {
 };
 
 //---------------------------------------------------Login Fonksiyonu-------------------------------------------------------------
-Future<LoginJsn?> loginJsnFunc(String userName, String password, bool social) async {
+Future<LoginJsn?> loginJsnFunc(String userName, String password) async {
   final response = await http.post(
     Uri.parse("${url}LoginJsn"),
-    body: '{"userName":"$userName","password":"$password","social":$social}',
+    body: '{"userName":"$userName","password":"$password"}',
     headers: header,
   );
 
@@ -407,8 +407,8 @@ Future<LikedCampaingJsn?> likedCampaingJsnFunc(int userId) async {
 
 //-------------------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------Toast Mesaj Gösterme Fonksiyonu--------------------------------------------------------
-showToast(BuildContext context, String content) {
-  return Fluttertoast.showToast(
+showToast(BuildContext context, String content) async {
+  return await Fluttertoast.showToast(
     msg: content,
     backgroundColor: tertiaryColor,
     timeInSecForIosWeb: 3,

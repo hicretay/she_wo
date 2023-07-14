@@ -40,7 +40,7 @@ class _SplashPageState extends State<SplashPage> {
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LogRegChoicePage()), (route) => false);
         } else {
           // ignore: unused_local_variable
-          final LoginJsn? userData = await loginJsnFunc(user, pass!, false);
+          final LoginJsn? userData = await loginJsnFunc(user, pass!);
           if (!mounted) return;
           Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => const Root()));
         }

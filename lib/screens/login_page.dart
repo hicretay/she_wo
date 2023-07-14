@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                                     String password = txtPassword.text; // Şifre TextField'ının texti = password
                                     if (username != "" && password != "") {
                                       //--------------------------------USER DATASI DOLDURULMASI---------------------------
-                                      final LoginJsn? userData = await loginJsnFunc(username, password, false);
+                                      final LoginJsn? userData = await loginJsnFunc(username, password);
                                       if (userData!.success == true) {
                                         // Giriş kontrolü, succes
                                         SharedPreferences prefs = await SharedPreferences.getInstance();

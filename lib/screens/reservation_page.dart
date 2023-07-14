@@ -231,7 +231,7 @@ class _ReservationPageState extends State<ReservationPage> {
                                                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                           children: [
                                                             MaterialButton(
-                                                                color: primaryColor,
+                                                                color: tertiaryColor,
                                                                 child: const Text("Evet", style: TextStyle(color: white)),
                                                                 onPressed: () async {
                                                                   final progressHUD = ProgressHUD.of(context);
@@ -251,7 +251,7 @@ class _ReservationPageState extends State<ReservationPage> {
                                                                   progressHUD.dismiss();
                                                                 }),
                                                             MaterialButton(
-                                                              color: primaryColor,
+                                                              color: tertiaryColor,
                                                               child: const Text("Hayır", style: TextStyle(color: white)),
                                                               onPressed: () {
                                                                 showToast(context, "Randevu iptal edilmedi!");

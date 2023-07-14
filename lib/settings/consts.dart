@@ -65,6 +65,9 @@ var circularBasic = const Center(
   child: CircularProgressIndicator(backgroundColor: tertiaryColor, valueColor: AlwaysStoppedAnimation<Color>(secondaryColor)),
 ));
 
+var circularLoading = const Center(
+    child: CircularProgressIndicator(backgroundColor: tertiaryColor, strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(secondaryColor)));
+
 bool isThemeDark = false;
 ThemeData theme = ThemeData();
 Color? iconCol;

@@ -9,7 +9,7 @@ class JsonDataProvider with ChangeNotifier {
   LoginJsn userDataProvider = LoginJsn();
 
   getLoginData(context) async {
-    userDataProvider = (await loginJsnFunc(usernameP!, passwordP!, false))!;
+    userDataProvider = (await loginJsnFunc(usernameP!, passwordP!))!;
     notifyListeners();
   }
 }

@@ -30,7 +30,7 @@ class TextFieldWidget extends StatelessWidget {
           controller: textEditingController,
           keyboardType: keyboardType,
           obscureText: obscureText!,
-          cursorColor: primaryColor,
+          cursorColor: tertiaryColor,
           textAlign: TextAlign.center,
           decoration: InputDecoration(
             border: OutlineInputBorder(

@@ -182,6 +182,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                                           if (appointmentAddData!.success == true) {
                                             if (!mounted) return;
                                             await showToast(context, "Randevu başarıyla kaydedildi!");
+                                            progressHUD.dismiss();
                                           } else {
                                             if (!mounted) return;
                                             await showToast(context, "Randevu kaydı başarısız!");
@@ -192,7 +193,6 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                                           Navigator.pop(context);
                                           Navigator.pop(context);
                                           Navigator.pop(context);
-                                          progressHUD.dismiss();
                                         } else {
                                           showNotMemberAlert(context);
                                           progressHUD.dismiss();
