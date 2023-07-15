@@ -207,7 +207,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               },
                             ),
                             ListTileWidget(
-                              text: "Estetik Vitrini Hakkında",
+                              text: "She Wo Hakkında",
                               child: LineIcon(LineIcons.infoCircle, color: primaryColor),
                               onTap: () {
                                 Navigator.of(context, rootNavigator: true)

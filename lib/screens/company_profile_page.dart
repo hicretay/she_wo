@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../widgets/backleading_widget.dart';
+
 class CompanyProfilePage extends StatefulWidget {
   final CompanyProfileJsn? companyProfile;
   const CompanyProfilePage({Key? key, this.companyProfile}) : super(key: key);
@@ -39,28 +41,9 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            //iconun çevresini saran yapı tasarımı
-                            maxRadius: 20,
-                            backgroundColor: Colors.white,
-                            child: IconButton(
-                                iconSize: iconSize,
-                                icon: const Icon(Icons.arrow_back, color: primaryColor),
-                                onPressed: () {
-                                  Navigator.pop(context, false);
-                                }),
-                          ),
-                          const SizedBox(width: maxSpace),
-                          SizedBox(
-                            width: deviceWidth(context) * 0.7,
-                            child: Text(
-                              companyProfile!.result!.companyName!,
-                              style: const TextStyle(overflow: TextOverflow.fade, fontFamily: contentFont, fontSize: 20, color: Colors.white),
-                            ),
-                          ),
-                        ],
+                      BackLeadingWidget(
+                        text: companyProfile!.result!.companyName!,
+                        backColor: tertiaryColor,
                       ),
                     ],
                   ),
@@ -97,21 +80,21 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Column(children: [
-                            const Text("Kampanya", style: TextStyle(color: white)),
+                            const Text("Kampanya", style: TextStyle(color: tertiaryColor)),
                             SizedBox(height: deviceHeight(context) * 0.01),
-                            Text(companyProfile!.result!.campaignCount.toString(), style: const TextStyle(color: white)),
+                            Text(companyProfile!.result!.campaignCount.toString(), style: const TextStyle(color: tertiaryColor)),
                           ]),
                           SizedBox(width: deviceWidth(context) * 0.05),
                           Column(children: [
-                            const Text("Beğeni", style: TextStyle(color: white)),
+                            const Text("Beğeni", style: TextStyle(color: tertiaryColor)),
                             SizedBox(height: deviceHeight(context) * 0.01),
-                            Text(companyProfile!.result!.likeCount.toString(), style: const TextStyle(color: white)),
+                            Text(companyProfile!.result!.likeCount.toString(), style: const TextStyle(color: tertiaryColor)),
                           ]),
                           SizedBox(width: deviceWidth(context) * 0.05),
                           Column(children: [
-                            const Text("Favori", style: TextStyle(color: white)),
+                            const Text("Favori", style: TextStyle(color: tertiaryColor)),
                             SizedBox(height: deviceHeight(context) * 0.01),
-                            Text(companyProfile!.result!.favCount.toString(), style: const TextStyle(color: white)),
+                            Text(companyProfile!.result!.favCount.toString(), style: const TextStyle(color: tertiaryColor)),
                           ])
                         ],
                       )

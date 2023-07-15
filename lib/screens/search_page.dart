@@ -1,11 +1,16 @@
-// ignore_for_file: avoid_function_literals_in_foreach_calls
+// ignore_for_file: avoid_function_literals_in_foreach_calls, avoid_print
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_progress_hud/flutter_progress_hud.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:she_wo/JsnClass/company_list_jsn.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../JsnClass/company_profile.dart';
+import '../widgets/backleading_widget.dart';
+import 'company_profile_page.dart';
 
 class SearchPage extends StatefulWidget {
   static const route = "searchPage";
@@ -20,6 +25,7 @@ class _SearchPageState extends State<SearchPage> {
   List allCompanies = [];
   List selectedCompanies = [];
   bool isFirstTime = true;
+  bool isSaved = false;
 
   Future<CompanyListJsn?> allCompaniesList() async {
     final CompanyListJsn? companyNewList = await companyListJsnFunc();
@@ -59,12 +65,16 @@ class _SearchPageState extends State<SearchPage> {
                             child: Padding(
                               padding: EdgeInsets.only(top: deviceHeight(context) * 0.03),
                               child: Column(
-                                // mainAxisAlignment: MainAxisAlignment.center,
-                                // crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
+                                  const Padding(
+                                    padding: EdgeInsets.all(defaultPadding),
+                                    child: BackLeadingWidget(
+                                      backColor: tertiaryColor,
+                                    ),
+                                  ),
                                   Center(
                                     child: Padding(
-                                      padding: EdgeInsets.only(top: deviceWidth(context) * 0.1),
+                                      padding: EdgeInsets.only(top: deviceWidth(context) * 0.05),
                                       child: SizedBox(
                                         height: deviceWidth(context) * 0.25,
                                         child: Center(
@@ -74,7 +84,7 @@ class _SearchPageState extends State<SearchPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: deviceHeight(context) * 0.1),
+                                    padding: EdgeInsets.only(top: deviceHeight(context) * 0.05),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -106,8 +116,8 @@ class _SearchPageState extends State<SearchPage> {
                                                 Flexible(
                                                   child: ListTile(
                                                     title: TextField(
+                                                      controller: teSearch,
                                                       cursorColor: tertiaryColor,
-                                                      readOnly: true,
                                                       decoration: InputDecoration(
                                                         isDense: true,
                                                         hintText: "Hizmet veya mekan arayın",
@@ -132,7 +142,37 @@ class _SearchPageState extends State<SearchPage> {
                                                           ),
                                                         ),
                                                       ),
-                                                      onTap: () {},
+                                                      onTap: () {
+                                                        selectedCompanies.clear();
+                                                        setState(() {
+                                                          isSaved = false;
+                                                        });
+                                                      },
+                                                      onChanged: (value) {
+                                                        selectedCompanies.clear();
+                                                        setState(() {
+                                                          for (var element in allCompanies) {
+                                                            if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
+                                                              selectedCompanies.add(element);
+                                                            }
+                                                          }
+                                                        });
+
+                                                        if (selectedCompanies.isEmpty) {
+                                                          setState(() {
+                                                            isSaved = false;
+                                                          });
+                                                        }
+                                                      },
+                                                      onSubmitted: (val) {
+                                                        if (selectedCompanies.isNotEmpty) {
+                                                          setState(() {
+                                                            isSaved = true;
+                                                          });
+                                                        }
+
+                                                        SystemChannels.textInput.invokeMethod('TextInput.hide');
+                                                      },
                                                     ),
                                                   ),
                                                 ),
@@ -197,13 +237,62 @@ class _SearchPageState extends State<SearchPage> {
                                                         .button!
                                                         .copyWith(color: white, fontFamily: contentFont, fontSize: 18, fontWeight: FontWeight.bold)),
                                                 //-----------------------------GİRİŞ BUTONU ONPRESSEDİ---------------------------------------------
-                                                onPressed: () {}),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    isSaved = true;
+                                                  });
+
+                                                  SystemChannels.textInput.invokeMethod('TextInput.hide');
+                                                }),
                                             //-----------------------------------------------------------------------------------------------------------------------------
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
+                                  if (isSaved && selectedCompanies.isNotEmpty)
+                                    ListView.separated(
+                                      padding: const EdgeInsets.all(0),
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: selectedCompanies.isEmpty ? allCompanies.length : selectedCompanies.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(left: defaultPadding, right: defaultPadding),
+                                          child: InkWell(
+                                            child: Container(
+                                              height: deviceHeight(context) * 0.06,
+                                              width: deviceWidth(context) * 0.06,
+                                              decoration: const BoxDecoration(
+                                                borderRadius: BorderRadius.all(Radius.circular(15)),
+                                                color: primaryColor,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  selectedCompanies.isEmpty ? allCompanies[index].companyName : selectedCompanies[index].companyName,
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(fontSize: 18, color: tertiaryColor),
+                                                ),
+                                              ),
+                                            ),
+                                            onTap: () async {
+                                              // final progressUHD = ProgressHUD.of(context);
+                                              // progressUHD!.show();
+                                              final CompanyProfileJsn? companyProfile = await companyListDetailJsnFunc(selectedCompanies[index].id);
+                                              if (!mounted) return;
+                                              Navigator.of(context, rootNavigator: true)
+                                                  .push(MaterialPageRoute(builder: (context) => CompanyProfilePage(companyProfile: companyProfile)));
+
+                                              // progressUHD.dismiss();
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      separatorBuilder: (BuildContext context, int index) {
+                                        return const SizedBox(height: minSpace);
+                                      },
+                                    ),
+                                  if (isSaved && selectedCompanies.isEmpty) const Text('Uygun hizmet veya mekan bulunamadı !'),
                                 ],
                               ),
                             ),

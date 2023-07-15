@@ -37,7 +37,7 @@ class _WebViewWidgetState extends State<WebViewWidget> {
                     ),
                     const SizedBox(width: maxSpace),
                     const Text(
-                      "Estetik Vitrini",
+                      "She Wo",
                       style: TextStyle(fontFamily: leadingFont, fontSize: 25, color: primaryColor),
                     ),
                   ],
