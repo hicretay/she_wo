@@ -29,17 +29,6 @@ class _MakeAppointmentCalendarPageState extends State<MakeAppointmentCalendarPag
 
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
-  late Map<DateTime, List<Event>> selectedEvents;
-
-  List<Event> _getEventsForDay(DateTime date) {
-    return selectedEvents[date] ?? [];
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    selectedEvents = {};
-  }
 
   _MakeAppointmentCalendarPageState({required this.appointment});
   @override
@@ -123,7 +112,6 @@ class _MakeAppointmentCalendarPageState extends State<MakeAppointmentCalendarPag
                                   formatButtonVisible: false,
                                   titleCentered: true,
                                 ),
-                                eventLoader: _getEventsForDay,
                               )
                             ],
                           ),

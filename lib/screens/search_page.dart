@@ -1,9 +1,10 @@
-// ignore_for_file: avoid_function_literals_in_foreach_calls, avoid_print
+// ignore_for_file: avoid_function_literals_in_foreach_calls, avoid_print, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:she_wo/JsnClass/company_list_jsn.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
@@ -11,6 +12,7 @@ import 'package:she_wo/settings/functions.dart';
 import '../JsnClass/company_profile.dart';
 import '../widgets/backleading_widget.dart';
 import 'company_profile_page.dart';
+import 'package:geolocator/geolocator.dart';
 
 class SearchPage extends StatefulWidget {
   static const route = "searchPage";
@@ -22,10 +24,14 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   TextEditingController teSearch = TextEditingController();
+  TextEditingController teLocation = TextEditingController();
+
   List allCompanies = [];
   List selectedCompanies = [];
   bool isFirstTime = true;
   bool isSaved = false;
+  String? currentAddress;
+  Position? currentPosition;
 
   Future<CompanyListJsn?> allCompaniesList() async {
     final CompanyListJsn? companyNewList = await companyListJsnFunc();
@@ -35,6 +41,57 @@ class _SearchPageState extends State<SearchPage> {
       });
     }
     return companyNewList;
+  }
+
+  Future<bool> handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      showToast(context, 'Location services are disabled. Please enable the services');
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        showToast(context, 'Location permissions are denied');
+
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      showToast(context, 'Location permissions are permanently denied, we cannot request permissions.');
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> getCurrentPosition() async {
+    final hasPermission = await handleLocationPermission();
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) {
+      setState(() => currentPosition = position);
+      getAddressFromLatLng(currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(currentPosition!.latitude, currentPosition!.longitude).then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        currentAddress = '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+        print(currentAddress);
+        setState(() {
+          teLocation.text = currentAddress ?? '';
+        });
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
   }
 
   @override
@@ -190,6 +247,7 @@ class _SearchPageState extends State<SearchPage> {
                                                 Flexible(
                                                   child: ListTile(
                                                     title: TextField(
+                                                      controller: teLocation,
                                                       cursorColor: tertiaryColor,
                                                       decoration: InputDecoration(
                                                         isDense: true,
@@ -215,7 +273,14 @@ class _SearchPageState extends State<SearchPage> {
                                                           ),
                                                         ),
                                                       ),
-                                                      onTap: () {},
+                                                      onTap: () async {
+                                                        selectedCompanies.clear();
+                                                        setState(() {
+                                                          isSaved = false;
+                                                        });
+
+                                                        await getCurrentPosition();
+                                                      },
                                                     ),
                                                   ),
                                                 ),

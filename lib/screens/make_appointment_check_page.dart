@@ -31,10 +31,15 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
   late List? appointmentList;
 
   Future appointmentListFunc() async {
-    final AppointmentListJsn? appointmentNewList = await appointmentListJsnFunc(1, "");
-    setState(() {
-      appointmentList = appointmentNewList!.result!;
-    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userIdData = prefs.getInt("userIdData");
+    final AppointmentListJsn? appointmentNewList = await appointmentListJsnFunc(userIdData!, "");
+
+    if (mounted) {
+      setState(() {
+        appointmentList = appointmentNewList!.result!;
+      });
+    }
   }
 
   @override
@@ -187,7 +192,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                                             if (!mounted) return;
                                             await showToast(context, "Randevu kaydı başarısız!");
                                           }
-                                          await appointmentListFunc();
+                                          // await appointmentListFunc();
                                           if (!mounted) return;
                                           Navigator.pop(context);
                                           Navigator.pop(context);
