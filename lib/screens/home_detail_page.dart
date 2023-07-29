@@ -13,6 +13,7 @@ import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
 import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/backleading_widget.dart';
+import 'package:she_wo/widgets/textfield_widget.dart';
 
 class HomeDetailPage extends StatefulWidget {
   final List? homeDetailContent;
@@ -78,6 +79,10 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
     });
   }
 
+  double rating = 4.5;
+  TextEditingController teComment = TextEditingController();
+  bool isOpenKeyboard = false;
+
   @override
   Widget build(BuildContext context) {
     final transformationController = TransformationController();
@@ -96,36 +101,38 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
     }
     //-------------------------------------------------------
 
-    double rating = 4.5;
+    isOpenKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
 
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        floatingActionButton: SingleChildScrollView(
-          child: FloatingActionButton.extended(
-              backgroundColor: tertiaryColor,
-              onPressed: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                userIdData = prefs.getInt("userIdData")!;
-                if (userIdData != 0) {
-                  AppointmentObject appointment =
-                      AppointmentObject(companyId: companyId!, userId: userIdData, companyNameS: companyName!, campaignId: campaingId!);
-                  if (!mounted) return;
+        resizeToAvoidBottomInset: true,
+        floatingActionButton: isOpenKeyboard
+            ? null
+            : SingleChildScrollView(
+                child: FloatingActionButton.extended(
+                    backgroundColor: tertiaryColor,
+                    onPressed: () async {
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      userIdData = prefs.getInt("userIdData")!;
+                      if (userIdData != 0) {
+                        AppointmentObject appointment =
+                            AppointmentObject(companyId: companyId!, userId: userIdData, companyNameS: companyName!, campaignId: campaingId!);
+                        if (!mounted) return;
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MakeAppointmentCalendarPage(appointment: appointment)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => MakeAppointmentCalendarPage(appointment: appointment)));
 
-                  //Buton tıklandığında randevu al sayfasına yönlendirilecek
-                } else {
-                  if (!mounted) return;
-                  showNotMemberAlert(context);
-                }
-              },
-              label: const Text(
-                "Randevu Al",
-                style: TextStyle(color: primaryColor),
+                        //Buton tıklandığında randevu al sayfasına yönlendirilecek
+                      } else {
+                        if (!mounted) return;
+                        showNotMemberAlert(context);
+                      }
+                    },
+                    label: const Text(
+                      "Randevu Al",
+                      style: TextStyle(color: primaryColor),
+                    ),
+                    icon: const FaIcon(FontAwesomeIcons.calendar, size: 18, color: primaryColor)),
               ),
-              icon: const FaIcon(FontAwesomeIcons.calendar, size: 18, color: primaryColor)),
-        ),
         body: ProgressHUD(
           child: Builder(
             builder: (context) => BackGroundContainer(
@@ -228,16 +235,16 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                               half: const Icon(Icons.star_half),
                                                               empty: const Icon(Icons.star_outline)),
                                                           itemPadding: EdgeInsets.zero,
-                                                          onRatingUpdate: (rating) {
+                                                          onRatingUpdate: (value) {
                                                             setState(() {
-                                                              rating = rating;
+                                                              rating = value;
                                                             });
                                                           },
                                                         ),
-                                                        const Text(
+                                                        Text(
                                                           //? TODO firma puanı eklenecek
-                                                          '4.5 Harika',
-                                                          style: TextStyle(fontSize: 10),
+                                                          '${rating.toString()} Harika',
+                                                          style: const TextStyle(fontSize: 10),
                                                           overflow: TextOverflow.ellipsis,
                                                         ),
                                                       ],
@@ -270,22 +277,107 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                 ],
                               )),
                           //------------------Açıklama Metni----------------------
-                          Padding(
-                            padding: const EdgeInsets.all(maxSpace),
+                          SingleChildScrollView(
                             child: Column(
                               children: [
-                                Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    contentTitle!,
-                                    style: const TextStyle(fontSize: 22, color: tertiaryColor),
+                                Padding(
+                                  padding: const EdgeInsets.all(maxSpace),
+                                  child: Column(
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: Text(
+                                          contentTitle!,
+                                          style: const TextStyle(fontSize: 22, color: tertiaryColor),
+                                        ),
+                                      ),
+                                      Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Html(
+                                              data: homeDetailContent!.first
+                                                  .campaingDetail)), //Text(homeDetailContent.first.campaingDetail, style: TextStyle(fontSize: 18, color: Theme.of(context).hintColor))),
+                                    ],
                                   ),
                                 ),
-                                Align(
-                                    alignment: Alignment.bottomLeft,
-                                    child: Html(
-                                        data: homeDetailContent!.first
-                                            .campaingDetail)), //Text(homeDetailContent.first.campaingDetail, style: TextStyle(fontSize: 18, color: Theme.of(context).hintColor))),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: maxSpace),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Yorumlar',
+                                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        ListView.builder(
+                                            itemCount: 1,
+                                            shrinkWrap: true,
+                                            physics: const NeverScrollableScrollPhysics(),
+                                            itemBuilder: ((context, index) {
+                                              return Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: maxSpace),
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        const CircleAvatar(
+                                                          backgroundColor: secondaryColor,
+                                                          child: Text(
+                                                            'H',
+                                                            style: TextStyle(color: tertiaryColor, fontWeight: FontWeight.bold),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(width: maxSpace),
+                                                        Column(
+                                                          children: const [
+                                                            Text(
+                                                              'Hicret Ay',
+                                                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                                            ),
+                                                            Text(
+                                                              '10.08.2023',
+                                                              textAlign: TextAlign.left,
+                                                              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12, color: Colors.grey),
+                                                            )
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                    const SizedBox(height: minSpace),
+                                                    Align(
+                                                      alignment: Alignment.topLeft,
+                                                      child: RatingBar(
+                                                        itemSize: 24,
+                                                        initialRating: 4.5,
+                                                        direction: Axis.horizontal,
+                                                        allowHalfRating: true,
+                                                        itemCount: 5,
+                                                        ratingWidget: RatingWidget(
+                                                            full: const Icon(Icons.star, color: Colors.black),
+                                                            half: const Icon(Icons.star_half),
+                                                            empty: const Icon(Icons.star_outline)),
+                                                        itemPadding: EdgeInsets.zero,
+                                                        onRatingUpdate: (value) {},
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            })),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                TextFieldWidget(
+                                  hintText: "Yorumunuzu giriniz...",
+                                  obscureText: false,
+                                  inputFormatters: const [],
+                                  keyboardType: TextInputType.text,
+                                  textEditingController: teComment,
+                                ),
                               ],
                             ),
                           ),
