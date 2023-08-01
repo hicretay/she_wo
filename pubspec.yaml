@@ -31,6 +31,7 @@ dependencies:
   intl: ^0.17.0
   line_icons: ^2.0.1
   mask_text_input_formatter: ^2.0.0
+  page_transition: ^2.0.9
   provider: ^6.0.0
   pull_to_refresh: ^2.0.0
   rich_editor: ^0.0.5

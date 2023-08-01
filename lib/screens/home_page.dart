@@ -19,6 +19,7 @@ import '../settings/functions.dart';
 import '../widgets/background_container.dart';
 import '../widgets/home_container_widget.dart';
 import 'home_detail_page.dart';
+import 'package:page_transition/page_transition.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -269,7 +270,6 @@ class _HomePageState extends State<HomePage> {
                                                 dynamic number = homeContent[index].companyPhone.toString(); // arama ekranına yönlendirme
                                                 launchUrl(Uri(path: "tel://$number"));
                                               },
-                                              
                                               homeDetailOntap: () async {
                                                 final progressUHD = ProgressHUD.of(context);
                                                 progressUHD!.show();
@@ -279,8 +279,23 @@ class _HomePageState extends State<HomePage> {
                                                     homeContent[index].companyId ?? 1, homeContent[index].campaingId ?? 1, userIdData!);
                                                 // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
                                                 if (!mounted) return;
-                                                Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                                    builder: (context) => HomeDetailPage(
+
+                                                // Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                                //     builder: (context) => HomeDetailPage(
+                                                //         homeDetailContent: homeDetailContent!.result,
+                                                //         campaingId: homeContent[index].campaingId,
+                                                //         companyId: homeContent[index].companyId,
+                                                //         companyLogo: homeContent[index].companyLogo,
+                                                //         companyName: homeContent[index].companyName,
+                                                //         contentTitle: homeContent[index].contentTitle,
+                                                //         googleAdressLink: homeContent[index].googleAdressLink,
+                                                //         companyPhone: homeContent[index].companyPhone.toString())));
+
+                                                Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    type: PageTransitionType.leftToRight,
+                                                    child: HomeDetailPage(
                                                         homeDetailContent: homeDetailContent!.result,
                                                         campaingId: homeContent[index].campaingId,
                                                         companyId: homeContent[index].companyId,
@@ -288,7 +303,12 @@ class _HomePageState extends State<HomePage> {
                                                         companyName: homeContent[index].companyName,
                                                         contentTitle: homeContent[index].contentTitle,
                                                         googleAdressLink: homeContent[index].googleAdressLink,
-                                                        companyPhone: homeContent[index].companyPhone.toString())));
+                                                        companyPhone: homeContent[index].companyPhone.toString()),
+                                                    isIos: true,
+                                                    duration: const Duration(milliseconds: 400),
+                                                  ),
+                                                );
+
                                                 progressUHD.dismiss();
                                               },
                                             );

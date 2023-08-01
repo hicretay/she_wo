@@ -225,7 +225,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                     Row(
                                                       children: [
                                                         RatingBar(
-                                                          itemSize: 20,
+                                                          itemSize: 16,
                                                           initialRating: 4.5,
                                                           direction: Axis.horizontal,
                                                           allowHalfRating: true,
@@ -332,15 +332,17 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                         ),
                                                         const SizedBox(width: maxSpace),
                                                         Column(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: const [
                                                             Text(
                                                               'Hicret Ay',
-                                                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                                                             ),
                                                             Text(
                                                               '10.08.2023',
                                                               textAlign: TextAlign.left,
-                                                              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12, color: Colors.grey),
+                                                              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 10, color: Colors.grey),
                                                             )
                                                           ],
                                                         )
@@ -350,7 +352,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                     Align(
                                                       alignment: Alignment.topLeft,
                                                       child: RatingBar(
-                                                        itemSize: 24,
+                                                        itemSize: 20,
                                                         initialRating: 4.5,
                                                         direction: Axis.horizontal,
                                                         allowHalfRating: true,
@@ -363,6 +365,14 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                         onRatingUpdate: (value) {},
                                                       ),
                                                     ),
+                                                    const SizedBox(height: minSpace),
+                                                    const Align(
+                                                      alignment: Alignment.centerLeft,
+                                                      child: Text(
+                                                        'Çok ilgili bir firmaydı, çok memnun kaldım.',
+                                                        style: TextStyle(fontWeight: FontWeight.normal, fontSize: 13, color: Colors.grey),
+                                                      ),
+                                                    )
                                                   ],
                                                 ),
                                               );
