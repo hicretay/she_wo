@@ -428,7 +428,7 @@ showAlert(BuildContext context, String content) {
           actions: <Widget>[
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               MaterialButton(
-                  color: primaryColor,
+                  color: tertiaryColor,
                   child: const Text("Kapat", style: TextStyle(fontFamily: leadingFont, color: white)),
                   onPressed: () async {
                     Navigator.of(context).pop();

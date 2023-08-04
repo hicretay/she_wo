@@ -1,3 +1,4 @@
+import 'package:provider/provider.dart';
 import 'package:she_wo/JsnClass/company_profile.dart';
 import 'package:she_wo/providers/navigation_provider.dart';
 import 'package:she_wo/screens/appointment_operation_page.dart';
@@ -231,9 +232,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                   final progressUHD = ProgressHUD.of(context);
                                   progressUHD!.show();
                                   SharedPreferences prefs = await SharedPreferences.getInstance();
+                                  // ignore: use_build_context_synchronously
+                                  Provider.of<NavigationProvider>(context, listen: false).setCurrentTab(0);
                                   // shared preferences nesnelerinin silinmesi
-                                  prefs.remove("user");
-                                  prefs.remove("pass");
+                                  prefs.remove("isLoggedIn");
                                   prefs.remove("userIdData");
                                   prefs.remove("namesurname");
                                   prefs.remove("isFirstLogin");

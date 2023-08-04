@@ -29,6 +29,11 @@ class NavigationProvider extends ChangeNotifier {
   int _currentScreenIndex = HOME_PAGE; // Başlangıç sayfası homePage
   int get currentTabIndex => _currentScreenIndex;
 
+  void setCurrentTab(int tab) {
+    _currentScreenIndex = tab;
+    notifyListeners();
+  }
+
   Route<dynamic> onGenerateRoute(RouteSettings settings) {
     if (settings.name == SplashPage.route) {
       return MaterialPageRoute(builder: (_) => const SplashPage());
