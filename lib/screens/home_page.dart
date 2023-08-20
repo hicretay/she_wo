@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:she_wo/screens/search_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../JsnClass/company_list_jsn.dart';
 import '../JsnClass/content_stream_detail_jsn.dart';
 import '../JsnClass/content_stream_jsn.dart';
 import '../JsnClass/content_stream_jsn.dart' as r;
@@ -45,6 +46,22 @@ class _HomePageState extends State<HomePage> {
 
 //-----------------------------------------
 
+  List allCompanies = [];
+  bool isFirstTime = true;
+  String? date;
+
+  Future<CompanyListJsn> allCompaniesList() async {
+    final CompanyListJsn? companyNewList = await companyListJsnFunc();
+    if (mounted) {
+      setState(() {
+        allCompanies = companyNewList!.result!;
+      });
+    }
+
+    print(allCompanies.first);
+    return companyNewList!;
+  }
+
   Future getHomeData() async {
     setState(() {
       isLoading = true;
@@ -71,6 +88,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     getAllCategories();
+    allCompaniesList();
   }
 
   Future getAllCategories() async {
@@ -215,7 +233,7 @@ class _HomePageState extends State<HomePage> {
                                           itemCount: homeCategoryList.length,
                                           itemBuilder: (BuildContext ctx, index) {
                                             return HomeContainerWidget(
-                                              homeContent: homeContent[index],
+                                              // homeContent: homeContent[index],
                                               isPopular: true,
                                               isCategoryWidget: true,
                                               companyName: homeCategoryList[index].leading,
@@ -256,15 +274,15 @@ class _HomePageState extends State<HomePage> {
                                             mainAxisSpacing: 16,
                                             mainAxisExtent: 120,
                                           ),
-                                          itemCount: homeContent.length,
+                                          itemCount: allCompanies.length,
                                           itemBuilder: (BuildContext ctx, index) {
                                             return HomeContainerWidget(
-                                              homeContent: homeContent[index],
+                                              // homeContent: homeContent[index],
                                               isCategoryWidget: true,
-                                              companyLogo: homeContent[index].companyLogo,
-                                              companyName: homeContent[index].companyName,
-                                              contentPicture: homeContent[index].contentPicture,
-                                              cardText: homeContent[index].contentTitle,
+                                              companyLogo: allCompanies[index].companyLogo,
+                                              companyName: allCompanies[index].companyName,
+                                              // contentPicture: homeContent[index].contentPicture,
+                                              // cardText: homeContent[index].contentTitle,
                                               pinColor: primaryColor,
                                               onPressedPhone: () async {
                                                 dynamic number = homeContent[index].companyPhone.toString(); // arama ekranına yönlendirme
@@ -346,12 +364,12 @@ class _HomePageState extends State<HomePage> {
                                                 child: SizedBox(
                                                   width: 300,
                                                   child: HomeContainerWidget(
-                                                    homeContent: homeContent[index],
+                                                    // homeContent: homeContent[index],
                                                     isCategoryWidget: false,
                                                     companyLogo: homeContent[index].companyLogo,
                                                     companyName: homeContent[index].companyName,
                                                     contentPicture: homeContent[index].contentPicture,
-                                                    cardText: homeContent[index].contentTitle,
+                                                    // cardText: homeContent[index].contentTitle,
                                                     pinColor: primaryColor,
                                                     onPressedPhone: () async {
                                                       dynamic number = homeContent[index].companyPhone.toString(); // arama ekranına yönlendirme

@@ -1,11 +1,11 @@
-import 'package:she_wo/screens/splash_page.dart';
-import 'package:she_wo/providers/navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
+import 'providers/navigation_provider.dart';
 import 'providers/theme_data_provider.dart';
+import 'screens/splash_page.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized(); // main de runApp'ten önce işlem yapılabilmesini sağlar
@@ -18,7 +18,6 @@ Future main() async {
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     Provider.of<ThemeDataProvider>(context, listen: false).loadTheme();
