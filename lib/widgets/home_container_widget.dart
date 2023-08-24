@@ -18,7 +18,7 @@ class HomeContainerWidget extends StatefulWidget {
   final VoidCallback? onPressedLocation, onPressedPhone, homeDetailOntap, logoOnTap;
   final bool isCategoryWidget;
   final bool? isPopular;
-  // final r.Result? homeContent;
+  final r.Result? homeContent;
 
   const HomeContainerWidget({
     Key? key,
@@ -37,7 +37,7 @@ class HomeContainerWidget extends StatefulWidget {
     this.logoOnTap,
     required this.isCategoryWidget,
     this.isPopular,
-    // this.homeContent,
+    this.homeContent,
   }) : super(key: key);
 
   @override
@@ -89,7 +89,7 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                                     )
                                   : DecorationImage(
                                       fit: BoxFit.fitWidth,
-                                      image: NetworkImage(widget.companyLogo ?? ''),
+                                      image: NetworkImage(widget.contentPicture!),
                                     )),
                         ),
                       ),
