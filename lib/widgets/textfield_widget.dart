@@ -10,9 +10,18 @@ class TextFieldWidget extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final String? Function(String?)? validator;
   final VoidCallback? onTap;
+  final double? height;
 
   const TextFieldWidget(
-      {Key? key, this.hintText, this.textEditingController, this.keyboardType, this.obscureText, this.inputFormatters, this.validator, this.onTap})
+      {Key? key,
+      this.hintText,
+      this.textEditingController,
+      this.keyboardType,
+      this.obscureText,
+      this.inputFormatters,
+      this.validator,
+      this.onTap,
+      this.height})
       : super(key: key);
 
   @override
@@ -23,7 +32,7 @@ class TextFieldWidget extends StatelessWidget {
         height: deviceHeight(context) * 0.07,
         width: deviceWidth(context),
         child: TextFormField(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          // autovalidateMode: AutovalidateMode.onUserInteraction,
           onTap: onTap,
           inputFormatters: inputFormatters,
           obscuringCharacter: "*",
@@ -41,11 +50,11 @@ class TextFieldWidget extends StatelessWidget {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16.0),
-              borderSide: const BorderSide(color: secondaryColor, width: 0.0),
+              borderSide: const BorderSide(color: Colors.black, width: 0.0),
             ),
             errorBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
-            contentPadding: const EdgeInsets.all(maxSpace),
+            contentPadding: EdgeInsets.all(height ?? maxSpace),
             filled: true,
             fillColor: secondaryColor,
             hintText: hintText,

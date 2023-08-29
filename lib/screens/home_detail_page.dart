@@ -226,22 +226,13 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                   children: [
                                                     Row(
                                                       children: [
-                                                        RatingBar(
+                                                        RatingBarIndicator(
+                                                          rating: 4.5,
+                                                          itemBuilder: (context, index) => const Icon(Icons.star, color: Colors.black),
                                                           itemSize: 16,
-                                                          initialRating: 4.5,
                                                           direction: Axis.horizontal,
-                                                          allowHalfRating: true,
                                                           itemCount: 5,
-                                                          ratingWidget: RatingWidget(
-                                                              full: const Icon(Icons.star, color: Colors.black),
-                                                              half: const Icon(Icons.star_half),
-                                                              empty: const Icon(Icons.star_outline)),
                                                           itemPadding: EdgeInsets.zero,
-                                                          onRatingUpdate: (value) {
-                                                            setState(() {
-                                                              rating = value;
-                                                            });
-                                                          },
                                                         ),
                                                         Text(
                                                           //? TODO firma puanı eklenecek
@@ -300,7 +291,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: maxSpace),
+                                  padding: const EdgeInsets.symmetric(horizontal: maxSpace, vertical: maxSpace),
                                   child: Align(
                                     alignment: Alignment.topLeft,
                                     child: Column(
@@ -317,77 +308,135 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                             shrinkWrap: true,
                                             physics: const NeverScrollableScrollPhysics(),
                                             itemBuilder: ((context, index) {
-                                              return Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: maxSpace),
-                                                child: Column(
-                                                  children: [
-                                                    const Row(
+                                              return Column(
+                                                children: [
+                                                  const Divider(),
+                                                  Padding(
+                                                    padding: const EdgeInsets.symmetric(vertical: maxSpace),
+                                                    child: Column(
                                                       children: [
-                                                        CircleAvatar(
-                                                          backgroundColor: secondaryColor,
-                                                          child: Text(
-                                                            'H',
-                                                            style: TextStyle(color: tertiaryColor, fontWeight: FontWeight.bold),
-                                                          ),
-                                                        ),
-                                                        SizedBox(width: maxSpace),
-                                                        Column(
-                                                          mainAxisAlignment: MainAxisAlignment.start,
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                        const Row(
                                                           children: [
-                                                            Text(
-                                                              'Hicret Ay',
-                                                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                                                            CircleAvatar(
+                                                              backgroundColor: secondaryColor,
+                                                              child: Text(
+                                                                'H',
+                                                                style: TextStyle(color: tertiaryColor, fontWeight: FontWeight.bold),
+                                                              ),
                                                             ),
-                                                            Text(
-                                                              '10.08.2023',
-                                                              textAlign: TextAlign.left,
-                                                              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 10, color: Colors.grey),
+                                                            SizedBox(width: maxSpace),
+                                                            Column(
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Text(
+                                                                  'Hicret Ay',
+                                                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                                                                ),
+                                                                Text(
+                                                                  '10.08.2023',
+                                                                  textAlign: TextAlign.left,
+                                                                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 10, color: Colors.grey),
+                                                                )
+                                                              ],
                                                             )
                                                           ],
-                                                        )
+                                                        ),
+                                                        const SizedBox(height: minSpace),
+                                                        Align(
+                                                          alignment: Alignment.topLeft,
+                                                          child: RatingBarIndicator(
+                                                            rating: 4.5,
+                                                            itemBuilder: (context, index) => const Icon(Icons.star, color: Colors.black),
+                                                            itemSize: 20,
+                                                            direction: Axis.horizontal,
+                                                            itemCount: 5,
+                                                            itemPadding: EdgeInsets.zero,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(height: minSpace),
+                                                        const Align(
+                                                          alignment: Alignment.centerLeft,
+                                                          child: Text(
+                                                            'Çok ilgili bir firmaydı, çok memnun kaldım.',
+                                                            style: TextStyle(fontWeight: FontWeight.normal, fontSize: 13, color: Colors.grey),
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
-                                                    const SizedBox(height: minSpace),
-                                                    Align(
-                                                      alignment: Alignment.topLeft,
-                                                      child: RatingBar(
-                                                        itemSize: 20,
-                                                        initialRating: 4.5,
-                                                        direction: Axis.horizontal,
-                                                        allowHalfRating: true,
-                                                        itemCount: 5,
-                                                        ratingWidget: RatingWidget(
-                                                            full: const Icon(Icons.star, color: Colors.black),
-                                                            half: const Icon(Icons.star_half),
-                                                            empty: const Icon(Icons.star_outline)),
-                                                        itemPadding: EdgeInsets.zero,
-                                                        onRatingUpdate: (value) {},
-                                                      ),
-                                                    ),
-                                                    const SizedBox(height: minSpace),
-                                                    const Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Text(
-                                                        'Çok ilgili bir firmaydı, çok memnun kaldım.',
-                                                        style: TextStyle(fontWeight: FontWeight.normal, fontSize: 13, color: Colors.grey),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
+                                                  ),
+                                                  const Divider(),
+                                                ],
                                               );
                                             })),
                                       ],
                                     ),
                                   ),
                                 ),
-                                TextFieldWidget(
-                                  hintText: "Yorumunuzu giriniz...",
-                                  obscureText: false,
-                                  inputFormatters: const [],
-                                  keyboardType: TextInputType.text,
-                                  textEditingController: teComment,
+                                Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Container(
+                                    height: deviceHeight(context) * 0.2,
+                                    decoration: const BoxDecoration(
+                                      color: secondaryColor,
+                                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 8),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: TextFieldWidget(
+                                              height: deviceHeight(context) * 0.1,
+                                              hintText: "Yorumunuzu giriniz...",
+                                              obscureText: false,
+                                              inputFormatters: const [],
+                                              keyboardType: TextInputType.text,
+                                              textEditingController: teComment,
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: RatingBar(
+                                                  itemSize: 25,
+                                                  initialRating: 0,
+                                                  direction: Axis.horizontal,
+                                                  allowHalfRating: true,
+                                                  itemCount: 5,
+                                                  ratingWidget: RatingWidget(
+                                                      full: const Icon(Icons.star, color: Colors.black),
+                                                      half: const Icon(Icons.star_half),
+                                                      empty: const Icon(Icons.star_outline)),
+                                                  itemPadding: EdgeInsets.zero,
+                                                  onRatingUpdate: (value) {},
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(right: 8),
+                                                child: MaterialButton(
+                                                    color: tertiaryColor,
+                                                    minWidth: deviceWidth(context) * 0.2,
+                                                    child: Text("Kaydet",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .labelLarge!
+                                                            .copyWith(color: white, fontFamily: contentFont, fontSize: 15)),
+                                                    //-----------------------------GİRİŞ BUTONU ONPRESSEDİ---------------------------------------------
+                                                    onPressed: () async {}),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
+                                const SizedBox(height: 100),
                               ],
                             ),
                           ),
