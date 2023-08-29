@@ -377,9 +377,9 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                   padding: const EdgeInsets.all(8),
                                   child: Container(
                                     height: deviceHeight(context) * 0.2,
-                                    decoration: const BoxDecoration(
-                                      color: secondaryColor,
-                                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                      border: Border.all(color: secondaryColor),
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 8),
