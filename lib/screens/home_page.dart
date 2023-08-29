@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                                         "Keşfet",
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline5!
+                                            .headlineSmall!
                                             .copyWith(color: tertiaryColor, fontFamily: leadingFont, fontWeight: FontWeight.bold),
                                       ),
                                     ),
@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                                         "Popüler Kategoriler",
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline6!
+                                            .titleLarge!
                                             .copyWith(color: tertiaryColor, fontFamily: leadingFont, fontWeight: FontWeight.bold),
                                       ),
                                     ),
@@ -238,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                                             'Tüm Kategoriler',
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .headline6!
+                                                .titleLarge!
                                                 .copyWith(color: tertiaryColor, fontFamily: leadingFont, fontWeight: FontWeight.bold),
                                           )),
                                     ),
@@ -324,7 +324,7 @@ class _HomePageState extends State<HomePage> {
                                             "En Favorileriler",
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .headline6!
+                                                .titleLarge!
                                                 .copyWith(color: tertiaryColor, fontFamily: leadingFont, fontWeight: FontWeight.bold),
                                           ),
                                         ),

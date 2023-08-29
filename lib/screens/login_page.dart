@@ -92,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                               child: MaterialButton(
                                   minWidth: deviceWidth(context) * 0.3, //Buton minimum genişliği
                                   child: Text("Giriş",
-                                      style: Theme.of(context).textTheme.button!.copyWith(color: white, fontFamily: contentFont, fontSize: 20)),
+                                      style: Theme.of(context).textTheme.labelLarge!.copyWith(color: white, fontFamily: contentFont, fontSize: 20)),
                                   //-----------------------------GİRİŞ BUTONU ONPRESSEDİ---------------------------------------------
                                   onPressed: () async {
                                     final progressHUD = ProgressHUD.of(context);

@@ -63,7 +63,7 @@ class _MakeAppointmentCalendarPageState extends State<MakeAppointmentCalendarPag
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
+                          color: Theme.of(context).colorScheme.background,
                           borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(cardCurved),
                           ),
@@ -122,7 +122,7 @@ class _MakeAppointmentCalendarPageState extends State<MakeAppointmentCalendarPag
                 ),
               ),
               bottomNavigationBar: Container(
-                color: Theme.of(context).backgroundColor,
+                color: Theme.of(context).colorScheme.background,
                 child: TextButtonWidget(
                     buttonText: "Randevu alınacak işlemi seçiniz",
                     icon: const FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: primaryColor),

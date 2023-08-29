@@ -114,7 +114,7 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).backgroundColor,
+                        color: Theme.of(context).colorScheme.background,
                         borderRadius: const BorderRadius.vertical(top: Radius.circular(cardCurved)),
                       ),
                       child: SingleChildScrollView(
@@ -368,7 +368,7 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
             buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                primary: secondaryColor,
+                foregroundColor: secondaryColor,
               ),
             ),
           ),
@@ -397,7 +397,7 @@ class _NewCampaignPageState extends State<NewCampaignPage> {
             buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                primary: secondaryColor,
+                foregroundColor: secondaryColor,
               ),
             ),
           ),

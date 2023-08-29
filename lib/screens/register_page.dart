@@ -123,7 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 child: MaterialButton(
                                     minWidth: deviceWidth(context) * 0.5,
                                     child: Text("Kayıt Ol",
-                                        style: Theme.of(context).textTheme.button!.copyWith(color: white, fontFamily: contentFont, fontSize: 20)),
+                                        style: Theme.of(context).textTheme.labelLarge!.copyWith(color: white, fontFamily: contentFont, fontSize: 20)),
                                     onPressed: () async {
                                       final progressUHD = ProgressHUD.of(context);
                                       progressUHD!.show();

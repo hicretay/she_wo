@@ -158,7 +158,7 @@ class _SearchPageState extends State<SearchPage> {
                                               "Arama",
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .headline5!
+                                                  .headlineSmall!
                                                   .copyWith(color: tertiaryColor, fontFamily: leadingFont, fontWeight: FontWeight.bold),
                                             ),
                                           ),
@@ -299,7 +299,7 @@ class _SearchPageState extends State<SearchPage> {
                                                 child: Text("UYGULA",
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .button!
+                                                        .labelLarge!
                                                         .copyWith(color: white, fontFamily: contentFont, fontSize: 18, fontWeight: FontWeight.bold)),
                                                 //-----------------------------GİRİŞ BUTONU ONPRESSEDİ---------------------------------------------
                                                 onPressed: () {

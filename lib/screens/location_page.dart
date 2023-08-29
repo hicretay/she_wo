@@ -119,7 +119,7 @@ class _LocationPageState extends State<LocationPage> {
                                 children: [
                                   Text(
                                     "Favori Bölgeler", //Büyük Başlık
-                                    style: Theme.of(context).textTheme.headline3!.copyWith(color: white, fontFamily: leadingFont),
+                                    style: Theme.of(context).textTheme.displaySmall!.copyWith(color: white, fontFamily: leadingFont),
                                     maxLines: 2,
                                   ),
                                   //   Align(
@@ -141,7 +141,7 @@ class _LocationPageState extends State<LocationPage> {
                               alignment: Alignment.bottomLeft,
                               child: Text(
                                 "Lütfen en az bir tane bölge seçiniz.", // Alt Başlık
-                                style: Theme.of(context).textTheme.subtitle1!.copyWith(color: white),
+                                style: Theme.of(context).textTheme.titleMedium!.copyWith(color: white),
                               ),
                             ),
                           ],
@@ -333,7 +333,7 @@ class _LocationPageState extends State<LocationPage> {
             ),
           ),
           bottomNavigationBar: Container(
-            color: Theme.of(context).backgroundColor,
+            color: Theme.of(context).colorScheme.background,
             child: TextButtonWidget(
                 buttonText: "Uygula",
                 onPressed: () async {

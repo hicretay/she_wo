@@ -73,7 +73,7 @@ class _FavoritePageState extends State<FavoritePage> {
                                 children: [
                                   Text(
                                     "favori salonlarım", //Büyük Başlık
-                                    style: Theme.of(context).textTheme.headline3!.copyWith(color: white, fontFamily: leadingFont),
+                                    style: Theme.of(context).textTheme.displaySmall!.copyWith(color: white, fontFamily: leadingFont),
                                     maxLines: 2,
                                   ),
                                   Align(

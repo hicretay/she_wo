@@ -126,7 +126,7 @@ class _ReservationPageState extends State<ReservationPage> {
                         children: [
                           Text(
                             "randevularım", //Büyük Başlık
-                            style: Theme.of(context).textTheme.headline4!.copyWith(color: tertiaryColor, fontFamily: leadingFont),
+                            style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: tertiaryColor, fontFamily: leadingFont),
                             maxLines: 2,
                           ),
                         ],

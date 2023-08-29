@@ -189,8 +189,8 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                                                   ),
                                                 ],
                                               ),
-                                              Row(
-                                                children: const [
+                                              const Row(
+                                                children: [
                                                   Icon(
                                                     Icons.remove_red_eye_sharp,
                                                     size: 15,

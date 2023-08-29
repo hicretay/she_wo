@@ -113,7 +113,7 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).backgroundColor,
+                      color: Theme.of(context).colorScheme.background,
                       borderRadius: const BorderRadius.vertical(top: Radius.circular(cardCurved)),
                     ),
                     child: RefreshIndicator(
@@ -466,7 +466,7 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
             buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                primary: secondaryColor,
+                foregroundColor: secondaryColor,
               ),
             ),
           ),

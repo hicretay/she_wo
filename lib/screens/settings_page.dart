@@ -80,7 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 child: Column(
                                   children: [
                                     Text("Profil",
-                                        style: Theme.of(context).textTheme.headline3!.copyWith(color: tertiaryColor, fontFamily: leadingFont)),
+                                        style: Theme.of(context).textTheme.displaySmall!.copyWith(color: tertiaryColor, fontFamily: leadingFont)),
                                     Align(
                                         alignment: Alignment.bottomLeft,
                                         child: Text(user, style: const TextStyle(color: tertiaryColor, fontSize: 16))),
@@ -90,8 +90,8 @@ class _SettingsPageState extends State<SettingsPage> {
                               ),
                             ],
                           ),
-                          Column(
-                            children: const [
+                          const Column(
+                            children: [
                               CircleAvatar(
                                 radius: 32,
                                 backgroundColor: tertiaryColor,
@@ -108,9 +108,9 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     Expanded(
                       child: Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(cardCurved)), //Yalnızca dikeyde yuvarlatılmış
+                        decoration: const BoxDecoration(
+                          color: secondaryColor,
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(cardCurved)), //Yalnızca dikeyde yuvarlatılmış
                         ),
                         child: ListView(
                           controller: NavigationProvider.of(context).screens[SETTINGS_PAGE].scrollController,
@@ -176,7 +176,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             const SizedBox(height: minSpace), // Post üstü - divider arası boşluk
                             ListTileWidget(
                               text: "Lisans Sözleşmesi",
-                              child: LineIcon(LineIcons.fileContract, color: primaryColor),
+                              child: const LineIcon(LineIcons.fileContract, color: primaryColor),
                               onTap: () {
                                 final progressHUD = ProgressHUD.of(context);
                                 progressHUD!.show();
@@ -187,7 +187,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                             ListTileWidget(
                               text: "Kullanım Sözleşmesi",
-                              child: LineIcon(LineIcons.fileSignature, color: primaryColor),
+                              child: const LineIcon(LineIcons.fileSignature, color: primaryColor),
                               onTap: () {
                                 final progressHUD = ProgressHUD.of(context);
                                 progressHUD!.show();
@@ -198,7 +198,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                             ListTileWidget(
                               text: "Gizlilik Bildirimi",
-                              child: LineIcon(LineIcons.file, color: primaryColor),
+                              child: const LineIcon(LineIcons.file, color: primaryColor),
                               onTap: () {
                                 final progressHUD = ProgressHUD.of(context);
                                 progressHUD!.show();
@@ -209,7 +209,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                             ListTileWidget(
                               text: "She Wo Hakkında",
-                              child: LineIcon(LineIcons.infoCircle, color: primaryColor),
+                              child: const LineIcon(LineIcons.infoCircle, color: primaryColor),
                               onTap: () {
                                 Navigator.of(context, rootNavigator: true)
                                     .push(MaterialPageRoute(builder: (context) => const WebViewWidget(locationUrl: "https://she_wo.com/About.html")));

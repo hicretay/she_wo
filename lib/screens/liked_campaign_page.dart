@@ -72,7 +72,7 @@ class _LikedCampaignPageState extends State<LikedCampaignPage> {
                                 children: [
                                   Text(
                                     "beğenilerim", //Büyük Başlık
-                                    style: Theme.of(context).textTheme.headline3!.copyWith(color: white, fontFamily: leadingFont),
+                                    style: Theme.of(context).textTheme.displaySmall!.copyWith(color: white, fontFamily: leadingFont),
                                     maxLines: 2,
                                   ),
                                   Align(

@@ -129,10 +129,10 @@ class _UpdateCampaignPageState extends State<UpdateCampaignPage> {
                           ),
                         ],
                       )),
-                  Padding(
-                    padding: const EdgeInsets.only(left: defaultPadding),
+                  const Padding(
+                    padding: EdgeInsets.only(left: defaultPadding),
                     child: Column(
-                      children: const [
+                      children: [
                         Align(
                           alignment: Alignment.topLeft,
                           child: Text(
@@ -147,7 +147,7 @@ class _UpdateCampaignPageState extends State<UpdateCampaignPage> {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).backgroundColor,
+                        color: Theme.of(context).colorScheme.background,
                         borderRadius: const BorderRadius.vertical(top: Radius.circular(cardCurved)),
                       ),
                       child: SingleChildScrollView(
@@ -376,7 +376,7 @@ class _UpdateCampaignPageState extends State<UpdateCampaignPage> {
             buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                primary: secondaryColor,
+                foregroundColor: secondaryColor,
               ),
             ),
           ),
@@ -405,7 +405,7 @@ class _UpdateCampaignPageState extends State<UpdateCampaignPage> {
             buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                primary: secondaryColor,
+                foregroundColor: secondaryColor,
               ),
             ),
           ),

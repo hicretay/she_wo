@@ -76,7 +76,7 @@ class _MakeAppointmentPersonelPageState extends State<MakeAppointmentPersonelPag
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).backgroundColor,
+                        color: Theme.of(context).colorScheme.background,
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(cardCurved),
                         ),
@@ -195,7 +195,7 @@ class _MakeAppointmentPersonelPageState extends State<MakeAppointmentPersonelPag
             ),
             //-----------------------------------RANDEVU SAATİNİ SEÇ BUTONU-------------------------------------------
             bottomNavigationBar: Container(
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).colorScheme.background,
               child: TextButtonWidget(
                   buttonText: "Randevu Saatini Seç",
                   icon: const FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: white),

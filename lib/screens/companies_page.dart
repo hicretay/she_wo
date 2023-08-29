@@ -77,7 +77,7 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                     alignment: Alignment.topLeft,
                                     child: Text(
                                       "firmalar",
-                                      style: Theme.of(context).textTheme.headline4!.copyWith(color: tertiaryColor, fontFamily: leadingFont),
+                                      style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: tertiaryColor, fontFamily: leadingFont),
                                     ),
                                   ),
                                   const Align(

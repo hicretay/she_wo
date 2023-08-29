@@ -12,7 +12,7 @@ BoxDecoration reservationBoxDecoration = BoxDecoration(
 );
 
 Text leadingText(BuildContext context, String leading) {
-  return Text(leading, style: Theme.of(context).textTheme.headline4!.copyWith(color: tertiaryColor, fontFamily: leadingFont));
+  return Text(leading, style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: tertiaryColor, fontFamily: leadingFont));
 }
 
 TextStyle reservationText(BuildContext context) {

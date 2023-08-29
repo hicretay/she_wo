@@ -63,7 +63,7 @@ class _LogRegChoicePageState extends State<LogRegChoicePage> {
                                   child: Text("Üye Girişi",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .button!
+                                          .labelLarge!
                                           .copyWith(color: isPressed ? white : tertiaryColor, fontFamily: contentFont, fontSize: 20)),
                                   //-----------------------------GİRİŞ BUTONU ONPRESSEDİ---------------------------------------------
                                   onPressed: () async {
@@ -86,7 +86,7 @@ class _LogRegChoicePageState extends State<LogRegChoicePage> {
                                   minWidth: deviceWidth(context), //Buton minimum genişliği
                                   child: Text("Kayıt Ol",
                                       style:
-                                          Theme.of(context).textTheme.button!.copyWith(color: tertiaryColor, fontFamily: contentFont, fontSize: 20)),
+                                          Theme.of(context).textTheme.labelLarge!.copyWith(color: tertiaryColor, fontFamily: contentFont, fontSize: 20)),
                                   //-----------------------------GİRİŞ BUTONU ONPRESSEDİ---------------------------------------------
                                   onPressed: () async {
                                     setState(() {

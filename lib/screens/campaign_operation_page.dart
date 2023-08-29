@@ -98,7 +98,7 @@ class _CampaignOperationPageState extends State<CampaignOperationPage> {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).backgroundColor,
+                        color: Theme.of(context).colorScheme.background,
                         borderRadius: const BorderRadius.vertical(top: Radius.circular(cardCurved)),
                       ),
                       child: RefreshIndicator(

@@ -1,10 +1,11 @@
 // ignore_for_file: avoid_print, library_private_types_in_public_api, no_logic_in_create_state, unused_local_variable
 
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:html/parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:she_wo/JsnClass/content_stream_detail_jsn.dart';
 import 'package:she_wo/model/appointment_model.dart';
@@ -102,6 +103,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
     //-------------------------------------------------------
 
     isOpenKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
+    var detailTest = parse(homeDetailContent!.first.campaingDetail);
 
     return SafeArea(
       child: Scaffold(
@@ -249,8 +251,8 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                         ),
                                                       ],
                                                     ),
-                                                    Row(
-                                                      children: const [
+                                                    const Row(
+                                                      children: [
                                                         Icon(
                                                           Icons.remove_red_eye_sharp,
                                                           size: 15,
@@ -291,11 +293,9 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                           style: const TextStyle(fontSize: 22, color: tertiaryColor),
                                         ),
                                       ),
-                                      Align(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Html(
-                                              data: homeDetailContent!.first
-                                                  .campaingDetail)), //Text(homeDetailContent.first.campaingDetail, style: TextStyle(fontSize: 18, color: Theme.of(context).hintColor))),
+                                      Align(alignment: Alignment.bottomLeft, child: Text(detailTest.body!.text))
+
+                                      //Text(homeDetailContent.first.campaingDetail, style: TextStyle(fontSize: 18, color: Theme.of(context).hintColor))),
                                     ],
                                   ),
                                 ),
@@ -321,20 +321,20 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                 padding: const EdgeInsets.symmetric(vertical: maxSpace),
                                                 child: Column(
                                                   children: [
-                                                    Row(
+                                                    const Row(
                                                       children: [
-                                                        const CircleAvatar(
+                                                        CircleAvatar(
                                                           backgroundColor: secondaryColor,
                                                           child: Text(
                                                             'H',
                                                             style: TextStyle(color: tertiaryColor, fontWeight: FontWeight.bold),
                                                           ),
                                                         ),
-                                                        const SizedBox(width: maxSpace),
+                                                        SizedBox(width: maxSpace),
                                                         Column(
                                                           mainAxisAlignment: MainAxisAlignment.start,
                                                           crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: const [
+                                                          children: [
                                                             Text(
                                                               'Hicret Ay',
                                                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
