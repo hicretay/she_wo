@@ -2,9 +2,7 @@ import 'package:provider/provider.dart';
 import 'package:she_wo/JsnClass/company_profile.dart';
 import 'package:she_wo/providers/navigation_provider.dart';
 import 'package:she_wo/screens/appointment_operation_page.dart';
-import 'package:she_wo/screens/campaign_operation_page.dart';
 import 'package:she_wo/screens/company_information_page.dart';
-import 'package:she_wo/screens/location_page.dart';
 import 'package:she_wo/settings/functions.dart';
 import 'package:she_wo/widgets/webview_widget.dart';
 import 'package:she_wo/screens/login_page.dart';
@@ -13,7 +11,6 @@ import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/list_tile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
@@ -120,24 +117,6 @@ class _SettingsPageState extends State<SettingsPage> {
                             isAdmin == true
                                 ? Column(children: [
                                     ListTileWidget(
-                                      text: "Kampanya İşlemleri",
-                                      child: const FaIcon(FontAwesomeIcons.tags, size: 16, color: primaryColor),
-                                      onTap: () async {
-                                        final progressHUD = ProgressHUD.of(context);
-                                        progressHUD!.show();
-                                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                                        // ignore: unused_local_variable
-                                        int? userIdData = prefs.getInt("userIdData");
-                                        final CompanyProfileJsn? companyProfile = await companyListDetailJsnFunc(1); //userIdData
-                                        if (!mounted) return;
-                                        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                            builder: (context) => CampaignOperationPage(
-                                                  companyProfile: companyProfile,
-                                                )));
-                                        progressHUD.dismiss();
-                                      },
-                                    ),
-                                    ListTileWidget(
                                       text: "Gelen Randevular",
                                       child: const FaIcon(FontAwesomeIcons.calendarCheck, size: 18, color: primaryColor),
                                       onTap: () {
@@ -215,16 +194,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     .push(MaterialPageRoute(builder: (context) => const WebViewWidget(locationUrl: "https://she_wo.com/About.html")));
                               },
                             ),
-                            ListTileWidget(
-                              text: "Favori Konumlar",
-                              child: SvgPicture.asset("assets/icons/haritanoktası.svg", height: 25, width: 25, color: primaryColor),
-                              onTap: () async {
-                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                prefs.setString("isFirstLogin", "Favori Konumlar");
-                                if (!mounted) return;
-                                Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => const LocationPage()));
-                              },
-                            ),
+
                             ListTileWidget(
                                 text: "Uygulamadan çıkış yap",
                                 child: const Icon(Icons.exit_to_app, color: primaryColor),
