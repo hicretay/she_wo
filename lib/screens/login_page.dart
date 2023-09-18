@@ -106,7 +106,8 @@ class _LoginPageState extends State<LoginPage> {
                                         // Giriş kontrolü, succes
                                         SharedPreferences prefs = await SharedPreferences.getInstance();
                                         prefs.setString("namesurname", userData.result!.nameSurname!);
-                                        prefs.setBool("isLoggedIn", true);
+                                        prefs.setString("user", username);
+                                        prefs.setString("pass", password);
                                         prefs.setBool("isAdmin", userData.result!.admin!);
                                         prefs.setInt("userIdData", userData.result!.id!);
                                         if (!mounted) return;

@@ -205,7 +205,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                   // ignore: use_build_context_synchronously
                                   Provider.of<NavigationProvider>(context, listen: false).setCurrentTab(0);
                                   // shared preferences nesnelerinin silinmesi
-                                  prefs.remove("isLoggedIn");
+                                  prefs.remove("user");
+                                  prefs.remove("pass");
                                   prefs.remove("userIdData");
                                   prefs.remove("namesurname");
                                   prefs.remove("isFirstLogin");

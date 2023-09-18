@@ -12,7 +12,7 @@ class ExitAlertDialog extends StatelessWidget {
       title: const Text("Uygulamadan çıkılsın mı?"),
       actions: <Widget>[
         MaterialButton(
-          color: primaryColor,
+          color: tertiaryColor,
           onPressed: () {
             Navigator.of(context).pop(false);
           },
@@ -22,7 +22,7 @@ class ExitAlertDialog extends StatelessWidget {
           ),
         ),
         MaterialButton(
-          color: primaryColor,
+          color: tertiaryColor,
           onPressed: () {
             exit(0);
           },
