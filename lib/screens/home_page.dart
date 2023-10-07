@@ -6,20 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:she_wo/model/company_detail_model.dart';
+import 'package:she_wo/model/home_categories_model.dart' as h;
+import 'package:she_wo/model/top_favorite_model.dart' as f;
+import 'package:she_wo/screens/company_profile_page.dart';
 import 'package:she_wo/screens/search_page.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-import '../JsnClass/content_stream_detail_jsn.dart';
-import '../JsnClass/content_stream_jsn.dart';
-import '../JsnClass/content_stream_jsn.dart' as r;
-import '../model/category_model.dart';
 import '../settings/consts.dart';
 import '../settings/functions.dart';
 import '../widgets/background_container.dart';
 import '../widgets/home_container_widget.dart';
-import 'home_detail_page.dart';
-import 'package:page_transition/page_transition.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -33,10 +29,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<r.Result> homeContent = [];
-  int pageIndex = 1;
-  int? userIdData;
-  bool? isLogin;
+  List<h.Result> homeContent = [];
+  List<h.Result> populerContent = [];
+  List<f.Result> topFavoriteContent = [];
   bool isLoading = false;
 
   TextEditingController teSearch = TextEditingController();
@@ -49,32 +44,69 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       isLoading = true;
     });
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userIdData = prefs.getInt("userIdData");
-    pageIndex = 1;
-    final response = await http.post(Uri.parse("${url}ContentStream/List"), body: '{"userId":$userIdData,"page":$pageIndex}', headers: header);
+    final response = await http.post(Uri.parse("https://service.shewoo.com/api/CategoryOperation/List"), body: '{}', headers: header);
 
     if (response.statusCode == 200) {
       setState(() {
-        homeContent = contentStreamJsnFromJson(response.body).result ?? [];
-        isLoading = false;
+        homeContent = h.homeCategoriesModelFromJson(response.body).result;
       });
     } else {
       print('an error occured');
-      setState(() {
-        isLoading = false;
-      });
     }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  Future getPopulerData() async {
+    setState(() {
+      isLoading = true;
+    });
+    final response = await http.post(Uri.parse("https://service.shewoo.com/api/CategoryOperation/PopularList"), body: '{}', headers: header);
+
+    if (response.statusCode == 200) {
+      setState(() {
+        populerContent = h.homeCategoriesModelFromJson(response.body).result;
+      });
+    } else {
+      print('an error occured');
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  Future getTopFavoriteData() async {
+    setState(() {
+      isLoading = true;
+    });
+    final response = await http.post(Uri.parse("https://service.shewoo.com/api/CompanyList/TopFavorite"), body: '{}', headers: header);
+
+    if (response.statusCode == 200) {
+      setState(() {
+        topFavoriteContent = f.topFavoritesModelFromJson(response.body).result;
+      });
+    } else {
+      print('an error occured');
+    }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    getAllCategories();
+    getAllData();
   }
 
-  Future getAllCategories() async {
+  Future getAllData() async {
     await getHomeData();
+    await getPopulerData();
+    await getTopFavoriteData();
   }
 
 //-------------------------------------------------------------------------------------
@@ -212,18 +244,16 @@ class _HomePageState extends State<HomePage> {
                                             mainAxisSpacing: 16,
                                             mainAxisExtent: 120,
                                           ),
-                                          itemCount: homeCategoryList.length,
+                                          itemCount: populerContent.length,
                                           itemBuilder: (BuildContext ctx, index) {
                                             return HomeContainerWidget(
-                                              homeContent: homeContent[index],
                                               isPopular: true,
                                               isCategoryWidget: true,
-                                              companyName: homeCategoryList[index].leading,
-                                              contentPicture: homeCategoryList[index].image,
-                                              //--------------------------------------------------------"DETAYLI BİLGİ İÇİN" BUTONU-------------------------------------------------------------
-                                              onPressed: () {},
-                                              //----------------------------------------------------------------------------------------------------------------------
-                                              homeDetailOntap: () {},
+                                              companyName: populerContent[index].categoryName,
+                                              contentPicture: populerContent[index].categoryLogo,
+                                              homeDetailOntap: () {
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPage()));
+                                              },
                                             );
                                           }),
                                     ),
@@ -259,57 +289,13 @@ class _HomePageState extends State<HomePage> {
                                           itemCount: homeContent.length,
                                           itemBuilder: (BuildContext ctx, index) {
                                             return HomeContainerWidget(
-                                              homeContent: homeContent[index],
                                               isCategoryWidget: true,
-                                              companyLogo: homeContent[index].companyLogo,
-                                              companyName: homeContent[index].companyName,
-                                              contentPicture: homeContent[index].contentPicture,
-                                              cardText: homeContent[index].contentTitle,
+                                              companyName: homeContent[index].categoryName,
+                                              contentPicture: homeContent[index].categoryLogo,
+                                              cardText: homeContent[index].categoryName,
                                               pinColor: primaryColor,
-                                              onPressedPhone: () async {
-                                                dynamic number = homeContent[index].companyPhone.toString(); // arama ekranına yönlendirme
-                                                launchUrl(Uri(path: "tel://$number"));
-                                              },
                                               homeDetailOntap: () async {
-                                                final progressUHD = ProgressHUD.of(context);
-                                                progressUHD!.show();
-                                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                userIdData = prefs.getInt("userIdData");
-                                                final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
-                                                    homeContent[index].companyId ?? 1, homeContent[index].campaingId ?? 1, userIdData!);
-                                                // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
-                                                if (!mounted) return;
-
-                                                // Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                                //     builder: (context) => HomeDetailPage(
-                                                //         homeDetailContent: homeDetailContent!.result,
-                                                //         campaingId: homeContent[index].campaingId,
-                                                //         companyId: homeContent[index].companyId,
-                                                //         companyLogo: homeContent[index].companyLogo,
-                                                //         companyName: homeContent[index].companyName,
-                                                //         contentTitle: homeContent[index].contentTitle,
-                                                //         googleAdressLink: homeContent[index].googleAdressLink,
-                                                //         companyPhone: homeContent[index].companyPhone.toString())));
-
-                                                Navigator.push(
-                                                  context,
-                                                  PageTransition(
-                                                    type: PageTransitionType.leftToRight,
-                                                    child: HomeDetailPage(
-                                                        homeDetailContent: homeDetailContent!.result,
-                                                        campaingId: homeContent[index].campaingId,
-                                                        companyId: homeContent[index].companyId,
-                                                        companyLogo: homeContent[index].companyLogo,
-                                                        companyName: homeContent[index].companyName,
-                                                        contentTitle: homeContent[index].contentTitle,
-                                                        googleAdressLink: homeContent[index].googleAdressLink,
-                                                        companyPhone: homeContent[index].companyPhone.toString()),
-                                                    isIos: true,
-                                                    duration: const Duration(milliseconds: 400),
-                                                  ),
-                                                );
-
-                                                progressUHD.dismiss();
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPage()));
                                               },
                                             );
                                           }),
@@ -321,7 +307,7 @@ class _HomePageState extends State<HomePage> {
                                         alignment: Alignment.topLeft,
                                         child: SizedBox(
                                           child: Text(
-                                            "En Favorileriler",
+                                            "En Favoriler",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .titleLarge!
@@ -339,67 +325,45 @@ class _HomePageState extends State<HomePage> {
                                             scrollDirection: Axis.horizontal,
                                             physics: const ClampingScrollPhysics(),
                                             shrinkWrap: true,
-                                            itemCount: homeContent.length,
+                                            itemCount: topFavoriteContent.length,
                                             itemBuilder: (BuildContext ctx, index) {
                                               return Padding(
                                                 padding: const EdgeInsets.only(right: maxSpace),
                                                 child: SizedBox(
                                                   width: 300,
                                                   child: HomeContainerWidget(
-                                                    homeContent: homeContent[index],
                                                     isCategoryWidget: false,
-                                                    companyLogo: homeContent[index].companyLogo,
-                                                    companyName: homeContent[index].companyName,
-                                                    contentPicture: homeContent[index].contentPicture,
-                                                    cardText: homeContent[index].contentTitle,
+                                                    companyName: topFavoriteContent[index].companyName,
+                                                    contentPicture: topFavoriteContent[index].companyLogo..replaceAll('shewoo', 'estetikvitrini'),
+                                                    cardText: topFavoriteContent[index].companyName,
                                                     pinColor: primaryColor,
-                                                    onPressedPhone: () async {
-                                                      dynamic number = homeContent[index].companyPhone.toString(); // arama ekranına yönlendirme
-                                                      launchUrl(Uri(path: "tel://$number"));
-                                                    },
-                                                    //--------------------------------------------------------"DETAYLI BİLGİ İÇİN" BUTONU-------------------------------------------------------------
-                                                    onPressed: () async {
-                                                      final progressUHD = ProgressHUD.of(context);
-                                                      progressUHD!.show();
-                                                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                      userIdData = prefs.getInt("userIdData");
-                                                      final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
-                                                          homeContent[index].companyId ?? 1, homeContent[index].campaingId ?? 1, userIdData!);
-                                                      // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
-                                                      if (!mounted) return;
-                                                      Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                                          builder: (context) => HomeDetailPage(
-                                                              homeDetailContent: homeDetailContent!.result,
-                                                              campaingId: homeContent[index].campaingId,
-                                                              companyId: homeContent[index].companyId,
-                                                              companyLogo: homeContent[index].companyLogo,
-                                                              companyName: homeContent[index].companyName,
-                                                              contentTitle: homeContent[index].contentTitle,
-                                                              googleAdressLink: homeContent[index].googleAdressLink,
-                                                              companyPhone: homeContent[index].companyPhone.toString())));
-                                                      progressUHD.dismiss();
-                                                    },
-                                                    //----------------------------------------------------------------------------------------------------------------------
                                                     homeDetailOntap: () async {
-                                                      final progressUHD = ProgressHUD.of(context);
-                                                      progressUHD!.show();
-                                                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                      userIdData = prefs.getInt("userIdData");
-                                                      final ContentStreamDetailJsn? homeDetailContent = await contentStreamDetailJsnFunc(
-                                                          homeContent[index].companyId ?? 1, homeContent[index].campaingId ?? 1, userIdData!);
-                                                      // "Detaylı Bilgi İçin" butouna basıldığında detay sayfasına yönlendirecek
+                                                      // final progressUHD = ProgressHUD.of(context);
+                                                      // progressUHD!.show();
+
+                                                      // final CompanyDetailModel? homeDetailContent =
+                                                      //     await companyDetailFunc(topFavoriteContent[index].id);
+
+                                                      // if (!mounted) return;
+                                                      // Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                                      //     builder: (context) => HomeDetailPage(
+                                                      //         homeDetailContent: homeDetailContent?.result,
+                                                      //         companyLogo: homeDetailContent?.result.companyLogo,
+                                                      //         companyName: homeDetailContent?.result.companyName,
+                                                      //         contentTitle: homeDetailContent?.result.companyName,
+                                                      //         googleAdressLink: homeDetailContent?.result.googleAdressLink,
+                                                      //         companyPhone: homeDetailContent?.result.companyPhone.toString())));
+                                                      // progressUHD.dismiss();
+
+                                                      // final CompanyProfileJsn? companyProfile =
+                                                      //     await companyListDetailJsnFunc(topFavoriteContent[index].id);
+
+                                                      final CompanyDetailModel? homeDetailContent =
+                                                          await companyDetailFunc(topFavoriteContent[index].id);
+
                                                       if (!mounted) return;
                                                       Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                                          builder: (context) => HomeDetailPage(
-                                                              homeDetailContent: homeDetailContent!.result,
-                                                              campaingId: homeContent[index].campaingId,
-                                                              companyId: homeContent[index].companyId,
-                                                              companyLogo: homeContent[index].companyLogo,
-                                                              companyName: homeContent[index].companyName,
-                                                              contentTitle: homeContent[index].contentTitle,
-                                                              googleAdressLink: homeContent[index].googleAdressLink,
-                                                              companyPhone: homeContent[index].companyPhone.toString())));
-                                                      progressUHD.dismiss();
+                                                          builder: (context) => CompanyProfilePage(companyProfile: homeDetailContent)));
                                                     },
                                                   ),
                                                 ),

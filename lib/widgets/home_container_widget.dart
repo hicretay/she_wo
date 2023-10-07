@@ -2,14 +2,12 @@
 
 import 'package:flutter/material.dart';
 
-import '../JsnClass/content_stream_jsn.dart' as r;
 import '../settings/consts.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class HomeContainerWidget extends StatefulWidget {
   //homePage sayfasında post görünümü oluşturulmasında kullanıldı
   final String? cardText; // resimde yer alacak metin
-  final String? companyLogo; // resimde yer alacak metin
   final String? companyName; // resimde yer alacak metin
   final String? contentPicture;
   final VoidCallback? onPressed; // detaylı bilgi butonu olayı
@@ -18,7 +16,6 @@ class HomeContainerWidget extends StatefulWidget {
   final VoidCallback? onPressedLocation, onPressedPhone, homeDetailOntap, logoOnTap;
   final bool isCategoryWidget;
   final bool? isPopular;
-  final r.Result? homeContent;
 
   const HomeContainerWidget({
     Key? key,
@@ -26,7 +23,6 @@ class HomeContainerWidget extends StatefulWidget {
     this.onPressed,
     this.child,
     this.pinColor,
-    this.companyLogo,
     this.companyName,
     this.contentPicture,
     this.onPressedLocation,
@@ -37,7 +33,6 @@ class HomeContainerWidget extends StatefulWidget {
     this.logoOnTap,
     required this.isCategoryWidget,
     this.isPopular,
-    this.homeContent,
   }) : super(key: key);
 
   @override
@@ -68,32 +63,31 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                 children: [
                   Flexible(
                     child: GestureDetector(
-                      onTap: widget.homeDetailOntap,
-                      child: InteractiveViewer(
-                        clipBehavior: Clip.none,
-                        transformationController: transformationController,
-                        onInteractionEnd: (details) {
-                          setState(() {
-                            transformationController.toScene(Offset.zero);
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: widget.cardText != ''
-                                  ? const BorderRadius.vertical(top: Radius.circular(maxSpace))
-                                  : const BorderRadius.all(Radius.circular(maxSpace)),
-                              image: (widget.isPopular ?? false)
-                                  ? DecorationImage(
-                                      fit: BoxFit.fitWidth,
-                                      image: AssetImage(widget.contentPicture!),
-                                    )
-                                  : DecorationImage(
-                                      fit: BoxFit.fitWidth,
-                                      image: NetworkImage(widget.contentPicture!),
-                                    )),
-                        ),
-                      ),
-                    ),
+                        onTap: widget.homeDetailOntap,
+                        child: InteractiveViewer(
+                            clipBehavior: Clip.none,
+                            transformationController: transformationController,
+                            onInteractionEnd: (details) {
+                              setState(() {
+                                transformationController.toScene(Offset.zero);
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: widget.cardText != ''
+                                    ? const BorderRadius.vertical(top: Radius.circular(maxSpace))
+                                    : const BorderRadius.all(Radius.circular(maxSpace)),
+                                image: DecorationImage(
+                                  fit: BoxFit.contain,
+                                  image: NetworkImage(
+                                    widget.contentPicture!.replaceAll('shewoo', 'estetikvitrini'),
+                                  ),
+                                  onError: (error, stackTrace) {
+                                    const Icon(Icons.image);
+                                  },
+                                ),
+                              ),
+                            ))),
                   ),
                   if (widget.cardText != "" && widget.isCategoryWidget)
                     Align(
@@ -152,7 +146,6 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                                       //? TODO Apiden Adres eklenecek
                                       const Expanded(
                                         child: Text(
-                                          //widget.homeContent?.googleAdressLink ?? '',
                                           'Çınardere Mah, Oba Sk No:2/1-2-3-4, 34896 Pendik/İstanbul',
                                           style: TextStyle(fontSize: 10),
                                           overflow: TextOverflow.ellipsis,

@@ -25,6 +25,8 @@ import 'package:she_wo/JsnClass/liked_campaing_jsn.dart';
 import 'package:she_wo/JsnClass/login_jsn.dart';
 import 'package:she_wo/JsnClass/story_content_jsn.dart';
 import 'package:she_wo/JsnClass/user_favori_area_jsn.dart';
+import 'package:she_wo/model/company_detail_model.dart';
+import 'package:she_wo/model/top_favorite_model.dart';
 import 'package:she_wo/screens/login_page.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:flutter/material.dart';
@@ -543,6 +545,34 @@ Future<AppointmentDeleteJsn?> campaignDeleteJsnFunc(int id) async {
 }
 //------------------------------------------------------------------------------------------------------------------------
 
+Future<CompanyDetailModel?> companyDetailFunc(int companyId) async {
+  final response = await http.post(Uri.parse("https://service.shewoo.com/api/CompanyList/Detail"), body: '{"companyId":$companyId}', headers: header);
+
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+    return companyDetailModelFromJson(responseString);
+  } else {
+    return null;
+  }
+}
+
+Future<TopFavoritesModel?> searchListFunc(String search, String location) async {
+  var bodys = {};
+  bodys["q"] = search;
+  bodys["location"] = location;
+
+  String body = json.encode(bodys);
+
+  final response = await http.post(Uri.parse("https://service.shewoo.com/api/Search"), body: body, headers: header);
+
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+    return topFavoritesModelFromJson(responseString);
+  } else {
+    return null;
+  }
+}
+
 //-----------------------Resmi base64'e dönüştürme(encode)----------------------
 String imageToBase64(File imagePath) {
   var imageBytes = imagePath.readAsBytesSync();
@@ -551,3 +581,7 @@ String imageToBase64(File imagePath) {
   return encodedImage;
 }
 //------------------------------------------------------------------------------
+
+
+
+

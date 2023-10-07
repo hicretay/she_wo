@@ -1,13 +1,10 @@
 // ignore_for_file: avoid_print, library_private_types_in_public_api, no_logic_in_create_state, unused_local_variable
 
 import 'package:flutter/material.dart';
-// import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:html/parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:she_wo/JsnClass/content_stream_detail_jsn.dart';
 import 'package:she_wo/model/appointment_model.dart';
 import 'package:she_wo/screens/make_appointment_calendar_page.dart';
 import 'package:she_wo/settings/consts.dart';
@@ -15,9 +12,10 @@ import 'package:she_wo/settings/functions.dart';
 import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/backleading_widget.dart';
 import 'package:she_wo/widgets/textfield_widget.dart';
+import 'package:she_wo/model/company_detail_model.dart' as d;
 
 class HomeDetailPage extends StatefulWidget {
-  final List? homeDetailContent;
+  final d.Result? homeDetailContent;
   final int? campaingId;
   final int? companyId;
   final String? companyLogo;
@@ -50,7 +48,7 @@ class HomeDetailPage extends StatefulWidget {
 }
 
 class _HomeDetailPageState extends State<HomeDetailPage> {
-  List? homeDetailContent;
+  final d.Result? homeDetailContent;
   int? campaingId;
   int? companyId;
   String? companyLogo;
@@ -70,15 +68,6 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
       this.contentTitle,
       this.googleAdressLink,
       this.companyPhone});
-  Future homeDetailRefresh() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userIdData = prefs.getInt("userIdData")!;
-    final ContentStreamDetailJsn? detailNewList = await contentStreamDetailJsnFunc(companyId!, campaingId!, userIdData);
-    if (!mounted) return;
-    setState(() {
-      homeDetailContent = detailNewList!.result;
-    });
-  }
 
   double rating = 4.5;
   TextEditingController teComment = TextEditingController();
@@ -87,23 +76,9 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
   @override
   Widget build(BuildContext context) {
     final transformationController = TransformationController();
-    //--------------------Slider Imageları-------------------
-    List<dynamic> sliderImg = [];
-    for (var item in homeDetailContent!.first.contentPictures) {
-      //final transformationController = TransformationController();
-      sliderImg.add(AspectRatio(
-        aspectRatio: 16 / 9,
-        child: Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(fit: BoxFit.fitWidth, image: NetworkImage(item.cPicture)),
-              borderRadius: const BorderRadius.all(Radius.circular(maxSpace))),
-        ),
-      ));
-    }
-    //-------------------------------------------------------
 
     isOpenKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
-    var detailTest = parse(homeDetailContent!.first.campaingDetail);
+    // var detailTest = parse(homeDetailContent!.first.campaingDetail);
 
     return SafeArea(
       child: Scaffold(
@@ -173,7 +148,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                   borderRadius: const BorderRadius.all(Radius.circular(maxSpace)),
                                                   image: DecorationImage(
                                                       fit: BoxFit.fitWidth,
-                                                      image: NetworkImage(homeDetailContent!.first.contentPictures.first.cPicture))),
+                                                      image: NetworkImage(homeDetailContent!.companyLogo.replaceAll('shewoo', 'estetikvitrini')))),
                                             ),
                                           ))),
                             ),
@@ -208,10 +183,10 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                               ),
                                             ),
                                             //? TODO Apiden Adres eklenecek
-                                            const Expanded(
+                                            Expanded(
                                               child: Text(
-                                                'Çınardere Mah, Oba Sk No:2/1, 34896 Pendik/İstanbul',
-                                                style: TextStyle(fontSize: 13),
+                                                homeDetailContent?.address ?? '',
+                                                style: const TextStyle(fontSize: 13),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
@@ -284,7 +259,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                           style: const TextStyle(fontSize: 22, color: tertiaryColor),
                                         ),
                                       ),
-                                      Align(alignment: Alignment.bottomLeft, child: Text(detailTest.body!.text))
+                                      Align(alignment: Alignment.bottomLeft, child: Text(homeDetailContent?.companyName ?? ''))
 
                                       //Text(homeDetailContent.first.campaingDetail, style: TextStyle(fontSize: 18, color: Theme.of(context).hintColor))),
                                     ],
