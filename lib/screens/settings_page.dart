@@ -1,17 +1,12 @@
 import 'package:provider/provider.dart';
-import 'package:she_wo/JsnClass/company_profile.dart';
-import 'package:she_wo/providers/navigation_provider.dart';
-import 'package:she_wo/screens/appointment_operation_page.dart';
-import 'package:she_wo/screens/company_information_page.dart';
-import 'package:she_wo/settings/functions.dart';
-import 'package:she_wo/widgets/webview_widget.dart';
-import 'package:she_wo/screens/login_page.dart';
-import 'package:she_wo/settings/consts.dart';
-import 'package:she_wo/widgets/background_container.dart';
-import 'package:she_wo/widgets/list_tile_widget.dart';
+import '../providers/navigation_provider.dart';
+import '../widgets/webview_widget.dart';
+import 'login_page.dart';
+import '../settings/consts.dart';
+import '../widgets/background_container.dart';
+import '../widgets/list_tile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -114,44 +109,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           padding: const EdgeInsets.all(0),
                           children: [
                             const SizedBox(height: defaultPadding),
-                            isAdmin == true
-                                ? Column(children: [
-                                    ListTileWidget(
-                                      text: "Gelen Randevular",
-                                      child: const FaIcon(FontAwesomeIcons.calendarCheck, size: 18, color: primaryColor),
-                                      onTap: () {
-                                        final progressHUD = ProgressHUD.of(context);
-                                        progressHUD!.show();
-                                        if (!mounted) return;
-                                        Navigator.of(context, rootNavigator: true)
-                                            .push(MaterialPageRoute(builder: (context) => const AppointmentOperationPage()));
-                                        progressHUD.dismiss();
-                                      },
-                                    ),
-                                    ListTileWidget(
-                                      text: "Firma Bilgileri",
-                                      child: const FaIcon(FontAwesomeIcons.questionCircle, size: 18, color: primaryColor),
-                                      onTap: () async {
-                                        final progressHUD = ProgressHUD.of(context);
-                                        progressHUD!.show();
-                                        final CompanyProfileJsn? companyProfile = await companyListDetailJsnFunc(1); // companyContent![index].id
-                                        if (!mounted) return;
-                                        Navigator.of(context, rootNavigator: true)
-                                            .push(MaterialPageRoute(builder: (context) => CompanyInformationPage(companyProfile: companyProfile)));
-                                        progressHUD.dismiss();
-                                      },
-                                    ),
-                                    const SizedBox(height: maxSpace), //Post altı - divider arası boşluk
-                                    const Divider(
-                                      //İki post arasında yer alan çizgi
-                                      indent: 100.0,
-                                      endIndent: 100.0,
-                                      height: 1,
-                                      color: secondaryColor,
-                                      thickness: 1.5,
-                                    ),
-                                  ])
-                                : Container(),
+
                             const SizedBox(height: minSpace), // Post üstü - divider arası boşluk
                             ListTileWidget(
                               text: "Lisans Sözleşmesi",

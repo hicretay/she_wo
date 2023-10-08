@@ -2,7 +2,6 @@
 
 import 'package:she_wo/JsnClass/appointment_list.dart';
 import 'package:she_wo/JsnClass/company_list_jsn.dart';
-import 'package:she_wo/JsnClass/content_stream_jsn.dart';
 import 'package:she_wo/providers/navigation_provider.dart';
 import 'package:she_wo/screens/companies_page.dart';
 import 'package:she_wo/settings/consts.dart';
@@ -51,15 +50,6 @@ class _ReservationPageState extends State<ReservationPage> {
     });
   }
 
-  Future homeContentList() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userIdData = prefs.getInt("userIdData");
-    final ContentStreamJsn? homeContentNewList = await contentStreamJsnFunc(userIdData!, 0);
-    setState(() {
-      homeContent = homeContentNewList!.result;
-    });
-  }
-
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
 
@@ -80,7 +70,6 @@ class _ReservationPageState extends State<ReservationPage> {
     selectedEvents = {};
     appointmentListFunc();
     companyListFunc();
-    homeContentList();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       //code will run when widget rendering complete
     });

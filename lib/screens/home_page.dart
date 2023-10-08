@@ -41,9 +41,6 @@ class _HomePageState extends State<HomePage> {
 //-----------------------------------------
 
   Future getHomeData() async {
-    setState(() {
-      isLoading = true;
-    });
     final response = await http.post(Uri.parse("https://service.shewoo.com/api/CategoryOperation/List"), body: '{}', headers: header);
 
     if (response.statusCode == 200) {
@@ -53,16 +50,9 @@ class _HomePageState extends State<HomePage> {
     } else {
       print('an error occured');
     }
-
-    setState(() {
-      isLoading = false;
-    });
   }
 
   Future getPopulerData() async {
-    setState(() {
-      isLoading = true;
-    });
     final response = await http.post(Uri.parse("https://service.shewoo.com/api/CategoryOperation/PopularList"), body: '{}', headers: header);
 
     if (response.statusCode == 200) {
@@ -72,29 +62,18 @@ class _HomePageState extends State<HomePage> {
     } else {
       print('an error occured');
     }
-
-    setState(() {
-      isLoading = false;
-    });
   }
 
   Future getTopFavoriteData() async {
-    setState(() {
-      isLoading = true;
-    });
     final response = await http.post(Uri.parse("https://service.shewoo.com/api/CompanyList/TopFavorite"), body: '{}', headers: header);
 
     if (response.statusCode == 200) {
       setState(() {
-        topFavoriteContent = f.topFavoritesModelFromJson(response.body).result;
+        topFavoriteContent = f.topFavoritesModelFromJson(response.body).result.reversed.toList();
       });
     } else {
       print('an error occured');
     }
-
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override
@@ -104,9 +83,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future getAllData() async {
+    setState(() {
+      isLoading = true;
+    });
     await getHomeData();
     await getPopulerData();
     await getTopFavoriteData();
+    setState(() {
+      isLoading = false;
+    });
   }
 
 //-------------------------------------------------------------------------------------
@@ -293,7 +278,6 @@ class _HomePageState extends State<HomePage> {
                                               companyName: homeContent[index].categoryName,
                                               contentPicture: homeContent[index].categoryLogo,
                                               cardText: homeContent[index].categoryName,
-                                              pinColor: primaryColor,
                                               homeDetailOntap: () async {
                                                 Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPage()));
                                               },
@@ -334,29 +318,11 @@ class _HomePageState extends State<HomePage> {
                                                   child: HomeContainerWidget(
                                                     isCategoryWidget: false,
                                                     companyName: topFavoriteContent[index].companyName,
-                                                    contentPicture: topFavoriteContent[index].companyLogo..replaceAll('shewoo', 'estetikvitrini'),
+                                                    contentPicture: topFavoriteContent[index].companyLogo.replaceAll('shewoo', 'estetikvitrini'),
                                                     cardText: topFavoriteContent[index].companyName,
-                                                    pinColor: primaryColor,
                                                     homeDetailOntap: () async {
-                                                      // final progressUHD = ProgressHUD.of(context);
-                                                      // progressUHD!.show();
-
-                                                      // final CompanyDetailModel? homeDetailContent =
-                                                      //     await companyDetailFunc(topFavoriteContent[index].id);
-
-                                                      // if (!mounted) return;
-                                                      // Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                                      //     builder: (context) => HomeDetailPage(
-                                                      //         homeDetailContent: homeDetailContent?.result,
-                                                      //         companyLogo: homeDetailContent?.result.companyLogo,
-                                                      //         companyName: homeDetailContent?.result.companyName,
-                                                      //         contentTitle: homeDetailContent?.result.companyName,
-                                                      //         googleAdressLink: homeDetailContent?.result.googleAdressLink,
-                                                      //         companyPhone: homeDetailContent?.result.companyPhone.toString())));
-                                                      // progressUHD.dismiss();
-
-                                                      // final CompanyProfileJsn? companyProfile =
-                                                      //     await companyListDetailJsnFunc(topFavoriteContent[index].id);
+                                                      final progressUHD = ProgressHUD.of(context);
+                                                      progressUHD!.show();
 
                                                       final CompanyDetailModel? homeDetailContent =
                                                           await companyDetailFunc(topFavoriteContent[index].id);
@@ -364,6 +330,8 @@ class _HomePageState extends State<HomePage> {
                                                       if (!mounted) return;
                                                       Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
                                                           builder: (context) => CompanyProfilePage(companyProfile: homeDetailContent)));
+
+                                                      progressUHD.dismiss();
                                                     },
                                                   ),
                                                 ),

@@ -182,7 +182,6 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
-                                            //? TODO Apiden Adres eklenecek
                                             Expanded(
                                               child: Text(
                                                 homeDetailContent?.address ?? '',

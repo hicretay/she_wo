@@ -11,8 +11,7 @@ class HomeContainerWidget extends StatefulWidget {
   final String? companyName; // resimde yer alacak metin
   final String? contentPicture;
   final VoidCallback? onPressed; // detaylı bilgi butonu olayı
-  final Widget? child, likeButton, starButton;
-  final Color? pinColor;
+  final Widget? child, likeButton;
   final VoidCallback? onPressedLocation, onPressedPhone, homeDetailOntap, logoOnTap;
   final bool isCategoryWidget;
   final bool? isPopular;
@@ -22,13 +21,11 @@ class HomeContainerWidget extends StatefulWidget {
     this.cardText,
     this.onPressed,
     this.child,
-    this.pinColor,
     this.companyName,
     this.contentPicture,
     this.onPressedLocation,
     this.onPressedPhone,
     this.likeButton,
-    this.starButton,
     this.homeDetailOntap,
     this.logoOnTap,
     required this.isCategoryWidget,

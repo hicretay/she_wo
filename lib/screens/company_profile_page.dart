@@ -39,43 +39,39 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       BackLeadingWidget(
-                        text: companyProfile!.result.companyName,
+                        text: companyProfile?.result.companyName,
                         backColor: tertiaryColor,
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: deviceWidth(context) * 0.05, left: deviceWidth(context) * 0.05),
+                  padding: EdgeInsets.only(right: deviceWidth(context) * 0.05),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Column(
-                          children: [
-                            Container(
-                              alignment: Alignment.topLeft,
-                              width: deviceWidth(context) * 0.2,
-                              height: deviceWidth(context) * 0.2,
-                              decoration: BoxDecoration(
-                                border: Border.all(width: 1.5),
-                                color: white,
-                                shape: BoxShape.circle,
-                                image:
-                                    DecorationImage(image: NetworkImage(companyProfile!.result.companyLogo.replaceAll('shewoo', 'estetikvitrini'))),
-                              ),
+                      Column(
+                        children: [
+                          Container(
+                            alignment: Alignment.topLeft,
+                            width: deviceWidth(context) * 0.2,
+                            height: deviceWidth(context) * 0.2,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 1.5),
+                              color: white,
+                              shape: BoxShape.circle,
+                              image: DecorationImage(image: NetworkImage(companyProfile!.result.companyLogo.replaceAll('shewoo', 'estetikvitrini'))),
                             ),
-                            SizedBox(
-                                width: deviceWidth(context) * 0.3,
-                                child: Center(
-                                    child:
-                                        Text(companyProfile!.result.companyName, style: const TextStyle(color: white), overflow: TextOverflow.fade))),
-                          ],
-                        ),
+                          ),
+                          SizedBox(
+                            width: deviceWidth(context) * 0.3,
+                            child: Center(
+                              child: Text(companyProfile!.result.companyName, style: const TextStyle(color: white), overflow: TextOverflow.fade),
+                            ),
+                          ),
+                        ],
                       ),
                       Row(
-                        //crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Column(children: [
@@ -100,7 +96,6 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                     ],
                   ),
                 ),
-                SizedBox(height: deviceHeight(context) * 0.01),
                 Expanded(
                   child: Container(
                     decoration: const BoxDecoration(borderRadius: BorderRadius.vertical(top: Radius.circular(cardCurved)), color: white),
@@ -108,7 +103,11 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                       child: Column(children: [
                         //-----------------------------------------ŞİRKET BİLGİLERİ ---------------------------------------------
                         Padding(
-                          padding: EdgeInsets.only(left: deviceWidth(context) * 0.1, top: deviceWidth(context) * 0.03),
+                          padding: EdgeInsets.only(
+                            left: deviceWidth(context) * 0.05,
+                            right: deviceWidth(context) * 0.05,
+                            top: deviceWidth(context) * 0.03,
+                          ),
                           child: Row(children: [
                             SizedBox(width: deviceWidth(context) * 0.17, child: const Text("Telefon")),
                             SizedBox(width: deviceWidth(context) * 0.05),
@@ -116,7 +115,11 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                           ]),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: deviceWidth(context) * 0.1, top: deviceWidth(context) * 0.03),
+                          padding: EdgeInsets.only(
+                            left: deviceWidth(context) * 0.05,
+                            right: deviceWidth(context) * 0.05,
+                            top: deviceWidth(context) * 0.03,
+                          ),
                           child: Row(children: [
                             SizedBox(width: deviceWidth(context) * 0.17, child: const Text("WhatsApp")),
                             SizedBox(width: deviceWidth(context) * 0.05),
@@ -124,7 +127,11 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                           ]),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: deviceWidth(context) * 0.1, top: deviceWidth(context) * 0.03),
+                          padding: EdgeInsets.only(
+                            left: deviceWidth(context) * 0.05,
+                            right: deviceWidth(context) * 0.05,
+                            top: deviceWidth(context) * 0.03,
+                          ),
                           child: Row(children: [
                             SizedBox(width: deviceWidth(context) * 0.17, child: const Text("Web Adresi")),
                             SizedBox(width: deviceWidth(context) * 0.05),
@@ -132,7 +139,11 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                           ]),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: deviceWidth(context) * 0.1, top: deviceWidth(context) * 0.03),
+                          padding: EdgeInsets.only(
+                            left: deviceWidth(context) * 0.05,
+                            right: deviceWidth(context) * 0.05,
+                            top: deviceWidth(context) * 0.03,
+                          ),
                           child: Row(children: [
                             SizedBox(width: deviceWidth(context) * 0.17, child: const Text("E-Posta")),
                             SizedBox(width: deviceWidth(context) * 0.05),
@@ -140,7 +151,11 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                           ]),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: deviceWidth(context) * 0.1, top: deviceWidth(context) * 0.03),
+                          padding: EdgeInsets.only(
+                            left: deviceWidth(context) * 0.05,
+                            right: deviceWidth(context) * 0.05,
+                            top: deviceWidth(context) * 0.03,
+                          ),
                           child: Row(children: [
                             SizedBox(width: deviceWidth(context) * 0.17, child: const Text("Konum")),
                             SizedBox(width: deviceWidth(context) * 0.05),
@@ -159,7 +174,11 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                         SizedBox(height: deviceHeight(context) * 0.03),
                         //----------------------------------------KAMPANYA LİSTESİ AKIŞI--------------------------------------------
                         Padding(
-                          padding: EdgeInsets.only(left: deviceWidth(context) * 0.1, top: deviceWidth(context) * 0.03),
+                          padding: EdgeInsets.only(
+                            left: deviceWidth(context) * 0.05,
+                            top: deviceWidth(context) * 0.03,
+                            right: deviceWidth(context) * 0.05,
+                          ),
                           child: GridView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,

@@ -328,7 +328,6 @@ class _SearchPageState extends State<SearchPage> {
                                     // progressUHD!.show();
 
                                     print(selectedCompanies[index].id);
-                                    // final CompanyProfileJsn? companyProfile = await companyListDetailJsnFunc(selectedCompanies[index].id);
                                     final CompanyDetailModel? homeDetailContent = await companyDetailFunc(selectedCompanies[index].id);
                                     if (!mounted) return;
                                     Navigator.of(context, rootNavigator: true)
