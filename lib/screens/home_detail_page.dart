@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:she_wo/model/appointment_model.dart';
+import 'package:she_wo/model/comment_model.dart';
+import 'package:she_wo/providers/theme_data_provider.dart';
 import 'package:she_wo/screens/make_appointment_calendar_page.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
@@ -16,29 +19,28 @@ import 'package:she_wo/model/company_detail_model.dart' as d;
 
 class HomeDetailPage extends StatefulWidget {
   final d.Result? homeDetailContent;
-  final int? campaingId;
   final int? companyId;
   final String? companyLogo;
   final String? companyName;
   final String? contentTitle;
   final String? googleAdressLink;
   final String? companyPhone;
-  const HomeDetailPage(
-      {Key? key,
-      this.homeDetailContent,
-      this.campaingId,
-      this.companyId,
-      this.companyLogo,
-      this.companyName,
-      this.contentTitle,
-      this.googleAdressLink,
-      this.companyPhone})
-      : super(key: key);
+  final List<Result>? comments;
+  const HomeDetailPage({
+    Key? key,
+    this.homeDetailContent,
+    this.companyId,
+    this.companyLogo,
+    this.companyName,
+    this.contentTitle,
+    this.googleAdressLink,
+    this.companyPhone,
+    this.comments,
+  }) : super(key: key);
 
   @override
   _HomeDetailPageState createState() => _HomeDetailPageState(
       homeDetailContent: homeDetailContent,
-      campaingId: campaingId,
       companyId: companyId,
       companyLogo: companyLogo,
       companyName: companyName,
@@ -56,20 +58,13 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
   String? contentTitle;
   String? googleAdressLink;
   String? companyPhone;
-
   late int userIdData;
 
   _HomeDetailPageState(
-      {this.homeDetailContent,
-      this.campaingId,
-      this.companyId,
-      this.companyLogo,
-      this.companyName,
-      this.contentTitle,
-      this.googleAdressLink,
-      this.companyPhone});
+      {this.homeDetailContent, this.companyId, this.companyLogo, this.companyName, this.contentTitle, this.googleAdressLink, this.companyPhone});
 
   double rating = 4.5;
+  double updateRating = 0;
   TextEditingController teComment = TextEditingController();
   bool isOpenKeyboard = false;
 
@@ -77,8 +72,13 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
   Widget build(BuildContext context) {
     final transformationController = TransformationController();
 
+    // Keyboard open - close controller
     isOpenKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
-    // var detailTest = parse(homeDetailContent!.first.campaingDetail);
+
+    final provider = Provider.of<ThemeDataProvider>(context);
+
+    // company comment
+    List<Result>? newComments = provider.comments;
 
     return SafeArea(
       child: Scaffold(
@@ -92,8 +92,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       userIdData = prefs.getInt("userIdData")!;
                       if (userIdData != 0) {
-                        AppointmentObject appointment =
-                            AppointmentObject(companyId: companyId!, userId: userIdData, companyNameS: companyName!, campaignId: campaingId!);
+                        AppointmentObject appointment = AppointmentObject(companyId: companyId!, userId: userIdData, companyNameS: companyName!);
                         if (!mounted) return;
 
                         Navigator.push(context, MaterialPageRoute(builder: (context) => MakeAppointmentCalendarPage(appointment: appointment)));
@@ -189,9 +188,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
-
                                             const SizedBox(height: maxSpace),
-
                                             Expanded(
                                               child: Padding(
                                                 padding: const EdgeInsets.only(right: maxSpace),
@@ -254,7 +251,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                       Align(
                                         alignment: Alignment.bottomLeft,
                                         child: Text(
-                                          contentTitle!,
+                                          contentTitle ?? '',
                                           style: const TextStyle(fontSize: 22, color: tertiaryColor),
                                         ),
                                       ),
@@ -272,77 +269,80 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        const Text(
-                                          'Yorumlar',
-                                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        ListView.builder(
-                                            itemCount: 1,
-                                            shrinkWrap: true,
-                                            physics: const NeverScrollableScrollPhysics(),
-                                            itemBuilder: ((context, index) {
-                                              return Column(
-                                                children: [
-                                                  const Divider(),
-                                                  Padding(
-                                                    padding: const EdgeInsets.symmetric(vertical: maxSpace),
-                                                    child: Column(
-                                                      children: [
-                                                        const Row(
-                                                          children: [
-                                                            CircleAvatar(
-                                                              backgroundColor: secondaryColor,
-                                                              child: Text(
-                                                                'H',
-                                                                style: TextStyle(color: tertiaryColor, fontWeight: FontWeight.bold),
-                                                              ),
-                                                            ),
-                                                            SizedBox(width: maxSpace),
-                                                            Column(
-                                                              mainAxisAlignment: MainAxisAlignment.start,
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              children: [
-                                                                Text(
-                                                                  'Hicret Ay',
-                                                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                                        if (newComments != [])
+                                          const Text(
+                                            'Yorumlar',
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        if (newComments != [])
+                                          ListView.builder(
+                                              itemCount: newComments?.length,
+                                              shrinkWrap: true,
+                                              physics: const NeverScrollableScrollPhysics(),
+                                              itemBuilder: ((context, index) {
+                                                return Column(
+                                                  children: [
+                                                    const Divider(),
+                                                    Padding(
+                                                      padding: const EdgeInsets.symmetric(vertical: maxSpace),
+                                                      child: Column(
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              CircleAvatar(
+                                                                backgroundColor: secondaryColor,
+                                                                child: Text(
+                                                                  newComments![index].userName.substring(0, 1),
+                                                                  style: const TextStyle(color: tertiaryColor, fontWeight: FontWeight.bold),
                                                                 ),
-                                                                Text(
-                                                                  '10.08.2023',
-                                                                  textAlign: TextAlign.left,
-                                                                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 10, color: Colors.grey),
-                                                                )
-                                                              ],
-                                                            )
-                                                          ],
-                                                        ),
-                                                        const SizedBox(height: minSpace),
-                                                        Align(
-                                                          alignment: Alignment.topLeft,
-                                                          child: RatingBarIndicator(
-                                                            rating: 4.5,
-                                                            itemBuilder: (context, index) => const Icon(Icons.star, color: Colors.black),
-                                                            itemSize: 20,
-                                                            direction: Axis.horizontal,
-                                                            itemCount: 5,
-                                                            itemPadding: EdgeInsets.zero,
+                                                              ),
+                                                              const SizedBox(width: maxSpace),
+                                                              Column(
+                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text(
+                                                                    newComments[index].userName,
+                                                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                                                                  ),
+                                                                  Text(
+                                                                    newComments[index].registrationDate.toString(),
+                                                                    textAlign: TextAlign.left,
+                                                                    style: const TextStyle(
+                                                                        fontWeight: FontWeight.normal, fontSize: 10, color: Colors.grey),
+                                                                  )
+                                                                ],
+                                                              )
+                                                            ],
                                                           ),
-                                                        ),
-                                                        const SizedBox(height: minSpace),
-                                                        const Align(
-                                                          alignment: Alignment.centerLeft,
-                                                          child: Text(
-                                                            'Çok ilgili bir firmaydı, çok memnun kaldım.',
-                                                            style: TextStyle(fontWeight: FontWeight.normal, fontSize: 13, color: Colors.grey),
+                                                          const SizedBox(height: minSpace),
+                                                          Align(
+                                                            alignment: Alignment.topLeft,
+                                                            child: RatingBarIndicator(
+                                                              rating: newComments[index].userPoint,
+                                                              itemBuilder: (context, index) => const Icon(Icons.star, color: Colors.black),
+                                                              itemSize: 20,
+                                                              direction: Axis.horizontal,
+                                                              itemCount: 5,
+                                                              itemPadding: EdgeInsets.zero,
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ],
+                                                          const SizedBox(height: minSpace),
+                                                          Align(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Text(
+                                                              newComments[index].comment,
+                                                              style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 13, color: Colors.grey),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                  const Divider(),
-                                                ],
-                                              );
-                                            })),
+                                                    const Divider(),
+                                                  ],
+                                                );
+                                              })),
                                       ],
                                     ),
                                   ),
@@ -387,21 +387,54 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                       half: const Icon(Icons.star_half),
                                                       empty: const Icon(Icons.star_outline)),
                                                   itemPadding: EdgeInsets.zero,
-                                                  onRatingUpdate: (value) {},
+                                                  onRatingUpdate: (value) {
+                                                    setState(() {
+                                                      updateRating = value;
+                                                    });
+                                                  },
                                                 ),
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(right: 8),
                                                 child: MaterialButton(
-                                                    color: tertiaryColor,
-                                                    minWidth: deviceWidth(context) * 0.2,
-                                                    child: Text("Kaydet",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .labelLarge!
-                                                            .copyWith(color: white, fontFamily: contentFont, fontSize: 15)),
-                                                    //-----------------------------GİRİŞ BUTONU ONPRESSEDİ---------------------------------------------
-                                                    onPressed: () async {}),
+                                                  color: tertiaryColor,
+                                                  minWidth: deviceWidth(context) * 0.2,
+                                                  child: Text("Kaydet",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .labelLarge!
+                                                          .copyWith(color: white, fontFamily: contentFont, fontSize: 15)),
+                                                  //-----------------------------Kaydet BUTONU ONPRESSEDİ---------------------------------------------
+                                                  onPressed: () async {
+                                                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                    int userIdData = prefs.getInt("userIdData")!;
+
+                                                    if (!mounted) return;
+                                                    final progressHUD = ProgressHUD.of(context);
+                                                    final commentData = await commentAddFunc(
+                                                      userIdData,
+                                                      widget.companyId!,
+                                                      teComment.text,
+                                                      updateRating,
+                                                    );
+                                                    if (commentData?.success == true) {
+                                                      if (!mounted) return;
+                                                      await showToast(context, "Yorum başarıyla kaydedildi!");
+                                                      teComment.text = '';
+                                                      final CommentModel? commentsModel = await commentListJsnFunc(widget.companyId!);
+                                                      provider.setComments(commentsModel?.result);
+                                                    } else {
+                                                      if (!mounted) return;
+                                                      await showToast(context, "Yorum kaydı başarısız!");
+                                                      teComment.text = '';
+                                                    }
+                                                    setState(() {
+                                                      updateRating = 0;
+                                                    });
+
+                                                    progressHUD?.dismiss();
+                                                  },
+                                                ),
                                               ),
                                             ],
                                           ),

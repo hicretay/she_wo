@@ -1,4 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api, no_logic_in_create_state
+import 'package:she_wo/model/comment_model.dart';
 import 'package:she_wo/model/company_detail_model.dart';
 import 'package:she_wo/screens/home_detail_page.dart';
 import 'package:she_wo/settings/consts.dart';
@@ -215,17 +216,20 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                                       progressUHD!.show();
                                       final CompanyDetailModel? homeDetailContent = await companyDetailFunc(companyProfile!.result.id);
 
+                                      final CommentModel? commentsModel = await commentListJsnFunc(companyProfile!.result.id);
+
                                       if (!mounted) return;
                                       Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
                                           builder: (context) => HomeDetailPage(
-                                              homeDetailContent: homeDetailContent!.result,
-                                              campaingId: companyProfile!.result.campaignList[index].campaingId,
-                                              companyId: companyProfile!.result.id,
-                                              companyLogo: companyProfile!.result.companyLogo.replaceAll('shewoo', 'estetikvitrini'),
-                                              companyName: companyProfile!.result.companyName,
-                                              contentTitle: companyProfile!.result.campaignList[index].campaingName,
-                                              googleAdressLink: companyProfile!.result.googleAdressLink,
-                                              companyPhone: companyProfile!.result.companyPhone)));
+                                                homeDetailContent: homeDetailContent!.result,
+                                                companyId: companyProfile!.result.id,
+                                                companyLogo: companyProfile!.result.companyLogo.replaceAll('shewoo', 'estetikvitrini'),
+                                                companyName: companyProfile!.result.companyName,
+                                                contentTitle: companyProfile!.result.campaignList[index].campaingName,
+                                                googleAdressLink: companyProfile!.result.googleAdressLink,
+                                                companyPhone: companyProfile!.result.companyPhone,
+                                                comments: commentsModel?.result,
+                                              )));
                                       progressUHD.dismiss();
                                     },
                                   ),

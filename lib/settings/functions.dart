@@ -15,6 +15,7 @@ import 'package:she_wo/JsnClass/company_operation_jsn.dart';
 import 'package:she_wo/JsnClass/company_operation_time.dart';
 import 'package:she_wo/JsnClass/forget_password_jsn.dart';
 import 'package:she_wo/JsnClass/login_jsn.dart';
+import 'package:she_wo/model/comment_model.dart';
 import 'package:she_wo/model/company_detail_model.dart';
 import 'package:she_wo/model/top_favorite_model.dart';
 import 'package:she_wo/screens/login_page.dart';
@@ -309,6 +310,58 @@ Future<TopFavoritesModel?> searchListFunc(String search, String location) async 
   }
 }
 
+//------------------Yorum Ekleme----------------------
+Future commentAddFunc(int userId, int companyId, String comment, double userPoint) async {
+  var bodys = {};
+  bodys["userId"] = userId;
+  bodys["companyId"] = companyId;
+  bodys["comment"] = comment;
+  bodys["userPoint"] = userPoint;
+
+  String body = json.encode(bodys);
+
+  final response = await http.post(Uri.parse("${baseUrl}CompanyComment/Add"), body: body, headers: header);
+
+  if (response.statusCode == 200) {
+    return commentResultModelFromJson(response.body);
+  } else {
+    print(response.statusCode);
+    return null;
+  }
+}
+
+//---------------Yorum Listeleme----------------------
+
+Future<CommentModel?> commentListJsnFunc(int companyId) async {
+  final response = await http.post(Uri.parse("${baseUrl}CompanyComment/List"), body: '{"companyId":$companyId}', headers: header);
+
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+    return commentModelFromJson(responseString);
+  } else {
+    return null;
+  }
+}
+
+//-------------------Yorum Silme----------------------------
+
+Future commentDeleteJsnFunc(int userId, int companyId) async {
+  var bodys = {};
+  bodys["userId"] = userId;
+  bodys["companyId"] = companyId;
+
+  String body = json.encode(bodys);
+
+  final response = await http.post(Uri.parse("${baseUrl}CompanyComment/Delete"), body: body, headers: header);
+
+  if (response.statusCode == 200) {
+    print(response.body);
+  } else {
+    print(response.statusCode);
+    return null;
+  }
+}
+
 //-----------------------Resmi base64'e dönüştürme(encode)----------------------
 String imageToBase64(File imagePath) {
   var imageBytes = imagePath.readAsBytesSync();
@@ -318,6 +371,26 @@ String imageToBase64(File imagePath) {
 }
 //------------------------------------------------------------------------------
 
+CommentResultModel commentResultModelFromJson(String str) => CommentResultModel.fromJson(json.decode(str));
 
+String commentResultModelToJson(CommentResultModel data) => json.encode(data.toJson());
 
+class CommentResultModel {
+  bool success;
+  String result;
 
+  CommentResultModel({
+    required this.success,
+    required this.result,
+  });
+
+  factory CommentResultModel.fromJson(Map<String, dynamic> json) => CommentResultModel(
+        success: json["success"],
+        result: json["result"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "success": success,
+        "result": result,
+      };
+}

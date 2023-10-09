@@ -6,16 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:she_wo/model/comment_model.dart';
 import 'package:she_wo/model/company_detail_model.dart';
 import 'package:she_wo/model/home_categories_model.dart' as h;
 import 'package:she_wo/model/top_favorite_model.dart' as f;
-import 'package:she_wo/screens/company_profile_page.dart';
+import 'package:she_wo/providers/theme_data_provider.dart';
 import 'package:she_wo/screens/search_page.dart';
 
 import '../settings/consts.dart';
 import '../settings/functions.dart';
 import '../widgets/background_container.dart';
 import '../widgets/home_container_widget.dart';
+import 'home_detail_page.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -99,6 +102,7 @@ class _HomePageState extends State<HomePage> {
   ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ThemeDataProvider>(context);
     return Container(
       color: Colors.transparent,
       child: SafeArea(
@@ -323,14 +327,25 @@ class _HomePageState extends State<HomePage> {
                                                     homeDetailOntap: () async {
                                                       final progressUHD = ProgressHUD.of(context);
                                                       progressUHD!.show();
-
                                                       final CompanyDetailModel? homeDetailContent =
                                                           await companyDetailFunc(topFavoriteContent[index].id);
 
+                                                      final CommentModel? commentsModel = await commentListJsnFunc(topFavoriteContent[index].id);
+                                                      provider.setComments(commentsModel?.result);
+
                                                       if (!mounted) return;
                                                       Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                                                          builder: (context) => CompanyProfilePage(companyProfile: homeDetailContent)));
-
+                                                          builder: (context) => HomeDetailPage(
+                                                                homeDetailContent: homeDetailContent!.result,
+                                                                companyId: homeDetailContent.result.id,
+                                                                companyLogo:
+                                                                    homeDetailContent.result.companyLogo.replaceAll('shewoo', 'estetikvitrini'),
+                                                                companyName: homeDetailContent.result.companyName,
+                                                                contentTitle: homeDetailContent.result.campaignList[index].campaingName,
+                                                                googleAdressLink: homeDetailContent.result.googleAdressLink,
+                                                                companyPhone: homeDetailContent.result.companyPhone,
+                                                                comments: commentsModel?.result,
+                                                              )));
                                                       progressUHD.dismiss();
                                                     },
                                                   ),
