@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
+import 'providers/reservation_provider.dart';
 import 'providers/theme_data_provider.dart';
 
 Future main() async {
@@ -26,6 +27,7 @@ class App extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
         ChangeNotifierProvider<ThemeDataProvider>(create: (BuildContext context) => ThemeDataProvider(), child: const App()),
+        ChangeNotifierProvider(create: (_) => ReservationProvider()),
       ],
       child: Builder(
         builder: (context) {

@@ -196,21 +196,27 @@ class _MakeAppointmentOperationPageState extends State<MakeAppointmentOperationP
                   onPressed: () async {
                     final progressHUD = ProgressHUD.of(context);
                     progressHUD!.show();
-                    final companyOperationTime = await companyOperationTimeJsnFunc([appointment!.operationId]);
+
                     // ignore: unnecessary_null_comparison
-                    if (appointment!.operationId != null) {
-                      if (!mounted) return;
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MakeAppointmentTimePage(
-                                  companyOperationTime: companyOperationTime!.result,
-                                  appointment: appointment!))); //MakeAppointmentPersonelPage(appointment: appointment,)
-                    } else {
-                      _checked = 0;
-                      appointment!.operationId = companyOperation![0].id;
-                      appointment!.operationS = companyOperation![0].operationName;
+                    if (appointment!.operationId == null) {
+                      setState(() {
+                        _checked = 0;
+                        appointment!.operationId = companyOperation![0].id;
+                        appointment!.operationS = companyOperation![0].operationName;
+                        print(appointment!.operationId);
+                        print(appointment!.operationS);
+                      });
                     }
+
+                    final companyOperationTime = await companyOperationTimeJsnFunc([appointment!.operationId]);
+
+                    if (!mounted) return;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MakeAppointmentTimePage(companyOperationTime: companyOperationTime!.result, appointment: appointment!),
+                      ),
+                    );
                     progressHUD.dismiss();
                   }),
             ),

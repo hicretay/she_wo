@@ -336,6 +336,7 @@ class _SearchPageState extends State<SearchPage> {
                                     if (!mounted) return;
                                     Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
                                         builder: (context) => HomeDetailPage(
+                                              //? TODO commentsAvg: homeDetailContent!.result,
                                               homeDetailContent: homeDetailContent!.result,
                                               companyId: homeDetailContent.result.id,
                                               companyLogo: homeDetailContent.result.companyLogo.replaceAll('shewoo', 'estetikvitrini'),

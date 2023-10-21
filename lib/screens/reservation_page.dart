@@ -1,17 +1,18 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:flutter/material.dart';
+import 'package:flutter_progress_hud/flutter_progress_hud.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:she_wo/JsnClass/appointment_list.dart';
-import 'package:she_wo/JsnClass/company_list_jsn.dart';
 import 'package:she_wo/providers/navigation_provider.dart';
+import 'package:she_wo/providers/reservation_provider.dart';
 import 'package:she_wo/screens/companies_page.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
 import 'package:she_wo/widgets/background_container.dart';
 import 'package:she_wo/widgets/reservation_result_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class ReservationPage extends StatefulWidget {
@@ -24,9 +25,8 @@ class ReservationPage extends StatefulWidget {
 
 class _ReservationPageState extends State<ReservationPage> {
   TextEditingController teSearch = TextEditingController();
-  List? appointmentList;
+
   List? allAppointmentList;
-  List? companyContent;
   List? homeContent;
 
   String? select; // firma seçimi dropDown değeri
@@ -43,54 +43,38 @@ class _ReservationPageState extends State<ReservationPage> {
     });
   }
 
-  Future appointmentListFunc() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userIdData = prefs.getInt("userIdData");
-    String calendarDate =
-        "${_selectedDay.day <= 9 ? "0${_selectedDay.day}" : _selectedDay.day.toString()}.${_selectedDay.month <= 9 ? "0${_selectedDay.month}" : _selectedDay.month.toString()}.${_selectedDay.year}";
-    final AppointmentListJsn? appointmentNewList = await appointmentListJsnFunc(userIdData!, calendarDate);
-    setState(() {
-      appointmentList = appointmentNewList!.result;
-    });
-  }
-
-  Future companyListFunc() async {
-    final CompanyListJsn? companyNewList = await companyListJsnFunc();
-    setState(() {
-      companyContent = companyNewList!.result;
-    });
-  }
-
-  DateTime _selectedDay = DateTime.now();
   // ignore: unused_field
   DateTime _focusedDay = DateTime.now();
 
-  Map<DateTime, List<Event>>? selectedEvents;
-
   @override
   void initState() {
+    final provider = Provider.of<ReservationProvider>(context, listen: false);
     super.initState();
-    selectedEvents = {};
-    appointmentListFunc();
+
+    provider.appointmentListFunc();
+
     allAppointmentListFunc().whenComplete(() {
       for (var element in (allAppointmentList ?? [])) {
-        selectedEvents?[DateTime.utc(
+        provider.selectedEvents?[DateTime.utc(
             int.parse(element.appointmentDate.toString().split('.')[2]),
             int.parse(element.appointmentDate.toString().split('.')[1]),
             int.parse(element.appointmentDate.toString().split('.')[0]))] = [Event(title: element.operationName)];
+        provider.refresh();
       }
     });
-    companyListFunc();
-  }
-
-  List<Event> getEventsfromDay(DateTime date) {
-    return selectedEvents?[date] ?? [];
+    provider.selectedEvents = {};
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ReservationProvider>(context);
+
+    List<Event> getEventsfromDay(DateTime date) {
+      return provider.selectedEvents?[date] ?? [];
+    }
+
     String calendarDate =
-        "${_selectedDay.day <= 9 ? "0${_selectedDay.day}" : _selectedDay.day.toString()}.${_selectedDay.month <= 9 ? "0${_selectedDay.month}" : _selectedDay.month.toString()}.${_selectedDay.year}";
+        "${provider.selectedDay.day <= 9 ? "0${provider.selectedDay.day}" : provider.selectedDay.day.toString()}.${provider.selectedDay.month <= 9 ? "0${provider.selectedDay.month}" : provider.selectedDay.month.toString()}.${provider.selectedDay.year}";
     return Container(
       color: Colors.transparent,
       child: SafeArea(
@@ -146,7 +130,7 @@ class _ReservationPageState extends State<ReservationPage> {
                                 padding: const EdgeInsets.only(right: maxSpace, left: maxSpace),
                                 child: TableCalendar(
                                   locale: "tr",
-                                  focusedDay: _selectedDay,
+                                  focusedDay: provider.selectedDay,
                                   firstDay: DateTime.utc(2010, 10, 16),
                                   lastDay: DateTime.utc(2030, 3, 14),
                                   shouldFillViewport: false,
@@ -174,13 +158,13 @@ class _ReservationPageState extends State<ReservationPage> {
                                     ),
                                   ),
                                   selectedDayPredicate: (day) {
-                                    return isSameDay(_selectedDay, day);
+                                    return isSameDay(provider.selectedDay, day);
                                   },
                                   onDaySelected: (selectedDay, focusedDay) async {
-                                    _selectedDay = selectedDay;
+                                    provider.selectedDay = selectedDay;
                                     _focusedDay = focusedDay;
 
-                                    await appointmentListFunc(); // randevuları yenileme
+                                    await provider.appointmentListFunc(); // randevuları yenileme
                                   },
                                   headerStyle: const HeaderStyle(
                                     formatButtonVisible: false,
@@ -199,23 +183,24 @@ class _ReservationPageState extends State<ReservationPage> {
                             ),
                             Flexible(
                               child: RefreshIndicator(
-                                onRefresh: () => appointmentListFunc(),
+                                onRefresh: () => provider.appointmentListFunc(),
                                 color: primaryColor,
                                 backgroundColor: secondaryColor,
                                 child: ListView.builder(
                                     padding: const EdgeInsets.all(0),
                                     shrinkWrap: true,
-                                    itemCount: appointmentList == null ? 0 : appointmentList!.length,
+                                    itemCount: provider.appointmentList == null ? 0 : provider.appointmentList!.length,
                                     controller: NavigationProvider.of(context).screens[RESERVATION_PAGE].scrollController,
                                     itemBuilder: (BuildContext context, int index) {
                                       return ResevationResultWidget(
-                                        companyName: appointmentList![index].companyName,
-                                        operation: appointmentList![index].operationName,
-                                        time: appointmentList![index].appointmentTime,
-                                        date: appointmentList![index].appointmentDate,
+                                        companyName: provider.appointmentList![index].companyName,
+                                        operation: provider.appointmentList![index].operationName,
+                                        time: provider.appointmentList![index].appointmentTime,
+                                        date: provider.appointmentList![index].appointmentDate,
                                         confirmButton: GestureDetector(
                                             child: Icon(Icons.check_box_rounded,
-                                                size: 18, color: appointmentList![index].confirmed ? tertiaryColor : Theme.of(context).hintColor),
+                                                size: 18,
+                                                color: provider.appointmentList![index].confirmed ? tertiaryColor : Theme.of(context).hintColor),
                                             onTap: () {
                                               showToast(context, "Randevu onayı bekleniyor...");
                                             }),
@@ -238,15 +223,28 @@ class _ReservationPageState extends State<ReservationPage> {
                                                                   final progressHUD = ProgressHUD.of(context);
                                                                   progressHUD!.show();
                                                                   final deleteAppointment =
-                                                                      await appointmentDeleteJsnFunc(appointmentList![index].id);
+                                                                      await appointmentDeleteJsnFunc(provider.appointmentList![index].id);
                                                                   if (deleteAppointment!.success == true) {
                                                                     if (!mounted) return;
                                                                     showToast(context, "Randevu başarıyla iptal edildi!");
+
+                                                                    allAppointmentListFunc().whenComplete(() {
+                                                                      String calendarDate =
+                                                                          "${provider.selectedDay.day <= 9 ? "0${provider.selectedDay.day}" : provider.selectedDay.day.toString()}.${provider.selectedDay.month <= 9 ? "0${provider.selectedDay.month}" : provider.selectedDay.month.toString()}.${provider.selectedDay.year}";
+
+                                                                      provider.selectedEvents?[DateTime.utc(
+                                                                          int.parse(calendarDate.toString().split('.')[2]),
+                                                                          int.parse(calendarDate.toString().split('.')[1]),
+                                                                          int.parse(calendarDate.toString().split('.')[0]))] = [];
+                                                                      provider.refresh();
+                                                                    });
+
+                                                                    await provider.appointmentListFunc();
                                                                   } else {
                                                                     if (!mounted) return;
                                                                     showToast(context, "Randevu iptal edilemedi!");
                                                                   }
-                                                                  await appointmentListFunc();
+
                                                                   if (!mounted) return;
                                                                   Navigator.of(context).pop();
                                                                   progressHUD.dismiss();

@@ -9,45 +9,49 @@ TopFavoritesModel topFavoritesModelFromJson(String str) => TopFavoritesModel.fro
 String topFavoritesModelToJson(TopFavoritesModel data) => json.encode(data.toJson());
 
 class TopFavoritesModel {
-    bool success;
-    List<Result> result;
+  bool success;
+  List<Result> result;
 
-    TopFavoritesModel({
-        required this.success,
-        required this.result,
-    });
+  TopFavoritesModel({
+    required this.success,
+    required this.result,
+  });
 
-    factory TopFavoritesModel.fromJson(Map<String, dynamic> json) => TopFavoritesModel(
+  factory TopFavoritesModel.fromJson(Map<String, dynamic> json) => TopFavoritesModel(
         success: json["success"],
         result: List<Result>.from(json["result"].map((x) => Result.fromJson(x))),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "success": success,
         "result": List<dynamic>.from(result.map((x) => x.toJson())),
-    };
+      };
 }
 
 class Result {
-    int id;
-    String companyName;
-    String companyLogo;
+  int id;
+  String companyName;
+  String companyLogo;
+  double? commentsAvg;
 
-    Result({
-        required this.id,
-        required this.companyName,
-        required this.companyLogo,
-    });
+  Result({
+    required this.id,
+    required this.companyName,
+    required this.companyLogo,
+    this.commentsAvg,
+  });
 
-    factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory Result.fromJson(Map<String, dynamic> json) => Result(
         id: json["id"],
         companyName: json["companyName"],
         companyLogo: json["companyLogo"],
-    );
+        commentsAvg: json["commentsAvg"],
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "companyName": companyName,
         "companyLogo": companyLogo,
-    };
+        "commentsAvg": commentsAvg,
+      };
 }

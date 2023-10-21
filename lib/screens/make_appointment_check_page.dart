@@ -1,7 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api, no_logic_in_create_state
 
+import 'package:provider/provider.dart';
 import 'package:she_wo/JsnClass/appointment_list.dart';
 import 'package:she_wo/model/appointment_model.dart';
+import 'package:she_wo/providers/reservation_provider.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/widgets/backleading_widget.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,8 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/information_row_widget.dart';
 import 'package:she_wo/settings/functions.dart';
+
+import 'reservation_page.dart';
 
 class MakeAppointmentCheckPage extends StatefulWidget {
   final AppointmentObject? appointment;
@@ -33,7 +37,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
   Future appointmentListFunc() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userIdData = prefs.getInt("userIdData");
-    final AppointmentListJsn? appointmentNewList = await appointmentListJsnFunc(userIdData!, "");
+    final AppointmentListJsn? appointmentNewList = await allAppointmentListJsnFunc(userIdData!);
 
     if (mounted) {
       setState(() {
@@ -43,13 +47,8 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    appointmentListFunc();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ReservationProvider>(context);
     return SafeArea(
         child: Scaffold(
       body: ProgressHUD(
@@ -72,7 +71,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                       Align(
                         alignment: Alignment.topLeft,
                         child: Text(
-                          appointment.companyNameS!,
+                          appointment.companyNameS ?? '',
                           style: const TextStyle(color: tertiaryColor),
                         ),
                       ),
@@ -186,13 +185,28 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                                               teNote.text);
                                           if (appointmentAddData!.success == true) {
                                             if (!mounted) return;
+
                                             await showToast(context, "Randevu başarıyla kaydedildi!");
-                                            progressHUD.dismiss();
+                                            await appointmentListFunc().whenComplete(() async {
+                                              for (var element in (appointmentList ?? [])) {
+                                                provider.selectedEvents?[DateTime.utc(
+                                                    int.parse(element.appointmentDate.toString().split('.')[2]),
+                                                    int.parse(element.appointmentDate.toString().split('.')[1]),
+                                                    int.parse(element.appointmentDate.toString().split('.')[0]))] = [
+                                                  Event(title: element.operationName)
+                                                ];
+                                                provider.refresh();
+                                              }
+
+                                              await provider.appointmentListFunc();
+
+                                              progressHUD.dismiss();
+                                            });
                                           } else {
                                             if (!mounted) return;
                                             await showToast(context, "Randevu kaydı başarısız!");
                                           }
-                                          // await appointmentListFunc();
+
                                           if (!mounted) return;
                                           Navigator.pop(context);
                                           Navigator.pop(context);

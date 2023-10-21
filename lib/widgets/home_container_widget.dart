@@ -15,6 +15,7 @@ class HomeContainerWidget extends StatefulWidget {
   final VoidCallback? onPressedLocation, onPressedPhone, homeDetailOntap, logoOnTap;
   final bool isCategoryWidget;
   final bool? isPopular;
+  final double? commentsAvg;
 
   const HomeContainerWidget({
     Key? key,
@@ -30,6 +31,7 @@ class HomeContainerWidget extends StatefulWidget {
     this.logoOnTap,
     required this.isCategoryWidget,
     this.isPopular,
+    this.commentsAvg,
   }) : super(key: key);
 
   @override
@@ -160,7 +162,7 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                                                   RatingBar(
                                                     updateOnDrag: false,
                                                     itemSize: 15,
-                                                    initialRating: 4.5,
+                                                    initialRating: widget.commentsAvg ?? 0,
                                                     direction: Axis.horizontal,
                                                     allowHalfRating: true,
                                                     itemCount: 5,
@@ -171,10 +173,9 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                                                     itemPadding: EdgeInsets.zero,
                                                     onRatingUpdate: (rating) {},
                                                   ),
-                                                  const Text(
-                                                    //? TODO firma puanı eklenecek
-                                                    '4.5 Harika',
-                                                    style: TextStyle(fontSize: 10),
+                                                  Text(
+                                                    (widget.commentsAvg ?? 0).toString(),
+                                                    style: const TextStyle(fontSize: 10),
                                                     overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ],

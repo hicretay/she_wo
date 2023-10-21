@@ -26,6 +26,7 @@ class HomeDetailPage extends StatefulWidget {
   final String? googleAdressLink;
   final String? companyPhone;
   final List<Result>? comments;
+  final double? commentsAvg;
   const HomeDetailPage({
     Key? key,
     this.homeDetailContent,
@@ -36,6 +37,7 @@ class HomeDetailPage extends StatefulWidget {
     this.googleAdressLink,
     this.companyPhone,
     this.comments,
+    this.commentsAvg,
   }) : super(key: key);
 
   @override
@@ -206,8 +208,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                           itemPadding: EdgeInsets.zero,
                                                         ),
                                                         Text(
-                                                          //? TODO firma puanı eklenecek
-                                                          '${rating.toString()} Harika',
+                                                          '${widget.commentsAvg ?? 0} Harika',
                                                           style: const TextStyle(fontSize: 10),
                                                           overflow: TextOverflow.ellipsis,
                                                         ),
@@ -397,13 +398,12 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                               Padding(
                                                 padding: const EdgeInsets.only(right: 8),
                                                 child: MaterialButton(
-                                                  color: tertiaryColor,
+                                                  elevation: 0,
+                                                  color: white,
                                                   minWidth: deviceWidth(context) * 0.2,
                                                   child: Text("Kaydet",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .labelLarge!
-                                                          .copyWith(color: white, fontFamily: contentFont, fontSize: 15)),
+                                                      style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                                                          color: tertiaryColor, fontFamily: contentFont, fontSize: 15, fontWeight: FontWeight.bold)),
                                                   //-----------------------------Kaydet BUTONU ONPRESSEDİ---------------------------------------------
                                                   onPressed: () async {
                                                     SharedPreferences prefs = await SharedPreferences.getInstance();

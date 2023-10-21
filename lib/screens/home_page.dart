@@ -322,6 +322,7 @@ class _HomePageState extends State<HomePage> {
                                                   child: HomeContainerWidget(
                                                     isCategoryWidget: false,
                                                     companyName: topFavoriteContent[index].companyName,
+                                                    commentsAvg: topFavoriteContent[index].commentsAvg,
                                                     contentPicture: topFavoriteContent[index].companyLogo.replaceAll('shewoo', 'estetikvitrini'),
                                                     cardText: topFavoriteContent[index].companyName,
                                                     homeDetailOntap: () async {
@@ -336,6 +337,8 @@ class _HomePageState extends State<HomePage> {
                                                       if (!mounted) return;
                                                       Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
                                                           builder: (context) => HomeDetailPage(
+                                                            //? TODO commentsAvg homeDetailContentden alınacak
+                                                                commentsAvg: topFavoriteContent[index].commentsAvg,
                                                                 homeDetailContent: homeDetailContent!.result,
                                                                 companyId: homeDetailContent.result.id,
                                                                 companyLogo:

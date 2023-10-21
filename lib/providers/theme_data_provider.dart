@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:she_wo/model/comment_model.dart' as c;
 
+
 ThemeData light = ThemeData(
   // ignore: deprecated_member_use
   backgroundColor: white,
@@ -44,11 +45,12 @@ class ThemeDataProvider with ChangeNotifier {
     isLightTheme = _preferences!.getBool("themeData") ?? true;
   }
 
-
   List<c.Result>? comments = [];
 
   void setComments(List<c.Result>? c) {
     comments = c;
     notifyListeners();
   }
+
+  
 }
