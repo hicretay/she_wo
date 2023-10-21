@@ -117,8 +117,8 @@ class _SettingsPageState extends State<SettingsPage> {
                               onTap: () {
                                 final progressHUD = ProgressHUD.of(context);
                                 progressHUD!.show();
-                                Navigator.of(context, rootNavigator: true).push(
-                                    MaterialPageRoute(builder: (context) => const WebViewWidget(locationUrl: "https://she_wo.com/license.html")));
+                                Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                    builder: (context) => const WebViewWidget(locationUrl: "https://shewoo.com/Corporate/License/mobil")));
                                 progressHUD.dismiss();
                               },
                             ),
@@ -128,8 +128,8 @@ class _SettingsPageState extends State<SettingsPage> {
                               onTap: () {
                                 final progressHUD = ProgressHUD.of(context);
                                 progressHUD!.show();
-                                Navigator.of(context, rootNavigator: true)
-                                    .push(MaterialPageRoute(builder: (context) => const WebViewWidget(locationUrl: "https://she_wo.com/usage.html")));
+                                Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                    builder: (context) => const WebViewWidget(locationUrl: "https://shewoo.com/Corporate/Usage/mobil")));
                                 progressHUD.dismiss();
                               },
                             ),
@@ -139,8 +139,8 @@ class _SettingsPageState extends State<SettingsPage> {
                               onTap: () {
                                 final progressHUD = ProgressHUD.of(context);
                                 progressHUD!.show();
-                                Navigator.of(context, rootNavigator: true).push(
-                                    MaterialPageRoute(builder: (context) => const WebViewWidget(locationUrl: "https://she_wo.com/privacy.html")));
+                                Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                    builder: (context) => const WebViewWidget(locationUrl: "https://shewoo.com/Corporate/Privacy/mobil")));
                                 progressHUD.dismiss();
                               },
                             ),
@@ -148,8 +148,8 @@ class _SettingsPageState extends State<SettingsPage> {
                               text: "She Wo Hakkında",
                               child: const LineIcon(LineIcons.infoCircle, color: primaryColor),
                               onTap: () {
-                                Navigator.of(context, rootNavigator: true)
-                                    .push(MaterialPageRoute(builder: (context) => const WebViewWidget(locationUrl: "https://she_wo.com/About.html")));
+                                Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                    builder: (context) => const WebViewWidget(locationUrl: "https://shewoo.com/Corporate/About/mobil")));
                               },
                             ),
 

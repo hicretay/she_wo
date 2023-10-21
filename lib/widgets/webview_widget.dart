@@ -19,29 +19,27 @@ class _WebViewWidgetState extends State<WebViewWidget> {
       child: Scaffold(
         body: Column(
           children: [
-            Padding(
-                padding: const EdgeInsets.all(defaultPadding),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      //iconun çevresini saran yapı tasarımı
-                      maxRadius: 20,
-                      backgroundColor: secondaryColor,
-                      child: IconButton(
+            Container(
+              color: tertiaryColor,
+              child: Padding(
+                  padding: const EdgeInsets.all(defaultPadding),
+                  child: Row(
+                    children: [
+                      IconButton(
                         iconSize: iconSize,
                         icon: const Icon(Icons.arrow_back, color: primaryColor, size: 25),
                         onPressed: () {
                           Navigator.pop(context);
                         },
                       ),
-                    ),
-                    const SizedBox(width: maxSpace),
-                    const Text(
-                      "She Wo",
-                      style: TextStyle(fontFamily: leadingFont, fontSize: 25, color: primaryColor),
-                    ),
-                  ],
-                )),
+                      const SizedBox(width: maxSpace),
+                      const Text(
+                        "She Wo",
+                        style: TextStyle(fontFamily: leadingFont, fontSize: 25, color: primaryColor),
+                      ),
+                    ],
+                  )),
+            ),
             Expanded(
               child: WebView(
                 initialUrl: widget.locationUrl,
