@@ -6,13 +6,16 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
+import 'package:she_wo/model/comment_model.dart';
 import 'package:she_wo/model/company_detail_model.dart';
 import 'package:she_wo/model/top_favorite_model.dart';
+import 'package:she_wo/providers/theme_data_provider.dart';
+import 'package:she_wo/screens/home_detail_page.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
 
 import '../widgets/backleading_widget.dart';
-import 'company_profile_page.dart';
 
 class SearchPage extends StatefulWidget {
   static const route = "searchPage";
@@ -85,6 +88,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ThemeDataProvider>(context);
     return Container(
       color: Colors.transparent,
       child: SafeArea(
@@ -324,16 +328,23 @@ class _SearchPageState extends State<SearchPage> {
                                     ),
                                   ),
                                   onTap: () async {
-                                    // final progressUHD = ProgressHUD.of(context);
-                                    // progressUHD!.show();
-
-                                    print(selectedCompanies[index].id);
                                     final CompanyDetailModel? homeDetailContent = await companyDetailFunc(selectedCompanies[index].id);
-                                    if (!mounted) return;
-                                    Navigator.of(context, rootNavigator: true)
-                                        .push(MaterialPageRoute(builder: (context) => CompanyProfilePage(companyProfile: homeDetailContent)));
 
-                                    // progressUHD.dismiss();
+                                    final CommentModel? commentsModel = await commentListJsnFunc(selectedCompanies[index].id);
+                                    provider.setComments(commentsModel?.result);
+
+                                    if (!mounted) return;
+                                    Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                                        builder: (context) => HomeDetailPage(
+                                              homeDetailContent: homeDetailContent!.result,
+                                              companyId: homeDetailContent.result.id,
+                                              companyLogo: homeDetailContent.result.companyLogo.replaceAll('shewoo', 'estetikvitrini'),
+                                              companyName: homeDetailContent.result.companyName,
+                                              contentTitle: homeDetailContent.result.campaignList[index].campaingName,
+                                              googleAdressLink: homeDetailContent.result.googleAdressLink,
+                                              companyPhone: homeDetailContent.result.companyPhone,
+                                              comments: commentsModel?.result,
+                                            )));
                                   },
                                 ),
                               );

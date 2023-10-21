@@ -26,14 +26,14 @@ dependencies:
   http: ^0.13.3
   image_cropper: ^1.4.1
   image_picker: ^0.8.4+4
-  intl: ^0.17.0
+  intl: ^0.18.0
   line_icons: ^2.0.1
   mask_text_input_formatter: ^2.0.0
   page_transition: ^2.0.9
   provider: ^6.0.0
   rich_editor: ^0.0.5
   shared_preferences: ^2.0.6
-  table_calendar: ^3.0.2
+  table_calendar: ^3.0.9
   url_launcher: ^6.0.10
   webview_flutter: ^2.0.12
 

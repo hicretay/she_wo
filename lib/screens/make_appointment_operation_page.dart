@@ -207,8 +207,9 @@ class _MakeAppointmentOperationPageState extends State<MakeAppointmentOperationP
                                   companyOperationTime: companyOperationTime!.result,
                                   appointment: appointment!))); //MakeAppointmentPersonelPage(appointment: appointment,)
                     } else {
-                      if (!mounted) return;
-                      showToast(context, "Lütfen bir işlem seçiniz!");
+                      _checked = 0;
+                      appointment!.operationId = companyOperation![0].id;
+                      appointment!.operationS = companyOperation![0].operationName;
                     }
                     progressHUD.dismiss();
                   }),

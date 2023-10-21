@@ -156,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                                           builder: (context) => AlertDialog(
                                             title: const Center(child: Text("SIFREMI UNUTTUM", style: TextStyle(fontFamily: leadingFont))),
                                             content: SizedBox(
-                                              height: 70,
+                                              height: 75,
                                               child: Column(
                                                 children: [
                                                   const Text("Lütfen E-Posta adresinizi giriniz: "),
@@ -179,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                                             actions: <Widget>[
                                               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                                                 MaterialButton(
-                                                    color: primaryColor,
+                                                    color: tertiaryColor,
                                                     child: const Text("Gönder",
                                                         style: TextStyle(fontFamily: leadingFont, color: white)), // fotoğraf çekilmeye devam edilecek
                                                     onPressed: () async {

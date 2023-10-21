@@ -25,12 +25,23 @@ class ReservationPage extends StatefulWidget {
 class _ReservationPageState extends State<ReservationPage> {
   TextEditingController teSearch = TextEditingController();
   List? appointmentList;
+  List? allAppointmentList;
   List? companyContent;
   List? homeContent;
 
   String? select; // firma seçimi dropDown değeri
 
   int? userIdData;
+
+  Future allAppointmentListFunc() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userIdData = prefs.getInt("userIdData");
+
+    final AppointmentListJsn? appointmentNewList = await allAppointmentListJsnFunc(userIdData!);
+    setState(() {
+      allAppointmentList = appointmentNewList!.result;
+    });
+  }
 
   Future appointmentListFunc() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -51,33 +62,33 @@ class _ReservationPageState extends State<ReservationPage> {
   }
 
   DateTime _selectedDay = DateTime.now();
+  // ignore: unused_field
   DateTime _focusedDay = DateTime.now();
 
-  Map<DateTime, List> selectedEvents = {
-    // DateTime.now():[Event(operation: "işlem"),Event(operation: "işlem")],
-    // DateTime.utc(2022, 9, 10):[Event(operation: "işlem"),],
-  };
-
-  // List<Event>? _getEventsForDay(DateTime date) {
-  //   return selectedEvents[date] ?? [
-  //   // Event(operation: "deneme"),
-  //   ];
-  // }
+  Map<DateTime, List<Event>>? selectedEvents;
 
   @override
   void initState() {
     super.initState();
     selectedEvents = {};
     appointmentListFunc();
-    companyListFunc();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      //code will run when widget rendering complete
+    allAppointmentListFunc().whenComplete(() {
+      for (var element in (allAppointmentList ?? [])) {
+        selectedEvents?[DateTime.utc(
+            int.parse(element.appointmentDate.toString().split('.')[2]),
+            int.parse(element.appointmentDate.toString().split('.')[1]),
+            int.parse(element.appointmentDate.toString().split('.')[0]))] = [Event(title: element.operationName)];
+      }
     });
+    companyListFunc();
+  }
+
+  List<Event> getEventsfromDay(DateTime date) {
+    return selectedEvents?[date] ?? [];
   }
 
   @override
   Widget build(BuildContext context) {
-    //final rootContext = context.findRootAncestorStateOfType<NavigatorState>().context;
     String calendarDate =
         "${_selectedDay.day <= 9 ? "0${_selectedDay.day}" : _selectedDay.day.toString()}.${_selectedDay.month <= 9 ? "0${_selectedDay.month}" : _selectedDay.month.toString()}.${_selectedDay.year}";
     return Container(
@@ -135,7 +146,7 @@ class _ReservationPageState extends State<ReservationPage> {
                                 padding: const EdgeInsets.only(right: maxSpace, left: maxSpace),
                                 child: TableCalendar(
                                   locale: "tr",
-                                  focusedDay: _focusedDay,
+                                  focusedDay: _selectedDay,
                                   firstDay: DateTime.utc(2010, 10, 16),
                                   lastDay: DateTime.utc(2030, 3, 14),
                                   shouldFillViewport: false,
@@ -168,13 +179,14 @@ class _ReservationPageState extends State<ReservationPage> {
                                   onDaySelected: (selectedDay, focusedDay) async {
                                     _selectedDay = selectedDay;
                                     _focusedDay = focusedDay;
+
                                     await appointmentListFunc(); // randevuları yenileme
                                   },
                                   headerStyle: const HeaderStyle(
                                     formatButtonVisible: false,
                                     titleCentered: true,
                                   ),
-                                  //eventLoader: _getEventsForDay,
+                                  eventLoader: getEventsfromDay,
                                 )),
                             Padding(
                               padding: const EdgeInsets.only(left: defaultPadding, top: defaultPadding, bottom: defaultPadding),
@@ -272,4 +284,12 @@ class _ReservationPageState extends State<ReservationPage> {
       ),
     );
   }
+}
+
+class Event {
+  final String title;
+  Event({required this.title});
+
+  @override
+  String toString() => title;
 }

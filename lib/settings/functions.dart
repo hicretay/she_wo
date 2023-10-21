@@ -100,6 +100,19 @@ Future<AppointmentListJsn?> appointmentListJsnFunc(int userId, String? appointme
   }
 }
 
+
+Future<AppointmentListJsn?> allAppointmentListJsnFunc(int userId) async {
+  final response =
+      await http.post(Uri.parse("${baseUrl}Appointment/List"), body: '{"userId":$userId}', headers: header);
+
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+    return appointmentListJsnFromJson(responseString);
+  } else {
+    return null;
+  }
+}
+
 //-----------------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------Firma Sahibinin Randevuları Listesi Fonksiyonu-------------------------------------------------
 Future<CompanyAppointmentListJsn?> appointmentCompanyListJsnFunc(int userId, String? appointmentDate) async {
