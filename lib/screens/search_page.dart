@@ -34,6 +34,7 @@ class _SearchPageState extends State<SearchPage> {
   bool isSaved = false;
   String? currentAddress;
   Position? currentPosition;
+  bool isLoading = false;
 
   Future<bool> handleLocationPermission() async {
     bool serviceEnabled;
@@ -61,6 +62,9 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<void> getCurrentPosition() async {
+    setState(() {
+      isLoading = true;
+    });
     final hasPermission = await handleLocationPermission();
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) {
@@ -68,6 +72,10 @@ class _SearchPageState extends State<SearchPage> {
       getAddressFromLatLng(currentPosition!);
     }).catchError((e) {
       debugPrint(e);
+    });
+
+    setState(() {
+      isLoading = false;
     });
   }
 
@@ -152,7 +160,7 @@ class _SearchPageState extends State<SearchPage> {
                                     children: [
                                       Flexible(
                                         child: ListTile(
-                                          title: TextField(
+                                          title: TextFormField(
                                             controller: teSearch,
                                             cursorColor: tertiaryColor,
                                             decoration: InputDecoration(
@@ -179,37 +187,6 @@ class _SearchPageState extends State<SearchPage> {
                                                 ),
                                               ),
                                             ),
-                                            // onTap: () {
-                                            //   selectedCompanies.clear();
-                                            //   setState(() {
-                                            //     isSaved = false;
-                                            //   });
-                                            // },
-                                            // onChanged: (value) {
-                                            //   selectedCompanies.clear();
-                                            //   setState(() {
-                                            //     for (var element in allCompanies) {
-                                            //       if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
-                                            //         selectedCompanies.add(element);
-                                            //       }
-                                            //     }
-                                            //   });
-
-                                            //   if (selectedCompanies.isEmpty) {
-                                            //     setState(() {
-                                            //       isSaved = false;
-                                            //     });
-                                            //   }
-                                            // },
-                                            // onSubmitted: (val) {
-                                            //   if (selectedCompanies.isNotEmpty) {
-                                            //     setState(() {
-                                            //       isSaved = true;
-                                            //     });
-                                            //   }
-
-                                            //   SystemChannels.textInput.invokeMethod('TextInput.hide');
-                                            // },
                                           ),
                                         ),
                                       ),
@@ -226,7 +203,7 @@ class _SearchPageState extends State<SearchPage> {
                                     children: [
                                       Flexible(
                                         child: ListTile(
-                                          title: TextField(
+                                          title: TextFormField(
                                             controller: teLocation,
                                             cursorColor: tertiaryColor,
                                             decoration: InputDecoration(
@@ -243,18 +220,21 @@ class _SearchPageState extends State<SearchPage> {
                                               icon: CircleAvatar(
                                                 maxRadius: 15,
                                                 backgroundColor: secondaryColor,
-                                                child: IconButton(
-                                                  iconSize: iconSize,
-                                                  icon: FaIcon(FontAwesomeIcons.locationArrow,
-                                                      color: Theme.of(context).hintColor, size: 16, textDirection: TextDirection.ltr),
-                                                  onPressed: () {
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPage()));
-                                                  },
-                                                ),
+                                                child: isLoading
+                                                    ? const CircularProgressIndicator(
+                                                        color: tertiaryColor,
+                                                      )
+                                                    : IconButton(
+                                                        iconSize: iconSize,
+                                                        icon: FaIcon(FontAwesomeIcons.locationArrow,
+                                                            color: Theme.of(context).hintColor, size: 16, textDirection: TextDirection.ltr),
+                                                        onPressed: () {},
+                                                      ),
                                               ),
                                             ),
                                             onTap: () async {
                                               selectedCompanies.clear();
+                                              teLocation.text = '';
                                               setState(() {
                                                 isSaved = false;
                                               });

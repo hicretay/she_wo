@@ -137,8 +137,8 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                                 keyboardType: TextInputType.multiline,
                                 maxLines: null,
                                 controller: teNote,
-                                cursorColor: primaryColor,
-                                style: const TextStyle(color: primaryColor, fontSize: 18),
+                                cursorColor: tertiaryColor,
+                                style: const TextStyle(color: tertiaryColor, fontSize: 18),
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(
