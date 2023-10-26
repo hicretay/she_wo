@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:she_wo/model/top_favorite_model.dart' as t;
 
 import '../settings/consts.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -16,6 +17,7 @@ class HomeContainerWidget extends StatefulWidget {
   final bool isCategoryWidget;
   final bool? isPopular;
   final double? commentsAvg;
+  final t.Result? pageData;
 
   const HomeContainerWidget({
     Key? key,
@@ -32,6 +34,7 @@ class HomeContainerWidget extends StatefulWidget {
     required this.isCategoryWidget,
     this.isPopular,
     this.commentsAvg,
+    this.pageData,
   }) : super(key: key);
 
   @override
@@ -142,11 +145,10 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      //? TODO Apiden Adres eklenecek
-                                      const Expanded(
+                                      Expanded(
                                         child: Text(
-                                          'Çınardere Mah, Oba Sk No:2/1-2-3-4, 34896 Pendik/İstanbul',
-                                          style: TextStyle(fontSize: 10),
+                                          widget.pageData?.companyAddress ?? '',
+                                          style: const TextStyle(fontSize: 10),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
@@ -180,16 +182,15 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                                                   ),
                                                 ],
                                               ),
-                                              const Row(
+                                              Row(
                                                 children: [
-                                                  Icon(
+                                                  const Icon(
                                                     Icons.remove_red_eye_sharp,
                                                     size: 15,
                                                   ),
                                                   Text(
-                                                    //? TODO görüntülenme sayısı eklenecek
-                                                    '500 Görüntülenme',
-                                                    style: TextStyle(fontSize: 10),
+                                                    '${widget.pageData?.viewsNumber} Görüntülenme',
+                                                    style: const TextStyle(fontSize: 10),
                                                     overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ],

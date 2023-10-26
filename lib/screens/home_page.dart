@@ -18,6 +18,7 @@ import '../settings/consts.dart';
 import '../settings/functions.dart';
 import '../widgets/background_container.dart';
 import '../widgets/home_container_widget.dart';
+import 'category_companies_page.dart';
 import 'home_detail_page.dart';
 
 // ignore: must_be_immutable
@@ -241,7 +242,15 @@ class _HomePageState extends State<HomePage> {
                                               companyName: populerContent[index].categoryName,
                                               contentPicture: populerContent[index].categoryLogo,
                                               homeDetailOntap: () {
-                                                Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPage()));
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => CategoryCompaniesPage(
+                                                      categoryId: populerContent[index].categoryId,
+                                                      categoryname: populerContent[index].categoryName,
+                                                    ),
+                                                  ),
+                                                );
                                               },
                                             );
                                           }),
@@ -283,7 +292,16 @@ class _HomePageState extends State<HomePage> {
                                               contentPicture: homeContent[index].categoryLogo,
                                               cardText: homeContent[index].categoryName,
                                               homeDetailOntap: () async {
-                                                Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPage()));
+                                                // Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPage()));
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => CategoryCompaniesPage(
+                                                      categoryId: homeContent[index].categoryId,
+                                                      categoryname: homeContent[index].categoryName,
+                                                    ),
+                                                  ),
+                                                );
                                               },
                                             );
                                           }),
@@ -320,9 +338,10 @@ class _HomePageState extends State<HomePage> {
                                                 child: SizedBox(
                                                   width: 300,
                                                   child: HomeContainerWidget(
+                                                    pageData: topFavoriteContent[index],
                                                     isCategoryWidget: false,
                                                     companyName: topFavoriteContent[index].companyName,
-                                                    commentsAvg: topFavoriteContent[index].commentsAvg,
+                                                    commentsAvg: topFavoriteContent[index].commentsAvg?.toDouble(),
                                                     contentPicture: topFavoriteContent[index].companyLogo.replaceAll('shewoo', 'estetikvitrini'),
                                                     cardText: topFavoriteContent[index].companyName,
                                                     homeDetailOntap: () async {
@@ -337,14 +356,13 @@ class _HomePageState extends State<HomePage> {
                                                       if (!mounted) return;
                                                       Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
                                                           builder: (context) => HomeDetailPage(
-                                                            //? TODO commentsAvg homeDetailContentden alınacak
-                                                                commentsAvg: topFavoriteContent[index].commentsAvg,
+                                                                commentsAvg: homeDetailContent?.result.commentsAvg,
                                                                 homeDetailContent: homeDetailContent!.result,
                                                                 companyId: homeDetailContent.result.id,
                                                                 companyLogo:
                                                                     homeDetailContent.result.companyLogo.replaceAll('shewoo', 'estetikvitrini'),
                                                                 companyName: homeDetailContent.result.companyName,
-                                                                contentTitle: homeDetailContent.result.campaignList[index].campaingName,
+                                                                contentTitle: homeDetailContent.result.companyName,
                                                                 googleAdressLink: homeDetailContent.result.googleAdressLink,
                                                                 companyPhone: homeDetailContent.result.companyPhone,
                                                                 comments: commentsModel?.result,

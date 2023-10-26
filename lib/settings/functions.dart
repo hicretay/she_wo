@@ -59,7 +59,19 @@ Future<CompanyListJsn?> companyListJsnFunc() async {
     return null;
   }
 }
+
 //-------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------Categori Firmalarının Listesi Fonksiyonu-----------------------------------------
+Future<TopFavoritesModel?> categoryCompanyListJsnFunc(int categoryId) async {
+  final response = await http.post(Uri.parse("${baseUrl}CategoryOperation/CategoryCompanyList"), body: '{"categoryId":$categoryId}', headers: header);
+
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+    return topFavoritesModelFromJson(responseString);
+  } else {
+    return null;
+  }
+}
 
 //----------------------------------------------------Kampanyalı İşlemler Fonksiyonu--------------------------------------------------
 Future<CompanyOperationJsn?> companyOperationJsnFunc(int id) async {
@@ -100,10 +112,8 @@ Future<AppointmentListJsn?> appointmentListJsnFunc(int userId, String? appointme
   }
 }
 
-
 Future<AppointmentListJsn?> allAppointmentListJsnFunc(int userId) async {
-  final response =
-      await http.post(Uri.parse("${baseUrl}Appointment/List"), body: '{"userId":$userId}', headers: header);
+  final response = await http.post(Uri.parse("${baseUrl}Appointment/List"), body: '{"userId":$userId}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;

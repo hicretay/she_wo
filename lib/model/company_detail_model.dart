@@ -36,12 +36,14 @@ class Result {
     String companyPhone2;
     String googleAdressLink;
     int likeCount;
-    int campaignCount;
+    dynamic campaignCount;
     int favCount;
     String eMail;
     String web;
     dynamic address;
-    List<CampaignList> campaignList;
+    dynamic commentsAvg;
+    int viewsNumber;
+    List<CommentList> commentList;
 
     Result({
         required this.id,
@@ -56,7 +58,9 @@ class Result {
         required this.eMail,
         required this.web,
         required this.address,
-        required this.campaignList,
+        required this.commentsAvg,
+        required this.viewsNumber,
+        required this.commentList,
     });
 
     factory Result.fromJson(Map<String, dynamic> json) => Result(
@@ -72,7 +76,9 @@ class Result {
         eMail: json["eMail"],
         web: json["web"],
         address: json["address"],
-        campaignList: List<CampaignList>.from(json["campaignList"].map((x) => CampaignList.fromJson(x))),
+        commentsAvg: json["commentsAvg"],
+        viewsNumber: json["viewsNumber"],
+        commentList: List<CommentList>.from(json["commentList"].map((x) => CommentList.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -88,30 +94,48 @@ class Result {
         "eMail": eMail,
         "web": web,
         "address": address,
-        "campaignList": List<dynamic>.from(campaignList.map((x) => x.toJson())),
+        "commentsAvg": commentsAvg,
+        "viewsNumber": viewsNumber,
+        "commentList": List<dynamic>.from(commentList.map((x) => x.toJson())),
     };
 }
 
-class CampaignList {
-    int campaingId;
-    String campaingName;
-    String campaingLogo;
+class CommentList {
+    int id;
+    int userId;
+    int companyId;
+    DateTime registrationDate;
+    String comment;
+    String userName;
+    double userPoint;
 
-    CampaignList({
-        required this.campaingId,
-        required this.campaingName,
-        required this.campaingLogo,
+    CommentList({
+        required this.id,
+        required this.userId,
+        required this.companyId,
+        required this.registrationDate,
+        required this.comment,
+        required this.userName,
+        required this.userPoint,
     });
 
-    factory CampaignList.fromJson(Map<String, dynamic> json) => CampaignList(
-        campaingId: json["campaingId"],
-        campaingName: json["campaingName"],
-        campaingLogo: json["campaingLogo"],
+    factory CommentList.fromJson(Map<String, dynamic> json) => CommentList(
+        id: json["id"],
+        userId: json["userId"],
+        companyId: json["companyId"],
+        registrationDate: DateTime.parse(json["registrationDate"]),
+        comment: json["comment"],
+        userName: json["userName"],
+        userPoint: json["userPoint"]?.toDouble(),
     );
 
     Map<String, dynamic> toJson() => {
-        "campaingId": campaingId,
-        "campaingName": campaingName,
-        "campaingLogo": campaingLogo,
+        "id": id,
+        "userId": userId,
+        "companyId": companyId,
+        "registrationDate": registrationDate.toIso8601String(),
+        "comment": comment,
+        "userName": userName,
+        "userPoint": userPoint,
     };
 }

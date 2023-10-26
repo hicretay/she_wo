@@ -29,16 +29,20 @@ class TopFavoritesModel {
 }
 
 class Result {
-  int id;
+  dynamic id;
   String companyName;
   String companyLogo;
-  double? commentsAvg;
+  int? commentsAvg;
+  String? companyAddress;
+  int? viewsNumber;
 
   Result({
     required this.id,
     required this.companyName,
     required this.companyLogo,
     this.commentsAvg,
+    this.companyAddress,
+    this.viewsNumber,
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
@@ -46,6 +50,8 @@ class Result {
         companyName: json["companyName"],
         companyLogo: json["companyLogo"],
         commentsAvg: json["commentsAvg"],
+        companyAddress: json["companyAddress"],
+        viewsNumber: json["viewsNumber"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -53,5 +59,7 @@ class Result {
         "companyName": companyName,
         "companyLogo": companyLogo,
         "commentsAvg": commentsAvg,
+        "companyAddress": companyAddress,
+        "viewsNumber": viewsNumber,
       };
 }

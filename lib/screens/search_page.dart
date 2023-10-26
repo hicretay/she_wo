@@ -316,12 +316,12 @@ class _SearchPageState extends State<SearchPage> {
                                     if (!mounted) return;
                                     Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
                                         builder: (context) => HomeDetailPage(
-                                              //? TODO commentsAvg: homeDetailContent!.result,
+                                              commentsAvg: homeDetailContent?.result.commentsAvg,
                                               homeDetailContent: homeDetailContent!.result,
                                               companyId: homeDetailContent.result.id,
                                               companyLogo: homeDetailContent.result.companyLogo.replaceAll('shewoo', 'estetikvitrini'),
                                               companyName: homeDetailContent.result.companyName,
-                                              contentTitle: homeDetailContent.result.campaignList[index].campaingName,
+                                              contentTitle: homeDetailContent.result.companyName,
                                               googleAdressLink: homeDetailContent.result.googleAdressLink,
                                               companyPhone: homeDetailContent.result.companyPhone,
                                               comments: commentsModel?.result,

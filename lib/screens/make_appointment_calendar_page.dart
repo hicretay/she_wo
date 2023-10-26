@@ -53,7 +53,7 @@ class _MakeAppointmentCalendarPageState extends State<MakeAppointmentCalendarPag
                             alignment: Alignment.topLeft,
                             child: Text(
                               appointment.companyNameS!,
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(color: tertiaryColor),
                             ),
                           ),
                           const SizedBox(height: maxSpace)

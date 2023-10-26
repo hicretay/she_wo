@@ -214,16 +214,15 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                         ),
                                                       ],
                                                     ),
-                                                    const Row(
+                                                    Row(
                                                       children: [
-                                                        Icon(
+                                                        const Icon(
                                                           Icons.remove_red_eye_sharp,
                                                           size: 15,
                                                         ),
                                                         Text(
-                                                          //? TODO görüntülenme sayısı eklenecek
-                                                          '500 Görüntülenme',
-                                                          style: TextStyle(fontSize: 10),
+                                                          '${widget.homeDetailContent?.viewsNumber} Görüntülenme',
+                                                          style: const TextStyle(fontSize: 10),
                                                           overflow: TextOverflow.ellipsis,
                                                         ),
                                                       ],
