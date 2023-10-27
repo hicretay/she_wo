@@ -326,7 +326,6 @@ class _SearchPageState extends State<SearchPage> {
                                               companyId: homeDetailContent.result.id,
                                               companyLogo: homeDetailContent.result.companyLogo.replaceAll('shewoo', 'estetikvitrini'),
                                               companyName: homeDetailContent.result.companyName,
-                                              contentTitle: homeDetailContent.result.companyName,
                                               googleAdressLink: homeDetailContent.result.googleAdressLink,
                                               companyPhone: homeDetailContent.result.companyPhone,
                                               comments: commentsModel?.result,

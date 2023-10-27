@@ -22,7 +22,7 @@ class HomeDetailPage extends StatefulWidget {
   final int? companyId;
   final String? companyLogo;
   final String? companyName;
-  final String? contentTitle;
+
   final String? googleAdressLink;
   final String? companyPhone;
   final List<Result>? comments;
@@ -33,7 +33,6 @@ class HomeDetailPage extends StatefulWidget {
     this.companyId,
     this.companyLogo,
     this.companyName,
-    this.contentTitle,
     this.googleAdressLink,
     this.companyPhone,
     this.comments,
@@ -46,7 +45,6 @@ class HomeDetailPage extends StatefulWidget {
       companyId: companyId,
       companyLogo: companyLogo,
       companyName: companyName,
-      contentTitle: contentTitle,
       googleAdressLink: googleAdressLink,
       companyPhone: companyPhone);
 }
@@ -57,13 +55,11 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
   int? companyId;
   String? companyLogo;
   String? companyName;
-  String? contentTitle;
   String? googleAdressLink;
   String? companyPhone;
   late int userIdData;
 
-  _HomeDetailPageState(
-      {this.homeDetailContent, this.companyId, this.companyLogo, this.companyName, this.contentTitle, this.googleAdressLink, this.companyPhone});
+  _HomeDetailPageState({this.homeDetailContent, this.companyId, this.companyLogo, this.companyName, this.googleAdressLink, this.companyPhone});
 
   double rating = 4.5;
   double updateRating = 0;
@@ -247,23 +243,6 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                           SingleChildScrollView(
                             child: Column(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(maxSpace),
-                                  child: Column(
-                                    children: [
-                                      Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: Text(
-                                          contentTitle ?? '',
-                                          style: const TextStyle(fontSize: 22, color: tertiaryColor),
-                                        ),
-                                      ),
-                                      Align(alignment: Alignment.bottomLeft, child: Text(homeDetailContent?.companyName ?? ''))
-
-                                      //Text(homeDetailContent.first.campaingDetail, style: TextStyle(fontSize: 18, color: Theme.of(context).hintColor))),
-                                    ],
-                                  ),
-                                ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: maxSpace, vertical: maxSpace),
                                   child: Align(
