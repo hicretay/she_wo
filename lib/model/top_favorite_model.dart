@@ -32,7 +32,7 @@ class Result {
   dynamic id;
   String companyName;
   String companyLogo;
-  int? commentsAvg;
+  double? commentsAvg;
   String? companyAddress;
   int? viewsNumber;
 

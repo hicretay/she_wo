@@ -7,6 +7,8 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:she_wo/JsnClass/add_user_city_jsn.dart';
 import 'package:she_wo/model/comment_model.dart';
 import 'package:she_wo/model/company_detail_model.dart';
 import 'package:she_wo/model/home_categories_model.dart' as h;
@@ -350,6 +352,9 @@ class _HomePageState extends State<HomePage> {
                                                       final CompanyDetailModel? homeDetailContent =
                                                           await companyDetailFunc(topFavoriteContent[index].id);
 
+                                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                      int? userId = prefs.getInt("userIdData");
+
                                                       final CommentModel? commentsModel = await commentListJsnFunc(topFavoriteContent[index].id);
                                                       provider.setComments(commentsModel?.result);
 
@@ -367,6 +372,10 @@ class _HomePageState extends State<HomePage> {
                                                                 companyPhone: homeDetailContent.result.companyPhone,
                                                                 comments: commentsModel?.result,
                                                               )));
+
+                                                      final AddUserCityJsn? viewCount = await viewCountFunc(userId!, homeDetailContent!.result.id);
+                                                      print(homeDetailContent.result.id);
+                                                      print(viewCount?.result);
                                                       progressUHD.dismiss();
                                                     },
                                                   ),

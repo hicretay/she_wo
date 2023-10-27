@@ -215,11 +215,14 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                       ],
                                                     ),
                                                     Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
                                                       children: [
                                                         const Icon(
                                                           Icons.remove_red_eye_sharp,
                                                           size: 15,
                                                         ),
+                                                        const SizedBox(width: 1),
                                                         Text(
                                                           '${widget.homeDetailContent?.viewsNumber} Görüntülenme',
                                                           style: const TextStyle(fontSize: 10),

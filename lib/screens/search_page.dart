@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:she_wo/model/comment_model.dart';
 import 'package:she_wo/model/company_detail_model.dart';
 import 'package:she_wo/model/top_favorite_model.dart';
@@ -15,6 +16,7 @@ import 'package:she_wo/screens/home_detail_page.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
 
+import '../JsnClass/add_user_city_jsn.dart';
 import '../widgets/backleading_widget.dart';
 
 class SearchPage extends StatefulWidget {
@@ -313,6 +315,9 @@ class _SearchPageState extends State<SearchPage> {
                                     final CommentModel? commentsModel = await commentListJsnFunc(selectedCompanies[index].id);
                                     provider.setComments(commentsModel?.result);
 
+                                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                                    int? userId = prefs.getInt("userIdData");
+
                                     if (!mounted) return;
                                     Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
                                         builder: (context) => HomeDetailPage(
@@ -326,6 +331,10 @@ class _SearchPageState extends State<SearchPage> {
                                               companyPhone: homeDetailContent.result.companyPhone,
                                               comments: commentsModel?.result,
                                             )));
+
+                                    final AddUserCityJsn? viewCount = await viewCountFunc(userId!, homeDetailContent!.result.id);
+                                    print(homeDetailContent.result.id);
+                                    print(viewCount?.result);
                                   },
                                 ),
                               );

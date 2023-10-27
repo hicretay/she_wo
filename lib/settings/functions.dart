@@ -21,6 +21,8 @@ import 'package:she_wo/model/top_favorite_model.dart';
 import 'package:she_wo/screens/login_page.dart';
 import 'package:she_wo/settings/consts.dart';
 
+import '../JsnClass/add_user_city_jsn.dart';
+
 String baseUrl = "https://service.shewoo.com/api/";
 
 Map<String, String> header = {
@@ -381,6 +383,20 @@ Future commentDeleteJsnFunc(int userId, int companyId) async {
     print(response.body);
   } else {
     print(response.statusCode);
+    return null;
+  }
+}
+
+
+//----------------------------------View Count------------------------------------
+Future<AddUserCityJsn?> viewCountFunc(int userId, int? companyId) async {
+  final response =
+      await http.post(Uri.parse("${baseUrl}CompanyList/Views"), body: '{"userId":$userId,"companyId":"$companyId"}', headers: header);
+
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+    return addUserCityJsnFromJson(responseString);
+  } else {
     return null;
   }
 }

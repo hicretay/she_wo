@@ -152,7 +152,6 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-
                                       Expanded(
                                         child: Padding(
                                           padding: const EdgeInsets.only(right: maxSpace),
@@ -183,11 +182,14 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                                                 ],
                                               ),
                                               Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
                                                   const Icon(
                                                     Icons.remove_red_eye_sharp,
                                                     size: 15,
                                                   ),
+                                                  const SizedBox(width: 1),
                                                   Text(
                                                     '${widget.pageData?.viewsNumber} Görüntülenme',
                                                     style: const TextStyle(fontSize: 10),
