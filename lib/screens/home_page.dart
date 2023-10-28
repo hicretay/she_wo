@@ -8,7 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:she_wo/JsnClass/add_user_city_jsn.dart';
+import 'package:she_wo/JsnClass/general_response_model.dart';
 import 'package:she_wo/model/comment_model.dart';
 import 'package:she_wo/model/company_detail_model.dart';
 import 'package:she_wo/model/home_categories_model.dart' as h;
@@ -372,7 +372,7 @@ class _HomePageState extends State<HomePage> {
                                                                 comments: commentsModel?.result,
                                                               )));
 
-                                                      final AddUserCityJsn? viewCount = await viewCountFunc(userId!, homeDetailContent!.result.id);
+                                                      final GeneralResponseModel? viewCount = await viewCountFunc(userId!, homeDetailContent!.result.id);
                                                       print(homeDetailContent.result.id);
                                                       print(viewCount?.result);
                                                       progressUHD.dismiss();

@@ -188,38 +188,41 @@ class _MakeAppointmentOperationPageState extends State<MakeAppointmentOperationP
               ),
             ),
             //-----------------------------------RANDEVU SAATİNİ SEÇ BUTONU-------------------------------------------
-            bottomNavigationBar: Container(
-              color: primaryColor,
-              child: TextButtonWidget(
-                  buttonText: "Saat Seç",
-                  icon: const FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: primaryColor),
-                  onPressed: () async {
-                    final progressHUD = ProgressHUD.of(context);
-                    progressHUD!.show();
+            bottomNavigationBar: (companyOperation!.isNotEmpty || companyOperation!.isNotEmpty)
+                ? Container(
+                    color: primaryColor,
+                    child: TextButtonWidget(
+                        buttonText: "Saat Seç",
+                        icon: const FaIcon(FontAwesomeIcons.arrowRight, size: 18, color: primaryColor),
+                        onPressed: () async {
+                          final progressHUD = ProgressHUD.of(context);
+                          progressHUD!.show();
 
-                    // ignore: unnecessary_null_comparison
-                    if (appointment!.operationId == null) {
-                      setState(() {
-                        _checked = 0;
-                        appointment!.operationId = companyOperation![0].id;
-                        appointment!.operationS = companyOperation![0].operationName;
-                        print(appointment!.operationId);
-                        print(appointment!.operationS);
-                      });
-                    }
+                          // ignore: unnecessary_null_comparison
+                          if (appointment!.operationId == null) {
+                            setState(() {
+                              _checked = 0;
+                              appointment!.operationId = companyOperation![0].id;
+                              appointment!.operationS = companyOperation![0].operationName;
+                              print(appointment!.operationId);
+                              print(appointment!.operationS);
+                            });
+                          }
 
-                    final companyOperationTime = await companyOperationTimeJsnFunc([appointment!.operationId]);
+                          final companyOperationTime = await companyOperationTimeJsnFunc([appointment!.operationId]);
 
-                    if (!mounted) return;
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MakeAppointmentTimePage(companyOperationTime: companyOperationTime!.result, appointment: appointment!),
-                      ),
-                    );
-                    progressHUD.dismiss();
-                  }),
-            ),
+                          if (!mounted) return;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  MakeAppointmentTimePage(companyOperationTime: companyOperationTime!.result, appointment: appointment!),
+                            ),
+                          );
+                          progressHUD.dismiss();
+                        }),
+                  )
+                : const SizedBox(),
             //--------------------------------------------------------------------------------------------------------------
           ),
         ),

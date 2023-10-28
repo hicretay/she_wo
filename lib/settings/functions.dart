@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:she_wo/JsnClass/add_user_jsn.dart';
 import 'package:she_wo/JsnClass/appointment_add_jsn.dart';
 import 'package:she_wo/JsnClass/appointment_delete_jsn.dart';
 import 'package:she_wo/JsnClass/appointment_list.dart';
@@ -13,7 +12,6 @@ import 'package:she_wo/JsnClass/company_appointment_list_jsn.dart';
 import 'package:she_wo/JsnClass/company_list_jsn.dart';
 import 'package:she_wo/JsnClass/company_operation_jsn.dart';
 import 'package:she_wo/JsnClass/company_operation_time.dart';
-import 'package:she_wo/JsnClass/forget_password_jsn.dart';
 import 'package:she_wo/JsnClass/login_jsn.dart';
 import 'package:she_wo/model/comment_model.dart';
 import 'package:she_wo/model/company_detail_model.dart';
@@ -21,7 +19,7 @@ import 'package:she_wo/model/top_favorite_model.dart';
 import 'package:she_wo/screens/login_page.dart';
 import 'package:she_wo/settings/consts.dart';
 
-import '../JsnClass/add_user_city_jsn.dart';
+import '../JsnClass/general_response_model.dart';
 
 String baseUrl = "https://service.shewoo.com/api/";
 
@@ -205,7 +203,7 @@ Future<AppointmentDeleteJsn?> appointmentApproveJsnFunc(int id) async {
 //------------------------------------------------------------------------------------------------------------------------
 
 //---------------------------------------------Kullanıcı Kayıt Fonksiyonu-----------------------------------------------------
-Future<AddUserJsn?> userAddJsnFunc(
+Future<GeneralResponseModel?> userAddJsnFunc(
     String nameSurname, String email, String telephone, String password, String facebookToken, String googleToken) async {
   var bodys = {};
   bodys["nameSurname"] = nameSurname;
@@ -221,7 +219,7 @@ Future<AddUserJsn?> userAddJsnFunc(
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
-    return addUserJsnFromJson(responseString);
+    return generalResponseModelFromJson(responseString);
   } else {
     print(response.statusCode);
     return null;
@@ -231,12 +229,12 @@ Future<AddUserJsn?> userAddJsnFunc(
 //------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //------------------------------------------Şifremi Unuttum Fonksiyonu----------------------------------------------------
-Future<ForgetPasswordJsn?> forgetPasswordJsnFunc(String eMail) async {
+Future<GeneralResponseModel?> forgetPasswordJsnFunc(String eMail) async {
   final response = await http.post(Uri.parse("${baseUrl}ForgetPassword"), body: '{"userName":"$eMail"}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
-    return forgetPasswordJsnFromJson(responseString);
+    return generalResponseModelFromJson(responseString);
   } else {
     return null;
   }
@@ -389,13 +387,13 @@ Future commentDeleteJsnFunc(int userId, int companyId) async {
 
 
 //----------------------------------View Count------------------------------------
-Future<AddUserCityJsn?> viewCountFunc(int userId, int? companyId) async {
+Future<GeneralResponseModel?> viewCountFunc(int userId, int? companyId) async {
   final response =
       await http.post(Uri.parse("${baseUrl}CompanyList/Views"), body: '{"userId":$userId,"companyId":"$companyId"}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;
-    return addUserCityJsnFromJson(responseString);
+    return generalResponseModelFromJson(responseString);
   } else {
     return null;
   }

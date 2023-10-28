@@ -99,71 +99,70 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: maxSpace),
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          ListTile(
-                                            visualDensity: const VisualDensity(vertical: -4),
-                                            dense: true,
-                                            title: TextField(
-                                              controller: teSearch,
-                                              cursorColor: tertiaryColor,
-                                              decoration: InputDecoration(
-                                                isDense: true,
-                                                hintText: "Ara",
-                                                hintStyle: const TextStyle(color: tertiaryColor),
-                                                focusedBorder: InputBorder.none,
-                                                enabledBorder: InputBorder.none,
-                                                filled: true,
-                                                fillColor: secondaryColor,
-                                                border: const OutlineInputBorder(
-                                                  borderRadius: BorderRadius.all(Radius.circular(cardCurved)),
-                                                ),
-                                                icon: CircleAvatar(
-                                                  maxRadius: 15,
-                                                  backgroundColor: secondaryColor,
-                                                  child: IconButton(
-                                                    iconSize: iconSize,
-                                                    icon: FaIcon(FontAwesomeIcons.search,
-                                                        color: Theme.of(context).hintColor, size: 16, textDirection: TextDirection.ltr),
-                                                    onPressed: () {
-                                                      selectedCompanies.clear();
-                                                      setState(() {
-                                                        for (var element in allCompanies) {
-                                                          if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
-                                                            selectedCompanies.add(element);
-                                                          }
+                                    child: Column(
+                                      children: [
+                                        ListTile(
+                                          visualDensity: const VisualDensity(vertical: -4),
+                                          dense: true,
+                                          title: TextField(
+                                            controller: teSearch,
+                                            cursorColor: tertiaryColor,
+                                            decoration: InputDecoration(
+                                              isDense: true,
+                                              hintText: "Ara",
+                                              hintStyle: const TextStyle(color: tertiaryColor),
+                                              focusedBorder: InputBorder.none,
+                                              enabledBorder: InputBorder.none,
+                                              filled: true,
+                                              fillColor: secondaryColor,
+                                              border: const OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(cardCurved)),
+                                              ),
+                                              icon: CircleAvatar(
+                                                maxRadius: 15,
+                                                backgroundColor: secondaryColor,
+                                                child: IconButton(
+                                                  iconSize: iconSize,
+                                                  icon: FaIcon(FontAwesomeIcons.search,
+                                                      color: Theme.of(context).hintColor, size: 16, textDirection: TextDirection.ltr),
+                                                  onPressed: () {
+                                                    selectedCompanies.clear();
+                                                    setState(() {
+                                                      for (var element in allCompanies) {
+                                                        if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
+                                                          selectedCompanies.add(element);
                                                         }
-                                                      });
-                                                    },
-                                                  ),
+                                                      }
+                                                    });
+                                                  },
                                                 ),
                                               ),
-                                              onTap: () {
-                                                selectedCompanies.clear();
-                                                setState(() {
-                                                  for (var element in allCompanies) {
-                                                    if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
-                                                      selectedCompanies.add(element);
-                                                    }
-                                                  }
-                                                });
-                                              },
-                                              onChanged: (value) {
-                                                selectedCompanies.clear();
-                                                setState(() {
-                                                  for (var element in allCompanies) {
-                                                    if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
-                                                      selectedCompanies.add(element);
-                                                    }
-                                                  }
-                                                });
-                                              },
                                             ),
+                                            onTap: () {
+                                              selectedCompanies.clear();
+                                              setState(() {
+                                                for (var element in allCompanies) {
+                                                  if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
+                                                    selectedCompanies.add(element);
+                                                  }
+                                                }
+                                              });
+                                            },
+                                            onChanged: (value) {
+                                              selectedCompanies.clear();
+                                              setState(() {
+                                                for (var element in allCompanies) {
+                                                  if (element.companyName.toLowerCase().contains(teSearch.text.toLowerCase())) {
+                                                    selectedCompanies.add(element);
+                                                  }
+                                                }
+                                              });
+                                            },
                                           ),
-                                          ListView.separated(
+                                        ),
+                                        Expanded(
+                                          child: ListView.separated(
                                             padding: const EdgeInsets.all(0),
-                                            physics: const NeverScrollableScrollPhysics(),
                                             shrinkWrap: true,
                                             itemCount: selectedCompanies.isEmpty ? allCompanies.length : selectedCompanies.length,
                                             itemBuilder: (BuildContext context, int index) {
@@ -227,9 +226,9 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                               return const SizedBox(height: minSpace);
                                             },
                                           ),
-                                          const SizedBox(height: maxSpace)
-                                        ],
-                                      ),
+                                        ),
+                                        const SizedBox(height: maxSpace)
+                                      ],
                                     ),
                                   )),
                             ),

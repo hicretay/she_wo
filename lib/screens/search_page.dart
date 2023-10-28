@@ -16,7 +16,7 @@ import 'package:she_wo/screens/home_detail_page.dart';
 import 'package:she_wo/settings/consts.dart';
 import 'package:she_wo/settings/functions.dart';
 
-import '../JsnClass/add_user_city_jsn.dart';
+import '../JsnClass/general_response_model.dart';
 import '../widgets/backleading_widget.dart';
 
 class SearchPage extends StatefulWidget {
@@ -331,7 +331,7 @@ class _SearchPageState extends State<SearchPage> {
                                               comments: commentsModel?.result,
                                             )));
 
-                                    final AddUserCityJsn? viewCount = await viewCountFunc(userId!, homeDetailContent!.result.id);
+                                    final GeneralResponseModel? viewCount = await viewCountFunc(userId!, homeDetailContent!.result.id);
                                     print(homeDetailContent.result.id);
                                     print(viewCount?.result);
                                   },
