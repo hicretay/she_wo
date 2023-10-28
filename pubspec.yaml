@@ -50,7 +50,6 @@ flutter:
     - assets/
     - assets/icons/
     - assets/images/
-    - assets/icons2/
 
   fonts:
     - family: futura_medium_bt

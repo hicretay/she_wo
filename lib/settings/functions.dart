@@ -20,6 +20,7 @@ import 'package:she_wo/screens/login_page.dart';
 import 'package:she_wo/settings/consts.dart';
 
 import '../JsnClass/general_response_model.dart';
+import '../model/comment_result_model.dart';
 
 String baseUrl = "https://service.shewoo.com/api/";
 
@@ -407,27 +408,3 @@ String imageToBase64(File imagePath) {
   return encodedImage;
 }
 //------------------------------------------------------------------------------
-
-CommentResultModel commentResultModelFromJson(String str) => CommentResultModel.fromJson(json.decode(str));
-
-String commentResultModelToJson(CommentResultModel data) => json.encode(data.toJson());
-
-class CommentResultModel {
-  bool success;
-  String result;
-
-  CommentResultModel({
-    required this.success,
-    required this.result,
-  });
-
-  factory CommentResultModel.fromJson(Map<String, dynamic> json) => CommentResultModel(
-        success: json["success"],
-        result: json["result"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "success": success,
-        "result": result,
-      };
-}
