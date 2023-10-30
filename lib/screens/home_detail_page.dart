@@ -143,9 +143,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                             child: Container(
                                               decoration: BoxDecoration(
                                                   borderRadius: const BorderRadius.all(Radius.circular(maxSpace)),
-                                                  image: DecorationImage(
-                                                      fit: BoxFit.fitWidth,
-                                                      image: NetworkImage(homeDetailContent!.companyLogo.replaceAll('shewoo', 'estetikvitrini')))),
+                                                  image: DecorationImage(fit: BoxFit.fitWidth, image: NetworkImage(homeDetailContent!.companyLogo))),
                                             ),
                                           ))),
                             ),

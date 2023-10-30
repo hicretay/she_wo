@@ -199,8 +199,8 @@ class _CategoryCompaniesPageState extends State<CategoryCompaniesPage> {
                                                                 shape: BoxShape.circle,
                                                                 image: DecorationImage(
                                                                   image: NetworkImage(selectedCompanies.isEmpty
-                                                                      ? allCompanies[index].companyLogo.replaceAll('shewoo', 'estetikvitrini')
-                                                                      : selectedCompanies[index].companyLogo.replaceAll('shewoo', 'estetikvitrini')),
+                                                                      ? allCompanies[index].companyLogo
+                                                                      : selectedCompanies[index].companyLogo),
                                                                 ),
                                                               ),
                                                             ),

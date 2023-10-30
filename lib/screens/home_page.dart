@@ -344,7 +344,7 @@ class _HomePageState extends State<HomePage> {
                                                     isCategoryWidget: false,
                                                     companyName: topFavoriteContent[index].companyName,
                                                     commentsAvg: topFavoriteContent[index].commentsAvg?.toDouble(),
-                                                    contentPicture: topFavoriteContent[index].companyLogo.replaceAll('shewoo', 'estetikvitrini'),
+                                                    contentPicture: topFavoriteContent[index].companyLogo,
                                                     cardText: topFavoriteContent[index].companyName,
                                                     homeDetailOntap: () async {
                                                       final progressUHD = ProgressHUD.of(context);
@@ -365,7 +365,7 @@ class _HomePageState extends State<HomePage> {
                                                                 homeDetailContent: homeDetailContent!.result,
                                                                 companyId: homeDetailContent.result.id,
                                                                 companyLogo:
-                                                                    homeDetailContent.result.companyLogo.replaceAll('shewoo', 'estetikvitrini'),
+                                                                    homeDetailContent.result.companyLogo,
                                                                 companyName: homeDetailContent.result.companyName,
                                                                 googleAdressLink: homeDetailContent.result.googleAdressLink,
                                                                 companyPhone: homeDetailContent.result.companyPhone,

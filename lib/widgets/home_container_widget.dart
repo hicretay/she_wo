@@ -82,7 +82,7 @@ class _HomeContainerWidgetState extends State<HomeContainerWidget> {
                                 image: DecorationImage(
                                   fit: BoxFit.contain,
                                   image: NetworkImage(
-                                    widget.contentPicture!.replaceAll('shewoo', 'estetikvitrini'),
+                                    widget.contentPicture!,
                                   ),
                                   onError: (error, stackTrace) {
                                     const Icon(Icons.image);
