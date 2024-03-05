@@ -88,7 +88,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                     backgroundColor: tertiaryColor,
                     onPressed: () async {
                       SharedPreferences prefs = await SharedPreferences.getInstance();
-                      userIdData = prefs.getInt("userIdData")!;
+                      userIdData = prefs.getInt("userIdData") ?? 0;
                       if (userIdData != 0) {
                         AppointmentObject appointment = AppointmentObject(companyId: companyId!, userId: userIdData, companyNameS: companyName!);
                         if (!mounted) return;
@@ -386,7 +386,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
                                                   //-----------------------------Kaydet BUTONU ONPRESSEDİ---------------------------------------------
                                                   onPressed: () async {
                                                     SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                    int userIdData = prefs.getInt("userIdData")!;
+                                                    int userIdData = prefs.getInt("userIdData") ?? 0;
 
                                                     if (!mounted) return;
                                                     final progressHUD = ProgressHUD.of(context);

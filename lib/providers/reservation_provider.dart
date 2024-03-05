@@ -9,7 +9,6 @@ class ReservationProvider with ChangeNotifier {
   List? appointmentList;
   DateTime selectedDay = DateTime.now();
 
-
   Map<DateTime, List<Event>>? selectedEvents;
 
   void refresh() {
@@ -26,7 +25,7 @@ class ReservationProvider with ChangeNotifier {
     int? userIdData = prefs.getInt("userIdData");
     String calendarDate =
         "${selectedDay.day <= 9 ? "0${selectedDay.day}" : selectedDay.day.toString()}.${selectedDay.month <= 9 ? "0${selectedDay.month}" : selectedDay.month.toString()}.${selectedDay.year}";
-    final AppointmentListJsn? appointmentNewList = await appointmentListJsnFunc(userIdData!, calendarDate);
+    final AppointmentListJsn? appointmentNewList = await appointmentListJsnFunc(userIdData ?? 0, calendarDate);
 
     appointmentList = appointmentNewList!.result;
 

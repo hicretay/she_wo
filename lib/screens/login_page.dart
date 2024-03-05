@@ -205,6 +205,35 @@ class _LoginPageState extends State<LoginPage> {
                                     });
                               },
                             ),
+
+                            const SizedBox(height: maxSpace),
+                            Material(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(10.0),
+                              //--------------------------------------------------GİRİŞ BUTONU---------------------------------------------------------------
+                              child: MaterialButton(
+                                  minWidth: deviceWidth(context), //Buton minimum genişliği
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("Üye olmadan devam et",
+                                          style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                                                color: tertiaryColor,
+                                                fontFamily: contentFont,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                      const SizedBox(width: 5),
+                                      const Icon(Icons.arrow_forward_ios, color: tertiaryColor, size: 18),
+                                    ],
+                                  ),
+                                  //-----------------------------GİRİŞ BUTONU ONPRESSEDİ---------------------------------------------
+                                  onPressed: () async {
+                                    if (!mounted) return;
+                                    Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => const Root()));
+                                  }),
+                              //-----------------------------------------------------------------------------------------------------------------------------
+                            ),
                           ]),
                         ),
                       )

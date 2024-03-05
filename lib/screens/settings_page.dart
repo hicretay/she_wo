@@ -27,7 +27,7 @@ class _SettingsPageState extends State<SettingsPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? newuser = prefs.getString("namesurname");
     setState(() {
-      user = newuser!;
+      user = newuser ?? '';
     });
   }
 
@@ -35,7 +35,7 @@ class _SettingsPageState extends State<SettingsPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? newAdminData = prefs.getBool("isAdmin");
     setState(() {
-      isAdmin = newAdminData!;
+      isAdmin = newAdminData ?? false;
     });
   }
 

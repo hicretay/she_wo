@@ -121,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                             //-----------------------------BAŞLIK-------------------------------
                             Center(
                               child: Padding(
-                                padding: EdgeInsets.only(top: deviceWidth(context) * 0.1),
+                                padding: EdgeInsets.only(top: deviceWidth(context) * 0.13),
                                 child: SizedBox(
                                   height: deviceWidth(context) * 0.25,
                                   child: Center(
@@ -364,15 +364,15 @@ class _HomePageState extends State<HomePage> {
                                                                 commentsAvg: homeDetailContent?.result.commentsAvg,
                                                                 homeDetailContent: homeDetailContent!.result,
                                                                 companyId: homeDetailContent.result.id,
-                                                                companyLogo:
-                                                                    homeDetailContent.result.companyLogo,
+                                                                companyLogo: homeDetailContent.result.companyLogo,
                                                                 companyName: homeDetailContent.result.companyName,
                                                                 googleAdressLink: homeDetailContent.result.googleAdressLink,
                                                                 companyPhone: homeDetailContent.result.companyPhone,
                                                                 comments: commentsModel?.result,
                                                               )));
 
-                                                      final GeneralResponseModel? viewCount = await viewCountFunc(userId!, homeDetailContent!.result.id);
+                                                      final GeneralResponseModel? viewCount =
+                                                          await viewCountFunc(userId ?? 0, homeDetailContent!.result.id);
                                                       print(homeDetailContent.result.id);
                                                       print(viewCount?.result);
                                                       progressUHD.dismiss();

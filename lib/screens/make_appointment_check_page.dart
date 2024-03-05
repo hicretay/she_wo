@@ -37,7 +37,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
   Future appointmentListFunc() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userIdData = prefs.getInt("userIdData");
-    final AppointmentListJsn? appointmentNewList = await allAppointmentListJsnFunc(userIdData!);
+    final AppointmentListJsn? appointmentNewList = await allAppointmentListJsnFunc(userIdData ?? 0);
 
     if (mounted) {
       setState(() {
@@ -176,7 +176,7 @@ class _MakeAppointmentCheckPageState extends State<MakeAppointmentCheckPage> {
                                         progressHUD!.show();
                                         if (userIdData != 0) {
                                           final appointmentAddData = await appointmentAddJsnFunc(
-                                              userIdData!,
+                                              userIdData ?? 0,
                                               appointment.companyId!,
                                               appointment.campaignId == null ? 0 : appointment.campaignId!,
                                               appointment.appointmentDate!,

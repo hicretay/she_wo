@@ -1,4 +1,4 @@
-package com.example.she_wo
+package com.ae.shewoo
 
 import io.flutter.embedding.android.FlutterActivity
 

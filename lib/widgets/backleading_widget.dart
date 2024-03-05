@@ -1,6 +1,5 @@
 import 'package:she_wo/settings/consts.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class BackLeadingWidget extends StatelessWidget {
   final Color? backColor;
@@ -19,7 +18,8 @@ class BackLeadingWidget extends StatelessWidget {
         children: [
           IconButton(
               iconSize: iconSize,
-              icon: SvgPicture.asset("assets/icons/back.svg", height: 27, width: 27, color: tertiaryColor),
+              icon: const Icon(Icons.arrow_back_ios,
+                  color: tertiaryColor, size: 20),
               onPressed: () {
                 Navigator.pop(context, false);
               }),

@@ -285,17 +285,15 @@ showNotMemberAlert(BuildContext context) {
         return AlertDialog(
           content: const Text("Devam etmek için lütfen üye olunuz !", style: TextStyle(fontFamily: contentFont)),
           actions: <Widget>[
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-              MaterialButton(
-                  color: primaryColor,
-                  child: const Text("Kayıt Ol", style: TextStyle(fontFamily: leadingFont, color: white)),
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              TextButton(
+                  child: const Text("Kayıt Ol", style: TextStyle(fontFamily: leadingFont, color: tertiaryColor, fontWeight: FontWeight.bold)),
                   onPressed: () async {
                     Navigator.of(context, rootNavigator: true)
                         .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const LoginPage()), (route) => false);
                   }),
-              MaterialButton(
-                  color: primaryColor,
-                  child: const Text("Kapat", style: TextStyle(fontFamily: leadingFont, color: white)),
+              TextButton(
+                  child: const Text("Kapat", style: TextStyle(fontFamily: leadingFont, color: tertiaryColor, fontWeight: FontWeight.bold)),
                   onPressed: () async {
                     Navigator.of(context).pop();
                   }),
@@ -386,11 +384,9 @@ Future commentDeleteJsnFunc(int userId, int companyId) async {
   }
 }
 
-
 //----------------------------------View Count------------------------------------
 Future<GeneralResponseModel?> viewCountFunc(int userId, int? companyId) async {
-  final response =
-      await http.post(Uri.parse("${baseUrl}CompanyList/Views"), body: '{"userId":$userId,"companyId":"$companyId"}', headers: header);
+  final response = await http.post(Uri.parse("${baseUrl}CompanyList/Views"), body: '{"userId":$userId,"companyId":"$companyId"}', headers: header);
 
   if (response.statusCode == 200) {
     final String responseString = response.body;

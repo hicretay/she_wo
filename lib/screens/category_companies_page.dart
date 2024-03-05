@@ -223,7 +223,7 @@ class _CategoryCompaniesPageState extends State<CategoryCompaniesPage> {
                                                     final progressHUD = ProgressHUD.of(context);
                                                     progressHUD!.show();
                                                     SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                    int userIdData = prefs.getInt("userIdData")!;
+                                                    int userIdData = prefs.getInt("userIdData") ?? 0;
                                                     if (userIdData != 0) {
                                                       AppointmentObject appointment = AppointmentObject(
                                                         companyId: selectedCompanies.isEmpty ? allCompanies[index].id : selectedCompanies[index].id,

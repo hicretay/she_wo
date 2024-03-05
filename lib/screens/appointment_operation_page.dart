@@ -43,7 +43,7 @@ class _AppointmentOperationPageState extends State<AppointmentOperationPage> {
   Future appointmentListFunc() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userIdData = prefs.getInt("userIdData");
-    final CompanyAppointmentListJsn? appointmentNewList = await appointmentCompanyListJsnFunc(userIdData!, getDate());
+    final CompanyAppointmentListJsn? appointmentNewList = await appointmentCompanyListJsnFunc(userIdData ?? 0, getDate());
     if (!mounted) return;
     setState(() {
       appointmentList = appointmentNewList!.result;

@@ -194,7 +194,7 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                                     //if(userIdData != 0){
                                                     AppointmentObject appointment = AppointmentObject(
                                                         companyId: selectedCompanies.isEmpty ? allCompanies[index].id : selectedCompanies[index].id,
-                                                        userId: userIdData!,
+                                                        userId: userIdData ?? 0,
                                                         companyNameS: selectedCompanies.isEmpty
                                                             ? allCompanies[index].companyName
                                                             : selectedCompanies[index].companyName,
@@ -208,10 +208,6 @@ class _CompaniesPageState extends State<CompaniesPage> {
                                                         MaterialPageRoute(
                                                             builder: (context) => MakeAppointmentOperationPage(
                                                                 companyOperation: companyOperation!.result, appointment: appointment)));
-                                                    print(selectedCompanies.isEmpty
-                                                        ? allCompanies[index].companyName
-                                                        : selectedCompanies[index].companyName);
-                                                    print(selectedCompanies.isEmpty ? allCompanies[index].id : selectedCompanies[index].id);
                                                     progressHUD.dismiss();
                                                     // }
                                                     // else{

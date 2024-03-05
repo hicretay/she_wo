@@ -37,7 +37,7 @@ class _ReservationPageState extends State<ReservationPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userIdData = prefs.getInt("userIdData");
 
-    final AppointmentListJsn? appointmentNewList = await allAppointmentListJsnFunc(userIdData!);
+    final AppointmentListJsn? appointmentNewList = await allAppointmentListJsnFunc(userIdData ?? 0);
     setState(() {
       allAppointmentList = appointmentNewList!.result;
     });
@@ -85,7 +85,16 @@ class _ReservationPageState extends State<ReservationPage> {
             child: FloatingActionButton.extended(
                 backgroundColor: secondaryColor,
                 onPressed: () async {
-                  Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => CompaniesPage(date: calendarDate)));
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  userIdData = prefs.getInt("userIdData");
+
+                  if (userIdData == null) {
+                    if (!mounted) return;
+                    showNotMemberAlert(context);
+                    return;
+                  } else {
+                    Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => CompaniesPage(date: calendarDate)));
+                  }
                 },
                 label: const Text(
                   "Randevu Al",
