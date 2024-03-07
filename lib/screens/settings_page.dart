@@ -154,6 +154,15 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
 
                             ListTileWidget(
+                              text: "Hesabını Sil",
+                              child: const LineIcon(LineIcons.alternateTrashAlt, color: primaryColor),
+                              onTap: () {
+                                Navigator.of(context, rootNavigator: true).push(
+                                    MaterialPageRoute(builder: (context) => const WebViewWidget(locationUrl: "https://shewoo.com/App/userDelete")));
+                              },
+                            ),
+
+                            ListTileWidget(
                                 text: "Uygulamadan çıkış yap",
                                 child: const Icon(Icons.exit_to_app, color: primaryColor),
                                 onTap: () async {

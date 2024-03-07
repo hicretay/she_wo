@@ -18,8 +18,7 @@ class BackLeadingWidget extends StatelessWidget {
         children: [
           IconButton(
               iconSize: iconSize,
-              icon: const Icon(Icons.arrow_back_ios,
-                  color: tertiaryColor, size: 20),
+              icon: const Icon(Icons.arrow_back_ios, color: tertiaryColor, size: 20),
               onPressed: () {
                 Navigator.pop(context, false);
               }),
